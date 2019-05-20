@@ -1,0 +1,42 @@
+﻿
+@model MyPlace.Models.Catalog.EstablishmentIndexModel
+
+<h2>@Model.Title</h2>
+
+<div class="container">
+        <div class="row input-container">
+            <div class="col-xs-12">
+                <div class="styled-input wide">
+
+                    <textarea name="content" id="content"></textarea>
+
+                    <label>Message</label>
+
+                    <button asp-controller="Catalog" asp-action="Create"
+                            asp-route-Id="@Model.Id"
+                            asp-route-text="content.value"
+                            class="btn btn-primary btn-block">
+                        Create
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<section id="app" class="comments">
+
+    @foreach (var comment in Model.Comments)
+    {
+        <article>
+            <h4><a href="#">chrisburton</a></h4>
+            <time>Created On: @comment.CreatedOn</time>
+            <like></like>
+            <h6>
+                @comment.Content
+            </h6>
+        </article>
+    }
+
+</section>
+
+
