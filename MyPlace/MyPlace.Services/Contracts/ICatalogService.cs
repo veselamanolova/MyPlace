@@ -1,6 +1,7 @@
 ﻿
 namespace MyPlace.Services.Contracts
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -11,6 +12,8 @@ namespace MyPlace.Services.Contracts
         Task<TSource> GetById<TSource>(int Id);
 
         Task CreateReply(int Id, string text);
+
+        IEnumerable<string> Autocomplete();
     }
 }
 
