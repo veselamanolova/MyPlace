@@ -40,11 +40,15 @@
             string userId = HttpContext.User.FindFirst(idClaimType).Value;
             var entities = await _userEntitiesService.GetAllUserEntitiesAsync(userId);
 
-            var notes = await _notesService.GetAllAsync(entities[0].EntityId);
+            var selectedEntityId = entityId ?? entities[0].EntityId; 
+
+
+            var notes = await _notesService.GetAllAsync(selectedEntityId);
 
             NotesViewModel vm = new NotesViewModel()
             {
                 UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
+                SelectedEntityId = selectedEntityId,
                 Notes = _mapper.Map<List<Note>, List<NoteViewModel>>(notes),
                 ManageableNote = new NoteViewModel()
             };

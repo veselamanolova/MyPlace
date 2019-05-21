@@ -1,27 +1,44 @@
 ﻿@model MyPlace.Areas.Notes.Models.NotesViewModel
-@foreach (var entity in Model.UserEntites)
-{
 
-   <a >@entity.</a>
-
-}
-<p>
-    <partial name="_AddNotePartial" model="Model.ManageableNote" />
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Category</th>
-            <th>Text</th>
-            <th>Date</th>
-            <th>Is Completed</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var note in Model.Notes)
+<ul class="nav nav-tabs">
+    @foreach (var entity in Model.UserEntites)
+    {
+        var cssClass = "nav-link";
+        @if (entity.EntityId == Model.SelectedEntityId)
         {
-            <partial name="_NotesPartial" model="note" />
+            cssClass += " active";
         }
-    </tbody>
-</table>
+        <li class="nav-item">
+            <a class="@cssClass" asp-area="Notes" asp-controller="Notes" asp-action="Notes" asp-route-entityId="@entity.EntityId">@entity.Title</a>
+        </li>
+    }
+</ul>
+<div class="tab-content clearfix">
+    <div class="tab-pane active">
+        <p>
+            <partial name="_AddNotePartial" model="Model.ManageableNote" />
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Category</th>
+                    <th>Text</th>
+                    <th>Date</th>
+                    <th>Is Completed</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var note in Model.Notes)
+                {
+                    <partial name="_NotesPartial" model="note" />
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/notes.css" />
+}

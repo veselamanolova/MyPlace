@@ -6,7 +6,9 @@
     public class NotesViewModel
     {
         public List<UserEntityViewModel> UserEntites { get; set; }
-    
+
+        public int SelectedEntityId { get; set; }
+
         public List<NoteViewModel> Notes{ get; set; }
 
         public NoteViewModel ManageableNote { get; set;  }
