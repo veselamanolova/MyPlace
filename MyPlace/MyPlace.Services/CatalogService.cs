@@ -23,7 +23,7 @@ namespace MyPlace.Services
         }
 
 
-        public async Task<IEnumerable<TSource>> ReadAll<TSource>() =>
+        public async Task<IQueryable<TSource>> ReadAll<TSource>() =>
             await Task.Run(() => _mapper.ProjectTo<TSource>(_context.Entities));
 
 
@@ -31,7 +31,7 @@ namespace MyPlace.Services
             await Task.Run(() => _mapper.ProjectTo<TSource>(
                 _context.Entities
                 .Where(entity => entity.Id.Equals(Id))
-                .Include(comment => comment.Comments))
+                    .Include(comment => comment.Comments))
                 .FirstOrDefault());
 
 
@@ -39,6 +39,7 @@ namespace MyPlace.Services
         {
             var selectedEntity = _context.Entities
             .Where(entity => entity.Id.Equals(Id))
+                .Include(comments => comments.Comments)
             .FirstOrDefault();
 
             selectedEntity.Comments.Add(new Comment(Id, text, DateTime.Now, selectedEntity));

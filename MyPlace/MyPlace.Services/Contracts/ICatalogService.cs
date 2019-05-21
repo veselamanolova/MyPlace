@@ -1,12 +1,12 @@
 ﻿
 namespace MyPlace.Services.Contracts
 {
+    using System.Linq;
     using System.Threading.Tasks;
-    using System.Collections.Generic;
 
     public interface ICatalogService
     {
-        Task<IEnumerable<TSource>> ReadAll<TSource>();
+        Task<IQueryable<TSource>> ReadAll<TSource>();
 
         Task<TSource> GetById<TSource>(int Id);
 

@@ -5,6 +5,7 @@ namespace MyPlace.Controllers
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
+    using MyPlace.Data.Models;
     using MyPlace.Models.Catalog;
     using MyPlace.Services.Contracts;
 
@@ -15,7 +16,9 @@ namespace MyPlace.Controllers
         public CatalogController(ICatalogService catalogContex) =>
             _catalogService = catalogContex ?? throw new ArgumentNullException(nameof(catalogContex));
 
-        public async Task<IActionResult> Index(string searchString)
+
+        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 60)]
+        public async Task<IActionResult> Index(string searchString, int? pageNumber)
         {
             ViewData["Filter"] = searchString;
 
@@ -26,15 +29,13 @@ namespace MyPlace.Controllers
                     .Where(filter =>
                         filter.Title.ToLower().Contains(searchString.ToLower()));
 
-            return View(new CatalogIndexModel
-            {
-                EntitiesList = establishments
-            });
+            int pageSize = 1;
+            return View(await PaginatedList<CatalogListingModel>.CreateAsync(establishments, pageNumber ?? 1, pageSize));
         }
 
-        public async Task<IActionResult> Create(int id, string text)
+        public async Task<IActionResult> Create(EstablishmentIndexModel model)
         {
-            await _catalogService.CreateReply(id, text);
+            await _catalogService.CreateReply(model.Id, model.NewPost);
             return RedirectToAction("Index");
         }
 
