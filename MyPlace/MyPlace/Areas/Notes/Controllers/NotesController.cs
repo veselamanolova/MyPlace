@@ -35,10 +35,23 @@
         }
 
 
-      //  [Authorize(Roles = "Administrator")]
+        //  [Authorize(Roles = "Administrator")]
+        [ValidateAntiForgeryToken]
+        [HttpGet("AddNote")]
+        public IActionResult _AddNotePartial(int entityId)
+        {
+            NoteViewModel vm = new NoteViewModel()
+            {
+                EntityId = entityId 
+            };
+           
+            return RedirectToAction(nameof(Notes));
+        }
+
+        //  [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         [HttpPost("AddNote")]
-        public async Task<IActionResult> AddNote(NoteViewModel model)
+        public async Task<IActionResult> _AddNotePartial(NoteViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -47,10 +60,9 @@
 
             try
             {
-                await _notesService.AddAsync(model.EntityId, model.Text, model.Category.Id);                   
-
-
-                return RedirectToAction(nameof(Notes));
+                await _notesService.AddAsync(model.EntityId, model.Text, model.Category.Id);
+                return View(model);
+                // return RedirectToAction(nameof(Notes));
             }
             catch (ArgumentException ex)
             {

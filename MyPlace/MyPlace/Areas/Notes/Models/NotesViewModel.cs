@@ -5,7 +5,10 @@
 
     public class NotesViewModel
     {
+
         public List<NoteViewModel> Notes{ get; set; }
+
+        public NoteViewModel ManageableNote { get; set;  }
 
     }
 }

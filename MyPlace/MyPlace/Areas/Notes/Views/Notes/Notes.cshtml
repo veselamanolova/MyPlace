@@ -1,13 +1,7 @@
 ﻿@model MyPlace.Areas.Notes.Models.NotesViewModel
 
-@{
-    ViewData["Title"] = "Notes";
-}
-
-<h1>Notes</h1>
-
 <p>
-    <a asp-action="Create">Create New</a>
+    <partial name="_AddNotePartial" model="Model.ManageableNote" />   
 </p>
 <table class="table">
     <thead>
@@ -21,8 +15,7 @@
     </thead>
     <tbody>
         @foreach (var note in Model.Notes)
-        {      
-
+        {  
             <partial name="_NotesPartial" model="note" />
         }
     </tbody>
