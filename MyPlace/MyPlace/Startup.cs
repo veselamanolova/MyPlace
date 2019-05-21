@@ -41,7 +41,7 @@ namespace MyPlace
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<ApplicationUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -49,7 +49,6 @@ namespace MyPlace
             services.AddScoped<INoteService, NoteService>();
             services.AddSingleton<IViewModelMapper<Note, NoteViewModel>, NoteViewModelMapper>();
             services.AddSingleton<IViewModelMapper<List<Note>, NotesViewModel>, NotesViewModelMapper>(); 
-
 
 
             services.AddAutoMapper(GetType().Assembly, typeof(Entity).Assembly);
