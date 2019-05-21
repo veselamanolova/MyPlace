@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyPlace.Services.DTOs
 {
-    public class UserEntitiesDTO
+    public class UserEntityDTO
     {
         public string UserId { get; set; }
 

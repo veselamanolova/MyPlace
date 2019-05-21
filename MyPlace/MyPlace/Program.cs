@@ -15,7 +15,7 @@ namespace MyPlace
         public static void Main(string[] args)
         {           
             var host = CreateWebHostBuilder(args).Build();
-            SeedDatabaseAsync(host);
+           // SeedDatabaseAsync(host);
             host.Run();
         }
 

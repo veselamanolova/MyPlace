@@ -7,6 +7,6 @@
 
     public interface IUserEntitiesService
     {
-        Task<List<UserEntitiesDTO>> GetAllUserEntitiesAsync(string userId); 
+        Task<List<UserEntityDTO>> GetAllUserEntitiesAsync(string userId); 
     }
 }

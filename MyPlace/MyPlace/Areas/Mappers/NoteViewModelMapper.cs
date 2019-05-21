@@ -1,7 +1,4 @@
-﻿
-
-
-namespace MyPlace.Areas.Mappers
+﻿namespace MyPlace.Areas.Mappers
 {
     using MyPlace.Areas.Notes.Models;
     using MyPlace.Data.Models;

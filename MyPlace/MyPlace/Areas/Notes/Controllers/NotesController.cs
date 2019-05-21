@@ -2,34 +2,54 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Threading.Tasks;    
+    using System.Threading.Tasks;
+    using AutoMapper;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyPlace.Areas.Mappers;
     using MyPlace.Areas.Notes.Models;
     using MyPlace.Data.Models;
     using MyPlace.Services.Contracts;
+    using MyPlace.Services.DTOs;
 
     [Area("Notes")]
-  //  [Authorize(Roles = "Manager")]
+    //  [Authorize(Roles = "Manager")]
     public class NotesController : Controller
     {
         private readonly INoteService _notesService;
-        private readonly IViewModelMapper<List<Note>, NotesViewModel> _notesMapper;
+        private readonly IMapper _mapper;
+        private readonly IUserEntitiesService _userEntitiesService;
 
-        public NotesController(INoteService notesService, IViewModelMapper<List<Note>, NotesViewModel> notesMapper)
+        public NotesController(INoteService notesService, IMapper mapper, IUserEntitiesService userEntitiesService)
         {
-            _notesService = notesService;
-            _notesMapper = notesMapper ?? throw new ArgumentNullException(nameof(notesMapper));
+            _notesService = notesService ?? throw new ArgumentNullException(nameof(notesService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _userEntitiesService = userEntitiesService ?? throw new ArgumentNullException(nameof(userEntitiesService));
         }
 
-      //  [Authorize(Roles = "Administrator")]
+        // [Authorize(Roles = "Manager")]
         [HttpGet("Notes")]
-        public async Task<IActionResult> Notes(int entityId)
+        public async Task<IActionResult> Notes(int? entityId, int? noteId)
         {
-            
-            var notes = await _notesService.GetAllAsync(1);
+            string idClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+            if (HttpContext.User == null || !HttpContext.User.HasClaim(x => x.Type == idClaimType))
+            {
+                throw new Exception("Cannot determine current user id");
+            }
 
-            NotesViewModel vm =  _notesMapper.MapFrom(notes);
+            string userId = HttpContext.User.FindFirst(idClaimType).Value;
+            var entities = await _userEntitiesService.GetAllUserEntitiesAsync(userId);
+
+            var notes = await _notesService.GetAllAsync(entities[0].EntityId);
+
+            NotesViewModel vm = new NotesViewModel()
+            {
+                UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
+                Notes = _mapper.Map<List<Note>, List<NoteViewModel>>(notes),
+                ManageableNote = new NoteViewModel()
+            };
+
+            //NotesViewModel vm =  _notesMapper.MapFrom(notes);
 
             return View(vm);
         }
@@ -42,9 +62,9 @@
         {
             NoteViewModel vm = new NoteViewModel()
             {
-                EntityId = entityId 
+                EntityId = entityId
             };
-           
+
             return RedirectToAction(nameof(Notes));
         }
 

@@ -47,6 +47,7 @@ namespace MyPlace
 
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<INoteService, NoteService>();
+            services.AddScoped<IUserEntitiesService, UserEntitiesService>(); 
             services.AddSingleton<IViewModelMapper<Note, NoteViewModel>, NoteViewModelMapper>();
             services.AddSingleton<IViewModelMapper<List<Note>, NotesViewModel>, NotesViewModelMapper>(); 
 

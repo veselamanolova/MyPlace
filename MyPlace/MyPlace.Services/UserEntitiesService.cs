@@ -20,18 +20,18 @@
             _context = context;
         }
 
-        public async Task<List<UserEntitiesDTO>> GetAllUserEntitiesAsync(string userId)
+        public async Task<List<UserEntityDTO>> GetAllUserEntitiesAsync(string userId)
         {
             List<UserEntity> userEntities = await _context.UsersEntities
                 .Where(ue => ue.UserId == userId)
                             .Include(ue => ue.Entity)
                             .ToListAsync();
 
-            List<UserEntitiesDTO> userEntitiesDTOsList = new List<UserEntitiesDTO>();
+            List<UserEntityDTO> userEntitiesDTOsList = new List<UserEntityDTO>();
 
             foreach (var userEntity in userEntities)
             {
-                userEntitiesDTOsList.Add(new UserEntitiesDTO()
+                userEntitiesDTOsList.Add(new UserEntityDTO()
                 {
                     UserId = userEntity.UserId,
                     EntityId = userEntity.EntityId,
