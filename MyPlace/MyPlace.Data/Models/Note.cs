@@ -11,7 +11,7 @@ namespace MyPlace.Data.Models
 
         public string Text { get; set; }
 
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
 
         public DateTime Date { get; set; }
 

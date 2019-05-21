@@ -15,6 +15,9 @@ namespace MyPlace
     using MyPlace.Data.Models;
     using MyPlace.Services.Contracts;
     using AutoMapper;
+    using MyPlace.Areas.Mappers;
+    using MyPlace.Areas.Notes.Models;
+    using System.Collections.Generic;
 
     public class Startup
     {
@@ -43,6 +46,11 @@ namespace MyPlace
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<ICatalogService, CatalogService>();
+            services.AddScoped<INoteService, NoteService>();
+            services.AddSingleton<IViewModelMapper<Note, NoteViewModel>, NoteViewModelMapper>();
+            services.AddSingleton<IViewModelMapper<List<Note>, NotesViewModel>, NotesViewModelMapper>(); 
+
+
 
             services.AddAutoMapper(GetType().Assembly, typeof(Entity).Assembly);
 
@@ -67,7 +75,15 @@ namespace MyPlace
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseAuthentication();
+            app.UseAuthentication();         
+
+            app.UseMvc(routes =>
+            {
+                routes.MapAreaRoute(
+                  name: "Admin",
+                  areaName: "Notes",
+                  template: "Admin/{controller=Admin}/{action=Index}/{id?}");
+            });
 
             app.UseMvc(routes =>
             {
