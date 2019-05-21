@@ -15,6 +15,7 @@ namespace MyPlace
     using MyPlace.Data.Models;
     using MyPlace.Services.Contracts;
     using AutoMapper;
+    
 
     public class Startup
     {

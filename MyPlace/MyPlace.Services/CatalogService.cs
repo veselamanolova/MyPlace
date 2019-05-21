@@ -45,6 +45,8 @@ namespace MyPlace.Services
             selectedEntity.Comments.Add(new Comment(Id, text, DateTime.Now, selectedEntity));
             return _context.SaveChangesAsync();
         }
+
+        public IEnumerable<string> Autocomplete() => _context.Entities.Select(entity => entity.Title);
     }
 }
 

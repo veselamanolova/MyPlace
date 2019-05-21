@@ -5,7 +5,6 @@ namespace MyPlace.Controllers
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using MyPlace.Data.Models;
     using MyPlace.Models.Catalog;
     using MyPlace.Services.Contracts;
 
@@ -41,6 +40,9 @@ namespace MyPlace.Controllers
 
         public async Task<IActionResult> Establishment(int Id) =>
             View(await _catalogService.GetById<EstablishmentIndexModel>(Id));
+
+        public JsonResult GetAll() =>
+             Json(_catalogService.Autocomplete());
     }
 }
 
