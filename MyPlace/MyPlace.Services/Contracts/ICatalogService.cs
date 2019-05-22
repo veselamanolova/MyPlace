@@ -1,9 +1,9 @@
 ﻿
 namespace MyPlace.Services.Contracts
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     public interface ICatalogService
     {
@@ -13,7 +13,7 @@ namespace MyPlace.Services.Contracts
 
         Task CreateReply(int Id, string text);
 
-        IEnumerable<string> Autocomplete();
+        IEnumerable<string> AutocompleteGetAll();
     }
 }
 

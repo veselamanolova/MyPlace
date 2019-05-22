@@ -64,6 +64,10 @@ namespace MyPlace
                 app.UseHsts();
             }
 
+#if DEBUG 
+            app.UseDeveloperExceptionPage();
+#endif
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

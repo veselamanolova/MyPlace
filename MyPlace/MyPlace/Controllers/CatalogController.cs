@@ -42,7 +42,7 @@ namespace MyPlace.Controllers
             View(await _catalogService.GetById<EstablishmentIndexModel>(Id));
 
         public JsonResult GetAll() =>
-             Json(_catalogService.Autocomplete());
+             Json(_catalogService.AutocompleteGetAll());
     }
 }
 

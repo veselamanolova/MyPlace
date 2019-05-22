@@ -46,7 +46,8 @@ namespace MyPlace.Services
             return _context.SaveChangesAsync();
         }
 
-        public IEnumerable<string> Autocomplete() => _context.Entities.Select(entity => entity.Title);
+        public IEnumerable<string> AutocompleteGetAll() => 
+            _context.Entities.Select(entity => entity.Title);
     }
 }
 
