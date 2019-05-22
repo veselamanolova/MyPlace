@@ -40,20 +40,28 @@
             string userId = HttpContext.User.FindFirst(idClaimType).Value;
             var entities = await _userEntitiesService.GetAllUserEntitiesAsync(userId);
 
-            var selectedEntityId = entityId ?? entities[0].EntityId; 
+            var selectedEntityId = entityId ?? entities[0].EntityId;
 
+            //  var selectedEntityCategories = 
 
             var notes = await _notesService.GetAllAsync(selectedEntityId);
+
+                      
+
+            AddNoteViewModel addNoteVm = new AddNoteViewModel()
+            {
+                NewNote = _mapper.Map<Note, NoteViewModel>(new Note()),
+                EntityCategories = new List<CategoryViewModel>()
+            }; 
 
             NotesViewModel vm = new NotesViewModel()
             {
                 UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
                 SelectedEntityId = selectedEntityId,
                 Notes = _mapper.Map<List<Note>, List<NoteViewModel>>(notes),
-                ManageableNote = new NoteViewModel()
-            };
-
-            //NotesViewModel vm =  _notesMapper.MapFrom(notes);
+                AddNote = addNoteVm
+            };        
+            
 
             return View(vm);
         }
@@ -75,7 +83,7 @@
         //  [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         [HttpPost("AddNote")]
-        public async Task<IActionResult> _AddNotePartial(NoteViewModel model)
+        public async Task<IActionResult> _AddNotePartial(AddNoteViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -84,7 +92,7 @@
 
             try
             {
-                await _notesService.AddAsync(model.EntityId, model.Text, model.Category.Id);
+                await _notesService.AddAsync(model.NewNote.EntityId, model.NewNote.Text, model.NewNote.Category.Id);
                 return View(model);
                 // return RedirectToAction(nameof(Notes));
             }
