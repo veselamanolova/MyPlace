@@ -15,7 +15,9 @@ namespace MyPlace
     using MyPlace.Data.Models;
     using MyPlace.Services.Contracts;
     using AutoMapper;
-    
+    using MyPlace.Areas.Mappers;
+    using MyPlace.Areas.Notes.Models;
+    using System.Collections.Generic;
 
     public class Startup
     {
@@ -39,11 +41,16 @@ namespace MyPlace
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<ApplicationUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<ICatalogService, CatalogService>();
+            services.AddScoped<INoteService, NoteService>();
+            services.AddScoped<IUserEntitiesService, UserEntitiesService>(); 
+            services.AddSingleton<IViewModelMapper<Note, NoteViewModel>, NoteViewModelMapper>();
+            services.AddSingleton<IViewModelMapper<List<Note>, NotesViewModel>, NotesViewModelMapper>(); 
+
 
             services.AddAutoMapper(GetType().Assembly, typeof(Entity).Assembly);
 
@@ -72,7 +79,15 @@ namespace MyPlace
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseAuthentication();
+            app.UseAuthentication();         
+
+            app.UseMvc(routes =>
+            {
+                routes.MapAreaRoute(
+                  name: "Admin",
+                  areaName: "Notes",
+                  template: "Admin/{controller=Admin}/{action=Index}/{id?}");
+            });
 
             app.UseMvc(routes =>
             {
