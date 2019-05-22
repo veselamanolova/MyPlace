@@ -1,9 +1,9 @@
-﻿namespace MyPlace.Services.Contracts
+﻿
+namespace MyPlace.Services.Contracts
 {
-    using MyPlace.Data.Models;
-    using MyPlace.Services.DTOs;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
+    using MyPlace.Services.DTOs;
 
     public interface IUserEntitiesService
     {

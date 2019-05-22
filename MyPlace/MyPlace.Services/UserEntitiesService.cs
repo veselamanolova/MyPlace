@@ -1,31 +1,34 @@
-﻿namespace MyPlace.Services
+﻿
+namespace MyPlace.Services
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Collections.Generic;
     using Microsoft.EntityFrameworkCore;
     using MyPlace.Data;
     using MyPlace.Data.Models;
-    using MyPlace.Services.Contracts;
     using MyPlace.Services.DTOs;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using MyPlace.Services.Contracts;
+    using AutoMapper;
 
     public class UserEntitiesService : IUserEntitiesService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public UserEntitiesService(ApplicationDbContext context)
+        public UserEntitiesService(ApplicationDbContext context, IMapper mapper)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<List<UserEntityDTO>> GetAllUserEntitiesAsync(string userId)
         {
             List<UserEntity> userEntities = await _context.UsersEntities
                 .Where(ue => ue.UserId == userId)
-                            .Include(ue => ue.Entity)
-                            .ToListAsync();
+                .Include(ue => ue.Entity)
+                .ToListAsync();
 
             List<UserEntityDTO> userEntitiesDTOsList = new List<UserEntityDTO>();
 
@@ -39,9 +42,15 @@
 
                 });
             }
-
             return userEntitiesDTOsList;
         }
 
+        //public async Task<IQueryable<UserEntityDTO>> GetAllUserEntitiesAsync(string userId)
+        //{
+        //    return await Task.Run(() => _mapper.ProjectTo<UserEntityDTO>(_context.UsersEntities
+        //        .Where(ue => ue.UserId == userId)
+        //        .Include(ue => ue.Entity)));
+        //}
     }
 }
+
