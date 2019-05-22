@@ -11,6 +11,7 @@ namespace MyPlace.Services
     using MyPlace.Services.DTOs;
     using MyPlace.Services.Contracts;
     using AutoMapper;
+    using System.Collections;
 
     public class UserEntitiesService : IUserEntitiesService
     {
@@ -22,27 +23,20 @@ namespace MyPlace.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
+               
 
         public async Task<List<UserEntityDTO>> GetAllUserEntitiesAsync(string userId)
         {
-            List<UserEntity> userEntities = await _context.UsersEntities
+            return await _context.UsersEntities
                 .Where(ue => ue.UserId == userId)
                 .Include(ue => ue.Entity)
-                .ToListAsync();
-
-            List<UserEntityDTO> userEntitiesDTOsList = new List<UserEntityDTO>();
-
-            foreach (var userEntity in userEntities)
-            {
-                userEntitiesDTOsList.Add(new UserEntityDTO()
+                .Select(ue => new UserEntityDTO
                 {
-                    UserId = userEntity.UserId,
-                    EntityId = userEntity.EntityId,
-                    Title = userEntity.Entity.Title
-
-                });
-            }
-            return userEntitiesDTOsList;
+                    EntityId = ue.EntityId,
+                    UserId = ue.UserId,
+                    Title = ue.Entity.Title
+                })
+                .ToListAsync();
         }
 
         //public async Task<IQueryable<UserEntityDTO>> GetAllUserEntitiesAsync(string userId)

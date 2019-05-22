@@ -4,6 +4,7 @@
     using MyPlace.Data;
     using MyPlace.Data.Models;
     using MyPlace.Services.Contracts;
+    using MyPlace.Services.DTOs;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -17,14 +18,19 @@
             _context = context;
         }
 
-        public async Task<List<EntityCategory>> GetAllEntityCategoriesAsync(int entityId)
+        public async Task<List<EntityCategoryDTO>> GetAllEntityCategoriesAsync(int entityId)
         {
-            List<EntityCategory> entityCategories = await _context.EntityCategories
+            return await _context.EntityCategories
                 .Where(ec => ec.EntityId == entityId)
-                            .Include(ec => ec.Category)
-                            .ToListAsync();         
-
-            return entityCategories;
+                .Include(ec => ec.Category)
+                .Select(ec => new EntityCategoryDTO
+                {
+                    CategoryId = ec.CategoryId,
+                    EntityId = ec.EntityId,
+                    Name = ec.Category.Name
+                })
+                .ToListAsync();
+           
         }
     }
 }
