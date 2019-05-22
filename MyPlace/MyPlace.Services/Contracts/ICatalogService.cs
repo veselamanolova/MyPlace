@@ -1,19 +1,19 @@
 ﻿
 namespace MyPlace.Services.Contracts
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     public interface ICatalogService
     {
-        Task<IQueryable<TSource>> ReadAll<TSource>();
+        Task<IQueryable<TSource>> ReadAllAsync<TSource>();
 
-        Task<TSource> GetById<TSource>(int Id);
+        Task<TSource> GetByIdAsync<TSource>(int Id);
 
-        Task CreateReply(int Id, string text);
+        Task CreateReplyAsync(int Id, string text);
 
-        IEnumerable<string> Autocomplete();
+        IEnumerable<string> AutocompleteGetAll();
     }
 }
 

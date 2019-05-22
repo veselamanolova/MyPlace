@@ -1,14 +1,14 @@
-﻿namespace MyPlace.Services
+﻿
+namespace MyPlace.Services
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Collections.Generic;
+    using Microsoft.EntityFrameworkCore;
     using MyPlace.Data;
     using MyPlace.Data.Models;
     using MyPlace.Services.Contracts;
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Linq;
-    using Microsoft.EntityFrameworkCore;
 
     public class NoteService : INoteService
     {
@@ -16,7 +16,7 @@
 
         public NoteService(ApplicationDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<Note> AddAsync(int entityId, string text, int? categoryId)
@@ -30,23 +30,15 @@
                 IsCompleted = false
             }; 
 
-            var result =  await _context.Notes.AddAsync(newNote);
-
+            var result = await _context.Notes.AddAsync(newNote);
             await _context.SaveChangesAsync();            
-
             return result.Entity; 
         }
 
-        public async Task<List<Note>> GetAllAsync(int entityId)
-        {
-            var notesList = await _context.Notes
-                            .Where(n => n.EntityId == entityId)
-                            .Include(n => n.Category)
-                            .ToListAsync();  
-
-            return notesList;
-        }
-
-      
+        public async Task<List<Note>> GetAllAsync(int entityId) =>
+            await _context.Notes
+                .Where(note => note.EntityId == entityId)
+                .Include(note => note.Category)
+                .ToListAsync();
     }
 }

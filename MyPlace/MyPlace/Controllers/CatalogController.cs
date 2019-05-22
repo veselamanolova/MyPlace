@@ -2,9 +2,11 @@
 namespace MyPlace.Controllers
 {
     using System;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
+    using MyPlace.Models;
     using MyPlace.Models.Catalog;
     using MyPlace.Services.Contracts;
 
@@ -21,7 +23,7 @@ namespace MyPlace.Controllers
         {
             ViewData["Filter"] = searchString;
 
-            var establishments = await _catalogService.ReadAll<CatalogListingModel>();
+            var establishments = await _catalogService.ReadAllAsync<CatalogListingModel>();
 
             if (!String.IsNullOrEmpty(searchString))
                 establishments = establishments
@@ -34,15 +36,20 @@ namespace MyPlace.Controllers
 
         public async Task<IActionResult> Create(EstablishmentIndexModel model)
         {
-            await _catalogService.CreateReply(model.Id, model.NewPost);
+            await _catalogService.CreateReplyAsync(model.Id, model.NewPost);
             return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Establishment(int Id) =>
-            View(await _catalogService.GetById<EstablishmentIndexModel>(Id));
+            View(await _catalogService.GetByIdAsync<EstablishmentIndexModel>(Id));
 
         public JsonResult GetAll() =>
-             Json(_catalogService.Autocomplete());
+             Json(_catalogService.AutocompleteGetAll());
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error() => 
+            View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
     }
 }
 

@@ -1,34 +1,27 @@
 ﻿@model PaginatedList<MyPlace.Models.Catalog.CatalogListingModel>
 
     @{
-    ViewData["Title"] = "Home Page";
+        ViewData["Title"] = "Home Page";
     }
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/css/kendo.common.min.css" />
     <link rel="stylesheet" href="~/css/kendo.silver.min.css" />
 
-    <br>
-    <div id="open">
-        <div class="content">
-            <h1>Rate the Hotel/Restaurant service</h1>
-            <span><i class="fa fa-star"></i></span>
+    <div class="content">
+        <h1>Rate the Hotel/Restaurant service</h1>
+        <span><i class="fa fa-star"></i></span>
+    </div>
+
+    <form asp-action="Index" method="get">
+        <div class="section k-content">
+            <h4><label for="objects">Search:</label></h4>
+            <input value="@ViewData[" Filter"]" id="objects" style="width: 100%;" />
         </div>
+    </form>
 
-        <form asp-action="Index" method="get">
-
-            <div class="demo-section k-content">
-                <h4><label for="objects">Search:</label></h4>
-                <input value="@ViewData[" Filter"]" id="objects" style="width: 100%;" />
-            </div>
-
-            @*<div class="search__container">
-                <input class="search__input" type="text" placeholder="Search" name="SearchString" value="@ViewData[" Filter"]" id="objects" />
-            </div>*@
-
-        </form>
-
-
+    <br>
+    <div>
         @foreach (var item in Model)
         {
         <div class="section-border">
@@ -63,8 +56,8 @@
         }
     </div>
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/kendo.all.min.js"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/kendo.all.min.js"></script>
 
     <script>
         $.ajax({
@@ -88,13 +81,13 @@
     <a asp-action="Index"
        asp-route-pageNumber="@(Model.PageIndex - 1)"
        asp-route-currentFilter="@ViewData[" CurrentFilter"]"
-       class="btn btn-outline-warning @prevDisabled">
+       class="btn @prevDisabled">
         <strong>Previous</strong>
     </a>
     <a asp-action="Index"
        asp-route-pageNumber="@(Model.PageIndex + 1)"
        asp-route-currentFilter="@ViewData[" CurrentFilter"]"
-       class="btn btn-outline-warning @nextDisabled">
+       class="btn @nextDisabled">
         Next
     </a>
 
