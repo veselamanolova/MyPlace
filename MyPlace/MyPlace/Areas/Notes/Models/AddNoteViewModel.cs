@@ -7,7 +7,7 @@ namespace MyPlace.Areas.Notes.Models
 {
     public class AddNoteViewModel
     {
-        public NoteViewModel NewNote { get; set; }
+        public NoteViewModel Note { get; set; }
 
         public List<CategoryViewModel> EntityCategories { get; set; }
     }

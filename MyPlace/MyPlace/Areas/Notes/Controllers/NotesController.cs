@@ -50,7 +50,7 @@
 
             AddNoteViewModel addNoteVm = new AddNoteViewModel()
             {
-                NewNote = _mapper.Map<Note, NoteViewModel>(new Note()),
+                Note = _mapper.Map<Note, NoteViewModel>(new Note()),
                 EntityCategories = new List<CategoryViewModel>()
             }; 
 
@@ -92,7 +92,7 @@
 
             try
             {
-                await _notesService.AddAsync(model.NewNote.EntityId, model.NewNote.Text, model.NewNote.Category.Id);
+                await _notesService.AddAsync(model.Note.EntityId, model.Note.Text, model.Note.Category.Id);
                 return View(model);
                 // return RedirectToAction(nameof(Notes));
             }
