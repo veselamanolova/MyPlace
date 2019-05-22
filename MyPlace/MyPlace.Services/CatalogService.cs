@@ -23,11 +23,11 @@ namespace MyPlace.Services
         }
 
 
-        public async Task<IQueryable<TSource>> ReadAll<TSource>() =>
+        public async Task<IQueryable<TSource>> ReadAllAsync<TSource>() =>
             await Task.Run(() => _mapper.ProjectTo<TSource>(_context.Entities));
 
 
-        public async Task<TSource> GetById<TSource>(int Id) =>
+        public async Task<TSource> GetByIdAsync<TSource>(int Id) =>
             await Task.Run(() => _mapper.ProjectTo<TSource>(
                 _context.Entities
                 .Where(entity => entity.Id.Equals(Id))
@@ -35,7 +35,7 @@ namespace MyPlace.Services
                 .FirstOrDefault());
 
 
-        public Task CreateReply(int Id, string text)
+        public Task CreateReplyAsync(int Id, string text)
         {
             var selectedEntity = _context.Entities
             .Where(entity => entity.Id.Equals(Id))

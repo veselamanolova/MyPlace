@@ -3,6 +3,7 @@ namespace MyPlace
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Http;
+    using System.Collections.Generic;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
@@ -13,12 +14,11 @@ namespace MyPlace
     using MyPlace.Data;
     using MyPlace.Services;
     using MyPlace.Data.Models;
-    using MyPlace.Services.Contracts;
-    using AutoMapper;
     using MyPlace.Areas.Mappers;
     using MyPlace.Areas.Notes.Models;
-    using System.Collections.Generic;
-
+    using MyPlace.Services.Contracts;
+    using AutoMapper;
+    
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -67,7 +67,7 @@ namespace MyPlace
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Catalog/Error");
                 app.UseHsts();
             }
 
