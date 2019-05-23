@@ -17,10 +17,9 @@ namespace MyPlace.Controllers
         public CatalogController(ICatalogService catalogContex) =>
             _catalogService = catalogContex ?? throw new ArgumentNullException(nameof(catalogContex));
 
-        public IActionResult Demo()
-        {
-            return View();
-        }
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error() =>
+            View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 
 
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 60)]
@@ -39,22 +38,13 @@ namespace MyPlace.Controllers
             return View(await PaginatedList<CatalogListingModel>.CreateAsync(establishments, pageNumber ?? 1, pageSize));
         }
 
-        public async Task<IActionResult> Create(EstablishmentIndexModel model)
-        {
-            await _catalogService.CreateReplyAsync(model.Id, model.NewPost);
-            return RedirectToAction("Index");
-        }
 
         public async Task<IActionResult> Establishment(int Id) =>
             View(await _catalogService.GetByIdAsync<EstablishmentIndexModel>(Id));
 
+
         public JsonResult GetAll() =>
              Json(_catalogService.AutocompleteGetAll());
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error() => 
-            View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-
     }
 }
 

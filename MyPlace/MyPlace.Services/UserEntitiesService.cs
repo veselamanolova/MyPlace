@@ -7,11 +7,9 @@ namespace MyPlace.Services
     using System.Collections.Generic;
     using Microsoft.EntityFrameworkCore;
     using MyPlace.Data;
-    using MyPlace.Data.Models;
     using MyPlace.Services.DTOs;
     using MyPlace.Services.Contracts;
     using AutoMapper;
-    using System.Collections;
 
     public class UserEntitiesService : IUserEntitiesService
     {

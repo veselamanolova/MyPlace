@@ -23,4 +23,9 @@
     <ProjectReference Include="..\MyPlace.Services\MyPlace.Services.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\kendo-ui-core\js\" />
+  </ItemGroup>
+
 </Project>

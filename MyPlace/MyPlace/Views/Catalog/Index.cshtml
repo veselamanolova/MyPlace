@@ -1,29 +1,29 @@
 ﻿@model PaginatedList<MyPlace.Models.Catalog.CatalogListingModel>
 
-    @{
-        ViewData["Title"] = "Home Page";
-    }
+@{
+    ViewData["Title"] = "Home Page";
+}
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/css/kendo.common.min.css" />
-    <link rel="stylesheet" href="~/css/kendo.silver.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="~/lib/kendo-ui-core/styles/kendo.common.min.css" rel="stylesheet" />
+<link href="~/lib/kendo-ui-core/styles/kendo.silver.min.css" rel="stylesheet" />
 
-    <div class="content">
-        <h1>Rate the Hotel/Restaurant service</h1>
-        <span><i class="fa fa-star"></i></span>
+<div class="content">
+    <h1>Rate the Hotel/Restaurant service</h1>
+    <span><i class="fa fa-star"></i></span>
+</div>
+
+<form asp-action="Index" method="get">
+    <div class="section k-content">
+        <h4><label for="objects">Search:</label></h4>
+        <input value="@ViewData[" Filter"]" id="objects" style="width: 100%;" />
     </div>
+</form>
 
-    <form asp-action="Index" method="get">
-        <div class="section k-content">
-            <h4><label for="objects">Search:</label></h4>
-            <input value="@ViewData[" Filter"]" id="objects" style="width: 100%;" />
-        </div>
-    </form>
-
-    <br>
-    <div>
-        @foreach (var item in Model)
-        {
+<br>
+<div>
+    @foreach (var item in Model)
+    {
         <div class="section-border">
             <div class="row">
                 <div class="col-md-4">
@@ -53,11 +53,13 @@
                 </div>
             </div>
         </div>
-        }
-    </div>
+    }
+</div>
 
-    <script src="~/js/jquery.min.js"></script>
-    <script src="~/js/kendo.all.min.js"></script>
+@section scripts {
+    <script src="~/lib/kendo-ui-core/styles/jquery.min.js"></script>
+    <script src="~/lib/kendo-ui-core/js/kendo.autocomplete.min.js"></script>
+    <script src="~/lib/kendo-ui-core/js/kendo.ui.core.min.js"></script>
 
     <script>
         $.ajax({
@@ -70,36 +72,36 @@
             }
         });
     </script>
+}
 
-
-    @{
+@{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-    }
+}
 
-    <a asp-action="Index"
-       asp-route-pageNumber="@(Model.PageIndex - 1)"
-       asp-route-currentFilter="@ViewData[" CurrentFilter"]"
-       class="btn @prevDisabled">
-        <strong>Previous</strong>
-    </a>
-    <a asp-action="Index"
-       asp-route-pageNumber="@(Model.PageIndex + 1)"
-       asp-route-currentFilter="@ViewData[" CurrentFilter"]"
-       class="btn @nextDisabled">
-        Next
-    </a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData[" CurrentFilter"]"
+   class="btn @prevDisabled">
+    <strong>Previous</strong>
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData[" CurrentFilter"]"
+   class="btn @nextDisabled">
+    Next
+</a>
 
 
-    @*<div class="wrapper">
-        <input type="checkbox" id="st1" value="1" />
-        <label for="st1"></label>
-        <input type="checkbox" id="st2" value="2" />
-        <label for="st2"></label>
-        <input type="checkbox" id="st3" value="3" />
-        <label for="st3"></label>
-        <input type="checkbox" id="st4" value="4" />
-        <label for="st4"></label>
-        <input type="checkbox" id="st5" value="5" />
-        <label for="st5"></label>
-    </div>*@
+@*<div class="wrapper">
+    <input type="checkbox" id="st1" value="1" />
+    <label for="st1"></label>
+    <input type="checkbox" id="st2" value="2" />
+    <label for="st2"></label>
+    <input type="checkbox" id="st3" value="3" />
+    <label for="st3"></label>
+    <input type="checkbox" id="st4" value="4" />
+    <label for="st4"></label>
+    <input type="checkbox" id="st5" value="5" />
+    <label for="st5"></label>
+</div>*@
