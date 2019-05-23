@@ -11,6 +11,7 @@ namespace MyPlace
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.EntityFrameworkCore;
+    using MyPlace.Hubs;
     using MyPlace.Data;
     using MyPlace.Services;
     using MyPlace.Data.Models;
@@ -49,9 +50,9 @@ namespace MyPlace
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IUserEntitiesService, UserEntitiesService>(); 
             services.AddSingleton<IViewModelMapper<Note, NoteViewModel>, NoteViewModelMapper>();
-            services.AddSingleton<IViewModelMapper<List<Note>, NotesViewModel>, NotesViewModelMapper>(); 
+            services.AddSingleton<IViewModelMapper<List<Note>, NotesViewModel>, NotesViewModelMapper>();
 
-
+            services.AddSignalR();
             services.AddAutoMapper(GetType().Assembly, typeof(Entity).Assembly);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -71,15 +72,15 @@ namespace MyPlace
                 app.UseHsts();
             }
 
-#if DEBUG 
-            app.UseDeveloperExceptionPage();
-#endif
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
-            app.UseAuthentication();         
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<CommentHub>("/commentHub");
+            });
 
             app.UseMvc(routes =>
             {

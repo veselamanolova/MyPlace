@@ -17,6 +17,11 @@ namespace MyPlace.Controllers
         public CatalogController(ICatalogService catalogContex) =>
             _catalogService = catalogContex ?? throw new ArgumentNullException(nameof(catalogContex));
 
+        public IActionResult Demo()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 60)]
         public async Task<IActionResult> Index(string searchString, int? pageNumber)

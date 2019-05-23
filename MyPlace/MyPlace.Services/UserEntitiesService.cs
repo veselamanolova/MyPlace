@@ -44,13 +44,6 @@ namespace MyPlace.Services
             }
             return userEntitiesDTOsList;
         }
-
-        //public async Task<IQueryable<UserEntityDTO>> GetAllUserEntitiesAsync(string userId)
-        //{
-        //    return await Task.Run(() => _mapper.ProjectTo<UserEntityDTO>(_context.UsersEntities
-        //        .Where(ue => ue.UserId == userId)
-        //        .Include(ue => ue.Entity)));
-        //}
     }
 }
 
