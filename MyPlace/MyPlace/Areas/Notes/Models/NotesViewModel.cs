@@ -11,6 +11,6 @@
 
         public List<NoteViewModel> Notes{ get; set; }
 
-        public NoteViewModel ManageableNote { get; set;  }
+        public AddNoteViewModel AddNote { get; set;  }
     }
 }
