@@ -39,6 +39,14 @@ namespace MyPlace.Services
             await _context.Notes
                 .Where(note => note.EntityId == entityId)
                 .Include(note => note.Category)
+                .OrderByDescending(note => note.Date)
                 .ToListAsync();
+
+        public async Task<List<Note>> SerchByTextAsync(int entityId, string searchedString) =>
+           await _context.Notes
+               .Where(note => note.EntityId == entityId&&note.Text.Contains(searchedString))
+               .Include(note => note.Category)
+               .OrderByDescending(note => note.Date)
+               .ToListAsync();
     }
 }

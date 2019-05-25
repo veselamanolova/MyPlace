@@ -30,7 +30,7 @@
             _entityCategoriesService = entityCategoriesService ?? throw new ArgumentNullException(nameof(entityCategoriesService));  
         }
 
-        // [Authorize(Roles = "Manager")]
+        //[Authorize(Roles = "Manager")]
         [HttpGet("Notes")]
         public async Task<IActionResult> Notes(int? entityId, int? noteId)
         {
@@ -70,7 +70,7 @@
             return View(vm);
         }
 
-        //  [Authorize(Roles = "Administrator")]
+       // [Authorize(Roles = "Manager")]
         [ValidateAntiForgeryToken]
         [HttpPost("AddNote")]
         public async Task<IActionResult> AddNote(AddNoteViewModel model)
@@ -91,6 +91,9 @@
                 return View(nameof(Notes), model);
             }
         }
+
+
+
 
     }
 }
