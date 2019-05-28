@@ -7,5 +7,7 @@ namespace MyPlace.Data.Models
     public class ApplicationUser : IdentityUser
     {
         public List<UserEntity> UserEntities { get; set; }
+
+        public List<Note> Notes { get; set; }
     }
 }

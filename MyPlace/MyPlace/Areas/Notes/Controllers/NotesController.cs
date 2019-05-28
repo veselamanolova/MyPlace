@@ -41,6 +41,8 @@
             }
 
             string userId = HttpContext.User.FindFirst(idClaimType).Value;
+            var userName = HttpContext.User.Identity.Name;  
+
             var entities = await _userEntitiesService.GetAllUserEntitiesAsync(userId);
 
             var selectedEntityId = entityId ?? entities[0].EntityId;
@@ -53,9 +55,12 @@
             {
                 Note = new NoteViewModel
                 {
-                    EntityId = selectedEntityId
+                    EntityId = selectedEntityId, 
+                    UserId  = userId, 
+                   
                 },
                 EntityCategories = _mapper.Map<List<EntityCategoryDTO>, List<CategoryViewModel>>(selectedEntityCategories),
+                UserName = userName
             }; 
 
             NotesViewModel vm = new NotesViewModel()
@@ -82,7 +87,7 @@
 
             try
             {
-                await _notesService.AddAsync(model.Note.EntityId, model.Note.Text, model.SelectedCategoryId);
+                await _notesService.AddAsync(model.Note.EntityId, model.UserId,  model.Note.Text, model.SelectedCategoryId);
                 return RedirectToAction(nameof(Notes), new { entityId = model.Note.EntityId });                
             }
             catch (ArgumentException ex)
@@ -91,9 +96,5 @@
                 return View(nameof(Notes), model);
             }
         }
-
-
-
-
     }
 }

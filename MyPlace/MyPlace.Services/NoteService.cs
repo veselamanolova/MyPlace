@@ -9,44 +9,70 @@ namespace MyPlace.Services
     using MyPlace.Data;
     using MyPlace.Data.Models;
     using MyPlace.Services.Contracts;
+    using MyPlace.Services.DTOs;
+    using MyPlace.Data.Repositories;
 
     public class NoteService : INoteService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly INotesRepository _repository;
 
-        public NoteService(ApplicationDbContext context)
+        public NoteService(INotesRepository repository)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _repository = repository?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task<Note> AddAsync(int entityId, string text, int? categoryId)
+        public async Task<Note> AddAsync(int entityId, string userId, string text, int? categoryId)
         {
             var newNote = new Note()
             {
                 EntityId = entityId,
+                UserId = userId,
                 Text = text,
                 CategoryId = categoryId,
                 Date = DateTime.Now,
                 IsCompleted = false
-            }; 
-
-            var result = await _context.Notes.AddAsync(newNote);
-            await _context.SaveChangesAsync();            
-            return result.Entity; 
+            };
+           
+            return await _repository.AddAsync(newNote);
         }
 
-        public async Task<List<Note>> GetAllAsync(int entityId) =>
-            await _context.Notes
-                .Where(note => note.EntityId == entityId)
-                .Include(note => note.Category)
+        public async Task<List<NoteDTO>> GetAllAsync(int entityId) =>
+            (await _repository.GetAllAsync(entityId))
                 .OrderByDescending(note => note.Date)
-                .ToListAsync();
+                .Select(note => new NoteDTO
+                {
+                    Id = note.Id,
+                    EntityId = note.EntityId,
+                    Text = note.Text,
+                    Date = note.Date,
+                    IsCompleted = note.IsCompleted,
+                    User = new NoteUserDTO
+                    {
+                        Id = note.User.Id,
+                        Name = note.User.UserName
+                    },
+                    Category = new CategoryDTO
+                    {
+                        Id = note.Category.Id,
+                        Name = note.Category.Name
+                    }
+                })
+                .ToList();
+
+        public async Task<List<UserEntityDTO>> GetAllUserEntitiesAsync(string userId) =>
+            ( await _repository.GetAllUserEntitiesAsync(userId))                
+                .Select(ue => new UserEntityDTO
+                {
+                    EntityId = ue.EntityId,
+                    UserId = ue.UserId,
+                    Title = ue.Entity.Title
+                })
+                .ToList();
+       
 
         public async Task<List<Note>> SerchByTextAsync(int entityId, string searchedString) =>
-           await _context.Notes
-               .Where(note => note.EntityId == entityId&&note.Text.Contains(searchedString))
-               .Include(note => note.Category)
+          ( await _repository.SerchByTextAsync( entityId, searchedString))              
                .OrderByDescending(note => note.Date)
-               .ToListAsync();
+               .ToList();
     }
 }

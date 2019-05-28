@@ -15,8 +15,7 @@
               crossorigin="anonymous"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
-    <link rel="stylesheet" href="~/css/kendo.common.min.css" />
-    <link rel="stylesheet" href="~/css/kendo.silver.min.css" />
+    <script src="~/lib/kendo-ui-core/styles/jquery.min.js"></script>
     <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("Styles", required: false)
 
@@ -35,11 +34,11 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Catalog" asp-action="Index">Home</a>
-                            
+
                         </li>
                         <li class="nav-item">
-                            <a  class="nav-link text-dark" asp-area="Notes" asp-controller="Notes" asp-action="Notes">Manager Notes</a>
-                        
+                            <a class="nav-link text-dark" asp-area="Notes" asp-controller="Notes" asp-action="Notes">Manager Notes</a>
+
                         </li>
                     </ul>
                 </div>
@@ -78,8 +77,9 @@
         </script>
     </environment>
     <script src="~/js/jquery.min.js" asp-append-version="true"></script>
-    <script src="~/js/kendo.all.min.js" asp-append-version="true"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/lib/@@aspnet/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/comment.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

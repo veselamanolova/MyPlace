@@ -10,16 +10,13 @@ namespace MyPlace.Hubs
     {
         private readonly ICatalogService _catalogService;
 
-        public CommentHub(ICatalogService catalogService)
-        {
+        public CommentHub(ICatalogService catalogService) =>
             _catalogService = catalogService ?? throw new ArgumentNullException(nameof(catalogService));
-        }
 
         public async Task SendMessage(int Id, string comment)
         {
             await _catalogService.CreateReplyAsync(Id, comment);
-
-            await Clients.All.SendAsync("AddComment", Id, comment);
+            await Clients.All.SendAsync("AddComment", comment);
         }
     }
 }

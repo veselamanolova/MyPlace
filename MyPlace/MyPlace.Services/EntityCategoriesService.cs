@@ -1,13 +1,12 @@
 ﻿namespace MyPlace.Services
 {
-    using Microsoft.EntityFrameworkCore;
-    using MyPlace.Data;
-    using MyPlace.Data.Models;
-    using MyPlace.Services.Contracts;
-    using MyPlace.Services.DTOs;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
+    using Microsoft.EntityFrameworkCore;
+    using MyPlace.Data;
+    using MyPlace.Services.DTOs;
+    using MyPlace.Services.Contracts;
 
     public class EntityCategoriesService: IEntityCategoriesService
     {
@@ -30,7 +29,6 @@
                     Name = ec.Category.Name
                 })
                 .ToListAsync();
-           
         }
     }
 }

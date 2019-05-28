@@ -19,7 +19,8 @@ namespace MyPlace
     using MyPlace.Areas.Notes.Models;
     using MyPlace.Services.Contracts;
     using AutoMapper;
-    
+    using MyPlace.Data.Repositories;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -45,6 +46,8 @@ namespace MyPlace
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<INotesRepository, NotesRepository>(); 
 
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<INoteService, NoteService>();

@@ -10,6 +10,10 @@
 
         public int EntityId { get; set; }
 
+        public string UserId { get; set; }
+
+        public string UserName { get; set; }
+
         [Required(ErrorMessage = "note text is required")]
         public string Text { get; set; }
 
