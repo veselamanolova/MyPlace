@@ -4,7 +4,7 @@ namespace MyPlace.Areas.Mappers
     using System;
     using System.Linq;
     using System.Collections.Generic;
-    using MyPlace.Data.Models;
+    using MyPlace.DataModels;
     using MyPlace.Areas.Notes.Models;
 
     public class NotesViewModelMapper : IViewModelMapper<List<Note>, NotesViewModel>

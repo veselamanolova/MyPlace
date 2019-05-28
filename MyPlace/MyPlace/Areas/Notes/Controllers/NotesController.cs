@@ -1,15 +1,12 @@
 ﻿namespace MyPlace.Areas.Notes.Controllers
 {
     using System;
-    using System.Linq; 
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoMapper;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using MyPlace.Areas.Mappers;
     using MyPlace.Areas.Notes.Models;
-    using MyPlace.Data.Models;
+    using MyPlace.DataModels;
     using MyPlace.Services.Contracts;
     using MyPlace.Services.DTOs;
 

@@ -2,7 +2,7 @@
 namespace MyPlace.Models.Catalog
 {
     using System.Collections.Generic;
-    using MyPlace.Data.Models;
+    using MyPlace.DataModels;
 
     public class EstablishmentIndexModel
     {

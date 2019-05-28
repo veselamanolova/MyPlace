@@ -1,25 +1,24 @@
 ﻿
 namespace MyPlace
 {
+    using System;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Http;
-    using System.Collections.Generic;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Identity.UI;
+    using Microsoft.AspNetCore.Mvc.Razor;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.EntityFrameworkCore;
     using MyPlace.Hubs;
     using MyPlace.Data;
     using MyPlace.Services;
-    using MyPlace.Data.Models;
-    using MyPlace.Areas.Mappers;
-    using MyPlace.Areas.Notes.Models;
+    using MyPlace.DataModels;
+    using MyPlace.Infrastructure;
     using MyPlace.Services.Contracts;
     using AutoMapper;
-    
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -42,26 +41,52 @@ namespace MyPlace
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<ApplicationUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
+
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 5;
+            }).AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Account/Login";
+                options.LogoutPath = $"/Account/Logout";
+                options.AccessDeniedPath = $"/Account/AccessDenied";
+            });
+
 
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IUserEntitiesService, UserEntitiesService>();
-            services.AddScoped<IEntityCategoriesService, EntityCategoriesService>();    
-
-            services.AddSingleton<IViewModelMapper<Note, NoteViewModel>, NoteViewModelMapper>();
-            services.AddSingleton<IViewModelMapper<List<Note>, NotesViewModel>, NotesViewModelMapper>();
+            services.AddScoped<IEntityCategoriesService, EntityCategoriesService>();
 
             services.AddSignalR();
             services.AddAutoMapper(GetType().Assembly, typeof(Entity).Assembly);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            /*
+                services.Configure<RazorViewEngineOptions>(options =>
+                {
+                    // List of default paths for views
+                    var viewsList = options.AreaViewLocationFormats;
+
+                    // Clear the default paths
+                    options.AreaViewLocationFormats.Clear();
+
+                    // Add my own path
+                    options.AreaViewLocationFormats.Add("/Administrator/Views/Admin/Index");
+                });
+            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -73,6 +98,8 @@ namespace MyPlace
                 app.UseExceptionHandler("/Catalog/Error");
                 app.UseHsts();
             }
+
+            RoleSeeder.Seed(serviceProvider);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -86,14 +113,21 @@ namespace MyPlace
 
             app.UseMvc(routes =>
             {
-                routes.MapAreaRoute(
-                  name: "Admin",
-                  areaName: "Notes",
-                  template: "Admin/{controller=Admin}/{action=Index}/{id?}");
-            });
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Admin}/{action=Index}/{id?}"
+            );
 
-            app.UseMvc(routes =>
-            {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Moderator}/{action=Index}/{id?}"
+            );
+
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Manager}/{action=Index}/{id?}"
+            );
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Catalog}/{action=Index}/{id?}");

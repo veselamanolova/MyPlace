@@ -2,7 +2,7 @@
 namespace MyPlace.Areas.Mappers
 {
     using MyPlace.Areas.Notes.Models;
-    using MyPlace.Data.Models;
+    using MyPlace.DataModels;
 
     public class NoteViewModelMapper : IViewModelMapper<Note, NoteViewModel>
     {

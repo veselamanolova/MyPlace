@@ -3,7 +3,7 @@ namespace MyPlace.Data.Configurations
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-    using MyPlace.Data.Models;
+    using MyPlace.DataModels;
 
     public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
     {

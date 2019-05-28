@@ -3,7 +3,7 @@ namespace MyPlace.Services.Contracts
 {
     using System.Threading.Tasks;
     using System.Collections.Generic;
-    using MyPlace.Data.Models;
+    using MyPlace.DataModels;
 
     public interface INoteService
     {

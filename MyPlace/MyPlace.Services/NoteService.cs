@@ -7,7 +7,7 @@ namespace MyPlace.Services
     using System.Collections.Generic;
     using Microsoft.EntityFrameworkCore;
     using MyPlace.Data;
-    using MyPlace.Data.Models;
+    using MyPlace.DataModels;
     using MyPlace.Services.Contracts;
 
     public class NoteService : INoteService

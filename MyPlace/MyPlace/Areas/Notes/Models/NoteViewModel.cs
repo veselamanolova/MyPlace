@@ -1,8 +1,8 @@
 ﻿namespace MyPlace.Areas.Notes.Models
 {
-    using MyPlace.Data.Models;
     using System;
     using System.ComponentModel.DataAnnotations;
+    using MyPlace.DataModels;
 
     public class NoteViewModel
     {

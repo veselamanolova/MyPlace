@@ -23,9 +23,8 @@ namespace MyPlace.Services
         }
                
 
-        public async Task<List<UserEntityDTO>> GetAllUserEntitiesAsync(string userId)
-        {
-            return await _context.UsersEntities
+        public async Task<List<UserEntityDTO>> GetAllUserEntitiesAsync(string userId) =>
+             await _context.UsersEntities
                 .Where(ue => ue.UserId == userId)
                 .Include(ue => ue.Entity)
                 .Select(ue => new UserEntityDTO
@@ -35,7 +34,6 @@ namespace MyPlace.Services
                     Title = ue.Entity.Title
                 })
                 .ToListAsync();
-        }
     }
 }
 

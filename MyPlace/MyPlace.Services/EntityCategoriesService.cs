@@ -1,4 +1,5 @@
-﻿namespace MyPlace.Services
+﻿
+namespace MyPlace.Services
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -17,9 +18,8 @@
             _context = context;
         }
 
-        public async Task<List<EntityCategoryDTO>> GetAllEntityCategoriesAsync(int entityId)
-        {
-            return await _context.EntityCategories
+        public async Task<List<EntityCategoryDTO>> GetAllEntityCategoriesAsync(int entityId) =>
+            await _context.EntityCategories
                 .Where(ec => ec.EntityId == entityId)
                 .Include(ec => ec.Category)
                 .Select(ec => new EntityCategoryDTO
@@ -29,6 +29,5 @@
                     Name = ec.Category.Name
                 })
                 .ToListAsync();
-        }
     }
 }

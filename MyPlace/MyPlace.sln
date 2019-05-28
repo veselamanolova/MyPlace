@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPlace", "MyPlace\MyPlace.csproj", "{FC03A020-8ACB-44FE-BF28-895FE281676B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyPlace", "MyPlace\MyPlace.csproj", "{FC03A020-8ACB-44FE-BF28-895FE281676B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPlace.Services", "MyPlace.Services\MyPlace.Services.csproj", "{ECBBFC58-F25C-48B0-9045-802FC1FAEFFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyPlace.Services", "MyPlace.Services\MyPlace.Services.csproj", "{ECBBFC58-F25C-48B0-9045-802FC1FAEFFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPlace.Data", "MyPlace.Data\MyPlace.Data.csproj", "{E76FC224-C807-4949-898D-B37C7E0A07A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyPlace.Data", "MyPlace.Data\MyPlace.Data.csproj", "{E76FC224-C807-4949-898D-B37C7E0A07A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPlace.DataModels", "MyPlace.DataModels\MyPlace.DataModels.csproj", "{1A38F486-792E-46B7-A207-F795F8BF4080}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{E76FC224-C807-4949-898D-B37C7E0A07A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E76FC224-C807-4949-898D-B37C7E0A07A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E76FC224-C807-4949-898D-B37C7E0A07A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A38F486-792E-46B7-A207-F795F8BF4080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A38F486-792E-46B7-A207-F795F8BF4080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A38F486-792E-46B7-A207-F795F8BF4080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A38F486-792E-46B7-A207-F795F8BF4080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
