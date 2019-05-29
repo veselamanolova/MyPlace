@@ -3,7 +3,7 @@
     Layout = null;
 }
 
-@model MyPlace.Models.Account.RegisterBindingModel
+@model MyPlace.Areas.Administrator.Models.CreateEstablishmentBindingModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +19,7 @@
     <link href="~/lib/login-form/vendor/animate/animate.css" rel="stylesheet" />
     <link href="~/lib/login-form/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" />
     <link href="~/lib/login-form/vendor/select2/select2.min.css" rel="stylesheet" />
+
 </head>
 <body>
 
@@ -35,23 +36,23 @@
 
                 <form asp-controller="Account" asp-action="Register" method="post" class="login100-form validate-form">
                     <div class="wrap-input100 validate-input" data-validate="Username is required">
-                        <input asp-for="UserName" class="input101" placeholder="User name">
-                        <span asp-validation-for="UserName" class="text-danger"></span>
+                        <input asp-for="Title" class="input101" placeholder="User name">
+                        <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input asp-for="Password" class="input101" type="password" placeholder="Password">
-                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <input asp-for="Address" class="input101" type="password" placeholder="Password">
+                        <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input asp-for="ConfirmPassword" class="input101" type="password" placeholder="Confirm Password">
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        <input asp-for="Description" class="input101" type="password" placeholder="Confirm Password">
+                        <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input asp-for="Role" class="input101" placeholder="Assign Role">
-                        <span asp-validation-for="Role"></span>
+                        <input asp-for="ImageUrl" class="input101" placeholder="Assign Role">
+                        <span asp-validation-for="ImageUrl"></span>
                     </div>
 
                     <div class="container-login100-form-btn">

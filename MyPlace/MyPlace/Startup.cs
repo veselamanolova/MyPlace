@@ -42,35 +42,70 @@ namespace MyPlace
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+
+            // Configuring user Identity
             services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 5;
+                options.Password.RequiredLength = 8;
             }).AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            // Configuring default paths
             services.ConfigureApplicationCookie(options =>
             {
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(10); // Logout user After 10 Minutes inactivity
                 options.LoginPath = $"/Account/Login";
                 options.LogoutPath = $"/Account/Logout";
                 options.AccessDeniedPath = $"/Account/AccessDenied";
             });
 
 
+            // Add services
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IUserEntitiesService, UserEntitiesService>();
             services.AddScoped<IEntityCategoriesService, EntityCategoriesService>();
 
+            // Important! -> Use Distributed cache
+            // Configuring Distributed Cache
+            services.AddDistributedSqlServerCache(options =>
+            {
+                options.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
+                options.SchemaName = "dbo";
+                options.TableName = "CacheData";
+            });
+
+            // Add and Configuring the Sessions
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true; // XSS Security [no JS]
+
+                // Session Timeout 
+                // For Testing => Set a short Timeout
+                options.IdleTimeout = new TimeSpan(0, 1, 0, 0); // Days, Hours, Minutes, Seconds
+            });
+
+
+            // For user comments
             services.AddSignalR();
             services.AddAutoMapper(GetType().Assembly, typeof(Entity).Assembly);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+
             /*
+                // For global AntiforgeryToken
+                services.AddMvc(options =>
+                {
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                });
+
+
+                // For changing default paths
                 services.Configure<RazorViewEngineOptions>(options =>
                 {
                     // List of default paths for views
@@ -110,6 +145,14 @@ namespace MyPlace
             {
                 routes.MapHub<CommentHub>("/commentHub");
             });
+
+            // Important!!!
+            // Add Sessions before Mvc middleware
+            app.UseSession();
+
+            // After adding the sessions
+            // From Project Folder => PowerShell => execute command:
+            // dotnet sql-cache create "Data Source={Connection string}" dbo CacheData
 
             app.UseMvc(routes =>
             {

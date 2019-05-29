@@ -65,6 +65,15 @@ namespace MyPlace.Controllers
             }
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signIn.SignOutAsync();
+            return RedirectToAction("Index", "Catalog");
+
+            // With Tag helper
+            // asp-route-returnUrl="@Url.Action("Index", "Catalog", new { area = "" })"
+        }
     }
 }
-

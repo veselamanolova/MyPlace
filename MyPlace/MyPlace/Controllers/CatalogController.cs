@@ -42,6 +42,7 @@ namespace MyPlace.Controllers
         public async Task<IActionResult> Establishment(int Id) =>
             View(await _catalogService.GetByIdAsync<EstablishmentIndexModel>(Id));
 
+        public IActionResult Demo() => View();
 
         public JsonResult GetAll() =>
              Json(_catalogService.AutocompleteGetAll());
