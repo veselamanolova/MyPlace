@@ -1,4 +1,5 @@
-﻿@model PaginatedList<MyPlace.Models.Catalog.CatalogListingModel>
+﻿
+@model PaginatedList<MyPlace.Models.Catalog.CatalogListingModel>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -57,20 +58,37 @@
 </div>
 
 @section scripts {
-    <script src="~/lib/kendo-ui-core/styles/jquery.min.js"></script>
-    <script src="~/lib/kendo-ui-core/js/kendo.autocomplete.min.js"></script>
+    <script src="~/lib/kendo-ui-core/js/jquery.min.js"></script>
     <script src="~/lib/kendo-ui-core/js/kendo.ui.core.min.js"></script>
-
+    <script src="~/lib/kendo-ui-core/js/kendo.autocomplete.min.js"></script>
+    
     <script>
-        $.ajax({
-            url: "https://localhost:44315/Catalog/GetAll",
-            type: 'GET',
-            success: function (data) {
-                $("#objects").kendoAutoComplete({
-                    dataSource: data
-                });
-            }
+        //$.ajax({
+        //    url: "https://localhost:44315/Catalog/GetAll",
+        //    type: 'GET',
+        //    success: function (data) {
+        //        $("#objects").kendoAutoComplete({
+        //            dataSource: data,
+        //            serverPaging: true,
+        //            serverFiltering: true,
+        //        });
+        //    }
+        //});
+
+        $('#objects').kendoAutoComplete({
+            filter: 'contains',
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "https://localhost:44315/Catalog/GetAll",
+                        dataType: "json",
+                        serverPaging: true,
+                        serverFiltering: true
+                    }
+                }
+            })
         });
+
     </script>
 }
 
