@@ -53,17 +53,19 @@ namespace MyPlace.Controllers
 
         public JsonResult GetAll()
         {
-            IEnumerable<string> cacheEntry;
+            return Json(_catalogService.AutocompleteGetAll());
 
-            if (!_cache.TryGetValue("AutocompleteValues", out cacheEntry))
-            {
-                cacheEntry = _catalogService.AutocompleteGetAll();
+            //IEnumerable<string> cacheEntry;
 
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromHours(1));
-                _cache.Set("AutocompleteValues", cacheEntry, cacheEntryOptions);
-            }
-            return Json(cacheEntry);
+            //if (!_cache.TryGetValue("AutocompleteValues", out cacheEntry))
+            //{
+            //    cacheEntry = _catalogService.AutocompleteGetAll();
+
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
+            //        .SetAbsoluteExpiration(TimeSpan.FromHours(1));
+            //    _cache.Set("AutocompleteValues", cacheEntry, cacheEntryOptions);
+            //}
+            //return Json(cacheEntry);
         }
 
         // For caching HTML -> cache Tag helper
