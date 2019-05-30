@@ -7,9 +7,9 @@ namespace MyPlace.Services.Contracts
     using MyPlace.Services.DTOs;
 
     public interface INoteService
-    {
-        Task<List<NoteDTO>> GetAllAsync(int entityId);
+    {  
+        Task<Note> AddAsync(int entityId,  string userId, string text, int? categoryId);
 
-        Task<Note> AddAsync(int entityId,  string userId, string text, int? categoryId);        
+        Task<List<NoteDTO>> SearchAsync(int entityId, string searchedString, int? categoryId); 
     }
 }

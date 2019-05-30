@@ -10,18 +10,19 @@
 
         public int EntityId { get; set; }
 
-        public string UserId { get; set; }
-
-        public string UserName { get; set; }
+        public NoteUserViewModel NoteUser { get; set; }
 
         [Required(ErrorMessage = "note text is required")]
         public string Text { get; set; }
 
-        public Category Category { get; set; }
+        public CategoryViewModel Category { get; set; }
 
         public bool IsCompleted { get; set; }
 
         public DateTime Date { get; set; }
+
+        public string CurrentUserId { get; set; }
+
     }
 }
 

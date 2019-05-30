@@ -14,5 +14,7 @@
         public List<NoteViewModel> Notes{ get; set; }
 
         public AddNoteViewModel AddNote { get; set;  }
+
+        public SearchNotesViewModel SearchNotes { get; set; }
     }
 }

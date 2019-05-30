@@ -17,7 +17,7 @@ namespace MyPlace.Services.DTOs
 
         public bool IsCompleted { get; set; }        
 
-        public NoteUserDTO User { get; set; }
+        public NoteUserDTO NoteUser { get; set; }
 
         public CategoryDTO Category { get; set; }
 

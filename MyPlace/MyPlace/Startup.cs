@@ -20,6 +20,7 @@ namespace MyPlace
     using MyPlace.Services.Contracts;
     using AutoMapper;
     using MyPlace.Data.Repositories;
+    using MyPlace.Services.DTOs;
 
     public class Startup
     {
@@ -54,8 +55,8 @@ namespace MyPlace
             services.AddScoped<IUserEntitiesService, UserEntitiesService>();
             services.AddScoped<IEntityCategoriesService, EntityCategoriesService>();    
 
-            services.AddSingleton<IViewModelMapper<Note, NoteViewModel>, NoteViewModelMapper>();
-            services.AddSingleton<IViewModelMapper<List<Note>, NotesViewModel>, NotesViewModelMapper>();
+            services.AddSingleton<IViewModelMapper<NoteDTO, NoteViewModel>, NoteViewModelMapper>();           
+            services.AddSingleton<IViewModelMapper<List<NoteDTO>, NotesViewModel>, NotesViewModelMapper>();
 
             services.AddSignalR();
             services.AddAutoMapper(GetType().Assembly, typeof(Entity).Assembly);

@@ -1,5 +1,4 @@
 ﻿@model MyPlace.Areas.Notes.Models.NotesViewModel
-
 <ul class="nav nav-tabs">
     @foreach (var entity in Model.UserEntites)
     {
@@ -16,15 +15,20 @@
 <div class="tab-content clearfix">
     <div class="tab-pane active">
         <p>
-           <partial name="_AddNotePartial" model="Model.AddNote" />
+            <partial name="_AddNotePartial" model="Model.AddNote" />
         </p>
-
+        <p>
+            <partial name="_SearchNotesPartial" model="Model.SearchNotes" />
+        </p>        
         <table class="table">
             <thead>
                 <tr>
-                    <th>Id</th><th>Category</th><th>Text</th>
-                    <th>Date</th><th>Is Completed</th>
-                    @*<th></th>*@
+                    <th><input type="hidden" /></th>
+                    <th>Text</th>
+                    <th>Date</th>
+                    <th>Creator</th>
+                    <th>Is Completed</th>
+                    <th>Category</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,6 +42,6 @@
 </div>
 
 @section Styles
-{
+    {
     <link rel="stylesheet" href="~/css/notes.css" />
 }

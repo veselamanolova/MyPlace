@@ -1,8 +1,12 @@
 ﻿@model MyPlace.Areas.Notes.Models.NoteViewModel
 
 <tr>
-    <td>@Model.Id</td>
-    @if(@Model.Category==null|| @Model.Category.Name== null)
+    <td><input type="hidden" asp-for="@Model.Id" /></td>
+    <td>@Model.Text</td>
+    <td>@Model.Date</td>
+    <td>@Model.NoteUser.Name</td>
+    <td><input type="checkbox" asp-for="@Model.IsCompleted" /></td>
+    @if (@Model.Category == null || @Model.Category.Name == null)
     {
         <td></td>
     }
@@ -10,10 +14,10 @@
     {
         <td>@Model.Category.Name</td>
     }
-    <td>@Model.Text</td>
-    <td>@Model.Date</td>
-    <td><input type="checkbox" asp-for="@Model.IsCompleted" /></td>
-    @*<td>
-        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })  
-    </td>*@
+    @if (Model.NoteUser.Id == Model.CurrentUserId)
+    {
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+        </td>
+    }
 </tr>
