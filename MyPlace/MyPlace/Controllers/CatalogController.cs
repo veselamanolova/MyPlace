@@ -65,6 +65,13 @@ namespace MyPlace.Controllers
             }
             return Json(cacheEntry);
         }
+
+        // For caching HTML -> cache Tag helper
+        // <Cache expires-after="@TimeSpan.FromMinutes(10)">
+        //     ...........
+        // </cache>
+
+        // expires-sliding="@TimeSpan.FromSeconds(60)" -> Ако страницата не е отваряна 60 секунди се изчиства от кеша
     }
 }
 
