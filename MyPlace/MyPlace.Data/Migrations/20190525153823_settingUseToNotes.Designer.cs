@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyPlace.Data;
 
 namespace MyPlace.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190525153823_settingUseToNotes")]
+    partial class settingUseToNotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,9 +87,11 @@ namespace MyPlace.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("ProviderKey");
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(128);
 
                     b.Property<string>("ProviderDisplayName");
 
@@ -118,9 +122,11 @@ namespace MyPlace.Data.Migrations
                 {
                     b.Property<string>("UserId");
 
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Value");
 
@@ -129,102 +135,7 @@ namespace MyPlace.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MyPlace.DataModels.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("MyPlace.DataModels.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content");
-
-                    b.Property<DateTime>("CreatedOn");
-
-                    b.Property<int>("EntityId");
-
-                    b.Property<int>("Rating");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EntityId");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("MyPlace.DataModels.Entity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("ImageUrl");
-
-                    b.Property<string>("Title");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Entities");
-                });
-
-            modelBuilder.Entity("MyPlace.DataModels.EntityCategory", b =>
-                {
-                    b.Property<int>("EntityId");
-
-                    b.Property<int>("CategoryId");
-
-                    b.HasKey("EntityId", "CategoryId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("EntityCategories");
-                });
-
-            modelBuilder.Entity("MyPlace.DataModels.Note", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CategoryId");
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<int>("EntityId");
-
-                    b.Property<bool>("IsCompleted");
-
-                    b.Property<string>("Text");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("EntityId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notes");
-                });
-
-            modelBuilder.Entity("MyPlace.DataModels.User", b =>
+            modelBuilder.Entity("MyPlace.Data.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -275,7 +186,102 @@ namespace MyPlace.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("MyPlace.DataModels.UserEntity", b =>
+            modelBuilder.Entity("MyPlace.Data.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("MyPlace.Data.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<int>("EntityId");
+
+                    b.Property<int>("Rating");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EntityId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("MyPlace.Data.Models.Entity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("ImageUrl");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Entities");
+                });
+
+            modelBuilder.Entity("MyPlace.Data.Models.EntityCategory", b =>
+                {
+                    b.Property<int>("EntityId");
+
+                    b.Property<int>("CategoryId");
+
+                    b.HasKey("EntityId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("EntityCategories");
+                });
+
+            modelBuilder.Entity("MyPlace.Data.Models.Note", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CategoryId");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("EntityId");
+
+                    b.Property<bool>("IsCompleted");
+
+                    b.Property<string>("Text");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("EntityId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notes");
+                });
+
+            modelBuilder.Entity("MyPlace.Data.Models.UserEntity", b =>
                 {
                     b.Property<int>("EntityId");
 
@@ -298,7 +304,7 @@ namespace MyPlace.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MyPlace.DataModels.User")
+                    b.HasOne("MyPlace.Data.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -306,7 +312,7 @@ namespace MyPlace.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MyPlace.DataModels.User")
+                    b.HasOne("MyPlace.Data.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -319,7 +325,7 @@ namespace MyPlace.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyPlace.DataModels.User")
+                    b.HasOne("MyPlace.Data.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -327,40 +333,40 @@ namespace MyPlace.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MyPlace.DataModels.User")
+                    b.HasOne("MyPlace.Data.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MyPlace.DataModels.Comment", b =>
+            modelBuilder.Entity("MyPlace.Data.Models.Comment", b =>
                 {
-                    b.HasOne("MyPlace.DataModels.Entity", "Entity")
+                    b.HasOne("MyPlace.Data.Models.Entity", "Entity")
                         .WithMany("Comments")
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MyPlace.DataModels.EntityCategory", b =>
+            modelBuilder.Entity("MyPlace.Data.Models.EntityCategory", b =>
                 {
-                    b.HasOne("MyPlace.DataModels.Category", "Category")
+                    b.HasOne("MyPlace.Data.Models.Category", "Category")
                         .WithMany("EntityCategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyPlace.DataModels.Entity", "Entity")
+                    b.HasOne("MyPlace.Data.Models.Entity", "Entity")
                         .WithMany("EntityCategories")
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MyPlace.DataModels.Note", b =>
+            modelBuilder.Entity("MyPlace.Data.Models.Note", b =>
                 {
-                    b.HasOne("MyPlace.DataModels.Category", "Category")
+                    b.HasOne("MyPlace.Data.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("MyPlace.DataModels.Entity", "Entity")
+                    b.HasOne("MyPlace.Data.Models.Entity", "Entity")
                         .WithMany()
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -370,14 +376,14 @@ namespace MyPlace.Data.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("MyPlace.DataModels.UserEntity", b =>
+            modelBuilder.Entity("MyPlace.Data.Models.UserEntity", b =>
                 {
-                    b.HasOne("MyPlace.DataModels.Entity", "Entity")
+                    b.HasOne("MyPlace.Data.Models.Entity", "Entity")
                         .WithMany("UserEntities")
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyPlace.DataModels.User", "User")
+                    b.HasOne("MyPlace.Data.Models.ApplicationUser", "User")
                         .WithMany("UserEntities")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

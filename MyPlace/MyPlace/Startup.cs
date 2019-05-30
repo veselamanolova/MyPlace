@@ -18,6 +18,11 @@ namespace MyPlace
     using MyPlace.Infrastructure;
     using MyPlace.Services.Contracts;
     using AutoMapper;
+    using MyPlace.Data.Repositories;
+    using MyPlace.Services.DTOs;
+    using MyPlace.Areas.Mappers;
+    using MyPlace.Areas.Notes.Models;
+    using System.Collections.Generic;
 
     public class Startup
     {
@@ -67,8 +72,12 @@ namespace MyPlace
             // Add services
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<INoteService, NoteService>();
+            services.AddScoped<INotesRepository, NotesRepository>();
             services.AddScoped<IUserEntitiesService, UserEntitiesService>();
             services.AddScoped<IEntityCategoriesService, EntityCategoriesService>();
+
+            services.AddSingleton<IViewModelMapper<NoteDTO, NoteViewModel>, NoteViewModelMapper>();           
+            services.AddSingleton<IViewModelMapper<List<NoteDTO>, NotesViewModel>, NotesViewModelMapper>();
 
             // Important! -> Use Distributed cache
             // Configuring Distributed Cache
