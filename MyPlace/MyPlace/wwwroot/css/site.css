@@ -369,17 +369,16 @@ html body .comments {
         html body .comments article h4 {
             display: inline-block;
             font-weight: 400;
-            margin-bottom: 25px;
         }
 
             html body .comments article h4 a {
-                color: #404040;
+                color: #5ce500;
                 text-transform: lowercase;
                 text-decoration: none;
             }
 
                 html body .comments article h4 a:hover {
-                    color: #BFBFA8;
+                    color: #9def66;
                 }
 
         html body .comments article time {

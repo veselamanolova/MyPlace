@@ -2,14 +2,21 @@
 @model MyPlace.Models.Catalog.EstablishmentIndexModel
 
 <h2>@Model.Title</h2>
+<br>
 
+<link href="~/lib/login-form/css/main.css" rel="stylesheet" />
 
 <div class="form-group">
     <form>
-        <input type="text" id="userInput" />
-        <textarea class="form-control" placeholder="Add comment!" id="comment-area" rows="5"></textarea>
+        <div class="wrap-input100 col-md-4">
+            <input type="text" id="userInput" class="input101" placeholder="Name (Optional)" style="background-color: azure" />
+            <span class="focus-input100"></span>
+        </div><br>
+
+        <textarea class="form-control" placeholder="Leave a comment!" id="comment-area" name="comment-area" rows="5"></textarea>
+        <h6 class="pull-left" id="count_message"></h6>
         <input type="hidden" id="establishment-id" name="name" value="@Model.Id" />
-        <input type="button" id="sendButton" value="Send Message" class="btn btn-primary" style="margin-top:10px" />
+        <input type="button" id="sendButton" value="Send Message" class="btn btn-info" style="margin-top:10px" />
     </form>
 </div>
 
@@ -25,14 +32,16 @@
     @foreach (var comment in Model.Comments.OrderByDescending(date => date.CreatedOn))
     {
         <article>
-            <h4><a href="#">@comment.Author</a></h4>
+            <h4><a href="#"><strong>@comment.Author</strong></a></h4>
             <time>Created On: @comment.CreatedOn</time>
-            <like></like>
             <h6>
                 @comment.Content
             </h6>
         </article>
     }
 </section>
+<br>
 
-
+@section scripts {
+    <script src="~/js/site.js"></script>
+}
