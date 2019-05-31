@@ -5,8 +5,7 @@
     using System.Threading.Tasks;
     using System.Linq;
     using AutoMapper;
-    using Microsoft.AspNetCore.Mvc;
-    using MyPlace.Areas.Mappers;
+    using Microsoft.AspNetCore.Mvc;   
     using MyPlace.Areas.Notes.Models;
     using MyPlace.DataModels;
     using MyPlace.Services.Contracts;

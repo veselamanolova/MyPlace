@@ -19,8 +19,7 @@ namespace MyPlace
     using MyPlace.Services.Contracts;
     using AutoMapper;
     using MyPlace.Data.Repositories;
-    using MyPlace.Services.DTOs;
-    using MyPlace.Areas.Mappers;
+    using MyPlace.Services.DTOs;    
     using MyPlace.Areas.Notes.Models;
     using System.Collections.Generic;
 
