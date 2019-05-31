@@ -8,6 +8,10 @@ namespace MyPlace.Controllers
     using MyPlace.Filters;
     using MyPlace.DataModels;
     using MyPlace.Models.Account;
+    using System.Security.Cryptography;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.SignalR;
+    using MyPlace.Hubs;
 
     [TypeFilter(typeof(AddHeaderActionFilter))]
     public class AccountController : Controller
@@ -17,14 +21,21 @@ namespace MyPlace.Controllers
         public AccountController(SignInManager<User> signIn) =>
             _signIn = signIn;
 
+        public AccountController(IHubContext<CommentHub> hubContext)
+        {
+            hubContext.Clients.All.SendAsync("BadComment");
+        }
+
 
         [HttpGet]
         public IActionResult Login() => View();
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
+        [AllowAnonymous]
         public IActionResult Login([FromForm]LoginBindingModel model)
         {
+
             if(ModelState.IsValid)
             {
                 var user = _signIn.UserManager.Users
@@ -51,6 +62,8 @@ namespace MyPlace.Controllers
             if (ModelState.IsValid)
             {
                 var user = new User() { UserName = model.UserName };
+
+                var password = SHA256.Create("admin123");
 
                 IdentityResult irUser = await _signIn.UserManager.CreateAsync(user, model.Password);
 
