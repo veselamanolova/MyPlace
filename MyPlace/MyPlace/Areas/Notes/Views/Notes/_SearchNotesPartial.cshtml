@@ -4,7 +4,6 @@
     <form asp-action="SearchNote" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
-
             <div class="form-group">
                 <input type="hidden" asp-for="@Model.EntityId" class="form-control" />
                 @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
@@ -25,9 +24,21 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="form-group">                  
+                <div class="form-group">
                     <input type="date" asp-for="@Model.ExactDate" class="datepicker form-control" />
-                    <span asp-validation-for="@Model.ExactDate" class="text-danger"></span>
+                    @*<span asp-validation-for="@Model.ExactDate" class="text-danger"></span>*@
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <input type="date" asp-for="@Model.FromDate" class="datepicker form-control" />
+                    @*<span asp-validation-for="@Model.FromDate" class="text-danger"></span>*@
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <input type="date" asp-for="@Model.ToDate" class="datepicker form-control" />
+                    @*<span asp-validation-for="@Model.ToDate" class="text-danger"></span>*@
                 </div>
             </div>
             <div>
@@ -43,9 +54,16 @@
 
 @section Scripts {
     @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
-    $(document).off('.datepicker.data-api');
-    $('.datepicker').datepicker({
-    startDate: '-3d'
-    });*@
+        $(document).off('.datepicker.data-api');
+        $('.datepicker').datepicker({
+        startDate: '-3d'
+        });*@
+
+    $(function() {
+        $('#datepicker').val('<%= DateTime.Now.ToString("yyyy-MM-dd") %>');
+        $('#datepicker').datepicker({
+        dateFormat: 'yyyy-MM-dd'
+        });
+      });
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -18,16 +18,22 @@
 
         public bool IsCompleted { get; set; }
 
+        
+        //[Display(Name = "Date")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd'/'MM'/'yyyy}")]
+        //[DataType(DataType.Date)]
+        public DateTime? ExactDate { get; set; }
 
+       
+        //[Display(Name = "Date")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd'/'MM'/'yyyy}")]
+        //[DataType(DataType.Date)]
+        public DateTime? FromDate { get; set; }
 
-        [Required]
-        [Display(Name = "Date")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd'/'MM'/'yyyy}")]
-        [DataType(DataType.Date)]
-        public DateTime ExactDate { get; set; }
-
-        public DateTime FromDate { get; set; }
-
-        public DateTime ToDate { get; set; }
+        
+        //[Display(Name = "Date")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd'/'MM'/'yyyy}")]
+        //[DataType(DataType.Date)]
+        public DateTime? ToDate { get; set; }
     }
 }

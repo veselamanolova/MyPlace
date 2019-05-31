@@ -11,6 +11,7 @@
     using MyPlace.DataModels;
     using MyPlace.Services.Contracts;
     using MyPlace.Services.DTOs;
+    using System.Globalization;
 
     [Area("Notes")]
     //  [Authorize(Roles = "Manager")]
@@ -21,7 +22,8 @@
         private readonly IUserEntitiesService _userEntitiesService;
         private readonly IEntityCategoriesService _entityCategoriesService;
 
-        public NotesController(INoteService notesService, IMapper mapper, IUserEntitiesService userEntitiesService, IEntityCategoriesService entityCategoriesService)
+        public NotesController(INoteService notesService, IMapper mapper, 
+            IUserEntitiesService userEntitiesService, IEntityCategoriesService entityCategoriesService)
         {
             _notesService = notesService ?? throw new ArgumentNullException(nameof(notesService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -31,7 +33,8 @@
 
         //[Authorize(Roles = "Manager")]
         [HttpGet("Notes")]
-        public async Task<IActionResult> Notes(int? entityId, string searchedStringInText, int? categoryId, DateTime? exactDate, DateTime? startDate, DateTime? endDate)
+        public async Task<IActionResult> Notes(int? entityId, string searchedStringInText, 
+            int? categoryId, string exactDate, string fromDate, string toDate)
         {
             string idClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
             if (HttpContext.User == null || !HttpContext.User.HasClaim(x => x.Type == idClaimType))
@@ -40,22 +43,23 @@
             }
 
             string userId = HttpContext.User.FindFirst(idClaimType).Value;
-            var userName = HttpContext.User.Identity.Name;  
+            var userName = HttpContext.User.Identity.Name;
 
             var entities = await _userEntitiesService.GetAllUserEntitiesAsync(userId);
 
             var selectedEntityId = entityId ?? entities[0].EntityId;
 
-            var selectedEntityCategories = await _entityCategoriesService.GetAllEntityCategoriesAsync(selectedEntityId);
+            var selectedEntityCategories = await _entityCategoriesService.GetAllEntityCategoriesAsync(selectedEntityId);           
 
-            var notes = await _notesService.SearchAsync(selectedEntityId, searchedStringInText, categoryId, exactDate, startDate, endDate);
+            var notes = await _notesService.SearchAsync(selectedEntityId, searchedStringInText, 
+                categoryId, ParseNullableDate(exactDate), ParseNullableDate(fromDate), ParseNullableDate(toDate));
 
-            var entityCategories = _mapper.Map<List<EntityCategoryDTO>, List<CategoryViewModel>>(selectedEntityCategories); 
+            var entityCategories = _mapper.Map<List<EntityCategoryDTO>, List<CategoryViewModel>>(selectedEntityCategories);
             AddNoteViewModel addNoteVm = new AddNoteViewModel()
             {
                 Note = new NoteViewModel
                 {
-                    EntityId = selectedEntityId, 
+                    EntityId = selectedEntityId,
                     NoteUser = new NoteUserViewModel
                     {
                         Id = userId,
@@ -63,7 +67,7 @@
                     }
                 },
                 EntityCategories = entityCategories,
-                
+
             };
 
 
@@ -98,14 +102,21 @@
                     EntityCategories = entityCategories
                 }
             };
-            
-           
-
-
             return View(vm);
         }
 
-       // [Authorize(Roles = "Manager")]
+        private static DateTime? ParseNullableDate(string date)
+        {      
+            DateTime dateTimeResult;
+            if (!DateTime.TryParseExact(date, "dd.MM.yyyy", CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out dateTimeResult))
+            {
+                return null;
+            }
+            return dateTimeResult; 
+        }
+
+        // [Authorize(Roles = "Manager")]
         [ValidateAntiForgeryToken]
         [HttpPost("AddNote")]
         public async Task<IActionResult> AddNote(AddNoteViewModel model)
@@ -137,16 +148,15 @@
             }
 
             try
-            {
-               
+            { 
                 return RedirectToAction(nameof(Notes), new
                 {
                     entityId = model.EntityId,
                     searchedStringInText = model.SearchedStringInText,
                     categoryId = model.SearchCategoryId,
-                    exactDate = model.ExactDate,
-                    startDate = model.FromDate,
-                    endDate = model.ToDate
+                    exactDate = model.ExactDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
+                    fromDate = model.FromDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
+                    toDate = model.ToDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)
                 });
             }
             catch (ArgumentException ex)

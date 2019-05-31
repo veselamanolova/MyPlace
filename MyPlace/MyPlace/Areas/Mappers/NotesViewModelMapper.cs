@@ -8,20 +8,20 @@ namespace MyPlace.Areas.Mappers
     using MyPlace.Areas.Notes.Models;
     using MyPlace.Services.DTOs;
 
-    public class NotesViewModelMapper : IViewModelMapper<List<NoteDTO>, NotesViewModel>
-    {
-        private readonly IViewModelMapper<NoteDTO, NoteViewModel> _noteMapper;
+    //public class NotesViewModelMapper : IViewModelMapper<List<NoteDTO>, NotesViewModel>
+    //{
+    //    private readonly IViewModelMapper<NoteDTO, NoteViewModel> _noteMapper;
        
-        public NotesViewModelMapper(
-            IViewModelMapper<NoteDTO, NoteViewModel> noteMapper)
-        {
-            _noteMapper = noteMapper ?? throw new ArgumentNullException(nameof(noteMapper));
-        }
+    //    public NotesViewModelMapper(
+    //        IViewModelMapper<NoteDTO, NoteViewModel> noteMapper)
+    //    {
+    //        _noteMapper = noteMapper ?? throw new ArgumentNullException(nameof(noteMapper));
+    //    }
 
-        public NotesViewModel MapFrom(List<NoteDTO> entity) =>
-            new NotesViewModel
-            {
-                Notes = entity.Select(x=>_noteMapper.MapFrom(x)).ToList()
-            };
-    }
+    //    public NotesViewModel MapFrom(List<NoteDTO> entity) =>
+    //        new NotesViewModel
+    //        {
+    //            Notes = entity.Select(x=>_noteMapper.MapFrom(x)).ToList()
+    //        };
+    //}
 }

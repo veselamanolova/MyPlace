@@ -48,14 +48,33 @@ namespace MyPlace.Services
                 .ToList();
 
 
-        public async Task<List<NoteDTO>> SearchAsync(int entityId, string searchedString, int? categoryId, DateTime? exactDate, DateTime? startDate, DateTime? endDate)
+        public async Task<List<NoteDTO>> SearchAsync(int entityId, string searchedString, int? categoryId, DateTime? exactDate, DateTime? fromDate, DateTime? toDate)
         {
+            //exactDate = VadlidateDate(exactDate);
+            //fromDate = VadlidateDate(fromDate);
+            //toDate = VadlidateDate(toDate);
+            if (fromDate != null && toDate != null)
+            {
+                if (fromDate > toDate)
+                {
+                    throw new ArgumentException("From date should be greater than to date."); 
+                }
+            }
 
-            var result = (await _repository.SearchAsync(entityId, searchedString, categoryId, exactDate, startDate, endDate))
+            var result = (await _repository.SearchAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate))
                .OrderByDescending(note => note.Date)
                .Select(note => ConvertToNoteDTO(note))
                .ToList();
             return result;
+        }
+
+        private static DateTime? VadlidateDate(DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                date = null;
+            }
+            return date;
         }
 
         private static NoteDTO ConvertToNoteDTO(Note note)

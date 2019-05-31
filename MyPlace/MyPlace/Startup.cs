@@ -76,8 +76,8 @@ namespace MyPlace
             services.AddScoped<IUserEntitiesService, UserEntitiesService>();
             services.AddScoped<IEntityCategoriesService, EntityCategoriesService>();
 
-            services.AddSingleton<IViewModelMapper<NoteDTO, NoteViewModel>, NoteViewModelMapper>();           
-            services.AddSingleton<IViewModelMapper<List<NoteDTO>, NotesViewModel>, NotesViewModelMapper>();
+            //services.AddSingleton<IViewModelMapper<NoteDTO, NoteViewModel>, NoteViewModelMapper>();           
+            //services.AddSingleton<IViewModelMapper<List<NoteDTO>, NotesViewModel>, NotesViewModelMapper>();
 
             // Important! -> Use Distributed cache
             // Configuring Distributed Cache
