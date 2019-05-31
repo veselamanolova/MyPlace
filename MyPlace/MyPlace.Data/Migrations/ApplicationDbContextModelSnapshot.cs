@@ -148,6 +148,8 @@ namespace MyPlace.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Author");
+
                     b.Property<string>("Content");
 
                     b.Property<DateTime>("CreatedOn");
@@ -211,11 +213,15 @@ namespace MyPlace.Data.Migrations
 
                     b.Property<string>("Text");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("EntityId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notes");
                 });
@@ -360,6 +366,10 @@ namespace MyPlace.Data.Migrations
                         .WithMany()
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyPlace.DataModels.User", "User")
+                        .WithMany("Notes")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("MyPlace.DataModels.UserEntity", b =>

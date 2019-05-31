@@ -13,8 +13,8 @@ namespace MyPlace.Services
 
     public class CatalogService : ICatalogService
     {
-        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ApplicationDbContext _context;
 
         public CatalogService(ApplicationDbContext context, IMapper mapper)
         {
@@ -46,8 +46,8 @@ namespace MyPlace.Services
             return _context.SaveChangesAsync();
         }
 
-        public IEnumerable<string> AutocompleteGetAll() => 
-            _context.Entities.Select(entity => entity.Title);
+        public async Task<IEnumerable<string>> AutocompleteGetAll() => 
+            await _context.Entities.Select(entity => entity.Title).ToListAsync();
     }
 }
 

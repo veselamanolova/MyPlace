@@ -1,5 +1,5 @@
 ﻿
-namespace MyPlace.Controllers
+namespace MyPlace.Areas.Identity.Controllers
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -9,6 +9,7 @@ namespace MyPlace.Controllers
     using MyPlace.DataModels;
     using MyPlace.Models.Account;
 
+    [Area("Identity")]
     [TypeFilter(typeof(AddHeaderActionFilter))]
     public class AccountController : Controller
     {
@@ -17,51 +18,22 @@ namespace MyPlace.Controllers
         public AccountController(SignInManager<User> signIn) =>
             _signIn = signIn;
 
-
         [HttpGet]
         public IActionResult Login() => View();
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Login([FromForm]LoginBindingModel model)
+        public async Task<IActionResult> Login([FromForm]LoginBindingModel model)
         {
             if(ModelState.IsValid)
             {
                 var user = _signIn.UserManager.Users
                 .FirstOrDefault(usr => usr.UserName.Equals(model.UserName));
 
-                if (user != null)
-                {
-                    _signIn.SignInAsync(user, false).Wait();
+                var result = await _signIn.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: true);
 
+                if (result.Succeeded)
                     return RedirectToAction("Index", "Catalog");
-                }
-            }
-            return View(model);
-        }
-
-
-        [HttpGet]
-        public IActionResult Register() => View();
-
-        [HttpPost]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Register([FromForm]RegisterBindingModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new User() { UserName = model.UserName };
-
-                IdentityResult irUser = await _signIn.UserManager.CreateAsync(user, model.Password);
-
-                if (irUser.Succeeded)
-                {
-                    await _signIn.UserManager.AddToRoleAsync(user, model.Role);
-
-                    return RedirectToAction("Login", "Account");
-                }
-
-                return View("Register");
             }
             return View(model);
         }
