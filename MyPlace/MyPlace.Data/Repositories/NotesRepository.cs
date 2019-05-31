@@ -33,7 +33,7 @@ namespace MyPlace.Data.Repositories
 
         public async Task<List<Note>> SearchAsync(int entityId, string searchedString,
             int? categoryId, DateTime? exactDate,
-            DateTime? fromDate, DateTime? toDate)
+            DateTime? fromDate, DateTime? toDate, string creator)
         {
             var query = _context.Notes.Where(note => note.EntityId == entityId)
                 .Include(note => note.User)
@@ -44,6 +44,11 @@ namespace MyPlace.Data.Repositories
 
             if (categoryId != null && categoryId > 0)
                 query = query.Where(note => note.CategoryId == categoryId);
+
+            if (!string.IsNullOrWhiteSpace(creator))
+            {
+                query = query.Where(note => note.User.UserName.Contains(creator));
+            }
 
             if (exactDate != null)
             {
@@ -74,8 +79,7 @@ namespace MyPlace.Data.Repositories
                     query = query.
                             Where(note => note.Date <= ((DateTime)toDate).Date.AddMinutes(60 * 24));
                 }
-            }
-            
+            }            
 
             return await query.ToListAsync();
         }

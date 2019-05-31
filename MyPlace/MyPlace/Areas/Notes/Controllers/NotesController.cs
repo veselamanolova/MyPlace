@@ -33,7 +33,8 @@
         //[Authorize(Roles = "Manager")]
         [HttpGet("Notes")]
         public async Task<IActionResult> Notes(int? entityId, string searchedStringInText, 
-            int? categoryId, string exactDate, string fromDate, string toDate)
+            int? categoryId, string exactDate, 
+            string fromDate, string toDate, string creator)
         {
             string idClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
             if (HttpContext.User == null || !HttpContext.User.HasClaim(x => x.Type == idClaimType))
@@ -51,7 +52,7 @@
             var selectedEntityCategories = await _entityCategoriesService.GetAllEntityCategoriesAsync(selectedEntityId);           
 
             var notes = await _notesService.SearchAsync(selectedEntityId, searchedStringInText, 
-                categoryId, ParseNullableDate(exactDate), ParseNullableDate(fromDate), ParseNullableDate(toDate));
+                categoryId, ParseNullableDate(exactDate), ParseNullableDate(fromDate), ParseNullableDate(toDate), creator);
 
             var entityCategories = _mapper.Map<List<EntityCategoryDTO>, List<CategoryViewModel>>(selectedEntityCategories);
             AddNoteViewModel addNoteVm = new AddNoteViewModel()
@@ -155,7 +156,8 @@
                     categoryId = model.SearchCategoryId,
                     exactDate = model.ExactDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
                     fromDate = model.FromDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                    toDate = model.ToDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)
+                    toDate = model.ToDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture), 
+                    creator  = model.Creator
                 });
             }
             catch (ArgumentException ex)

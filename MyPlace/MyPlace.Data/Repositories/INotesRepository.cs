@@ -9,6 +9,8 @@
     {
         Task<Note> AddAsync(Note newNote);
         Task<List<UserEntity>> GetAllUserEntitiesAsync(string userId);
-        Task<List<Note>> SearchAsync(int entityId, string searchedString, int? categoryId, DateTime? exactDate, DateTime? startDate, DateTime? endDate);
+        Task<List<Note>> SearchAsync(int entityId, string searchedString, 
+            int? categoryId, DateTime? exactDate,
+            DateTime? startDate, DateTime? endDate, string creator);
     }
 }

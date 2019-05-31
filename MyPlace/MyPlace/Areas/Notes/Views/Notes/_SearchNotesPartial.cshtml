@@ -26,19 +26,23 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <input type="date" asp-for="@Model.ExactDate" class="datepicker form-control" />
-                    @*<span asp-validation-for="@Model.ExactDate" class="text-danger"></span>*@
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <input type="date" asp-for="@Model.FromDate" class="datepicker form-control" />
-                    @*<span asp-validation-for="@Model.FromDate" class="text-danger"></span>*@
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <input type="date" asp-for="@Model.ToDate" class="datepicker form-control" />
                     @*<span asp-validation-for="@Model.ToDate" class="text-danger"></span>*@
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <input asp-for="@Model.Creator " class="form-control" placeholder="Search by Creator" />
+                    @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
                 </div>
             </div>
             <div>

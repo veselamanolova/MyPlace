@@ -48,7 +48,8 @@ namespace MyPlace.Services
                 .ToList();
 
 
-        public async Task<List<NoteDTO>> SearchAsync(int entityId, string searchedString, int? categoryId, DateTime? exactDate, DateTime? fromDate, DateTime? toDate)
+        public async Task<List<NoteDTO>> SearchAsync(int entityId, string searchedString, int? categoryId,
+            DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator)
         {
             //exactDate = VadlidateDate(exactDate);
             //fromDate = VadlidateDate(fromDate);
@@ -61,7 +62,7 @@ namespace MyPlace.Services
                 }
             }
 
-            var result = (await _repository.SearchAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate))
+            var result = (await _repository.SearchAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator))
                .OrderByDescending(note => note.Date)
                .Select(note => ConvertToNoteDTO(note))
                .ToList();
