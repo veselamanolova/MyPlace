@@ -8,7 +8,6 @@ namespace MyPlace.Areas.Admin.Controllers
     using MyPlace.DataModels;
     using MyPlace.Models.Account;
 
-    [AllowAnonymous]
     [Area("Administrator")]
     public class AdminController : Controller
     {
@@ -34,7 +33,7 @@ namespace MyPlace.Areas.Admin.Controllers
                 {
                     await _signIn.UserManager.AddToRoleAsync(user, model.Role);
 
-                    return RedirectToAction("Login", "Account");
+                    return RedirectToAction("Login", "Account", new { area = "Identity" });
                 }
 
                 return View("Register");

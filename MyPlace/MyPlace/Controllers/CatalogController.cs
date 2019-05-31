@@ -7,11 +7,13 @@ namespace MyPlace.Controllers
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using Microsoft.Extensions.Caching.Memory;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyPlace.Models;
     using MyPlace.Models.Catalog;
     using MyPlace.Services.Contracts;
 
+    [AllowAnonymous]
     public class CatalogController : Controller
     {
         private readonly IMemoryCache _cache;
@@ -50,23 +52,21 @@ namespace MyPlace.Controllers
             View(await _catalogService.GetByIdAsync<EstablishmentIndexModel>(Id));
 
 
-
-        public JsonResult GetAll()
+        public async Task<JsonResult> GetAll()
         {
-            //return Json(_catalogService.AutocompleteGetAll());
-
             IEnumerable<string> cacheEntry;
 
             if (!_cache.TryGetValue("AutocompleteValues", out cacheEntry))
             {
-                cacheEntry = _catalogService.AutocompleteGetAll();
+                cacheEntry = await _catalogService.AutocompleteGetAll();
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromHours(1));
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
                 _cache.Set("AutocompleteValues", cacheEntry, cacheEntryOptions);
             }
 
-            // Get the cached object if it exists
+            else
+                cacheEntry = (IEnumerable<string>)_cache.Get("AutocompleteValues");
 
             return Json(cacheEntry);
         }

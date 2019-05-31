@@ -13,7 +13,7 @@ namespace MyPlace.Services.Contracts
 
         Task CreateReplyAsync(int Id, string text);
 
-        IEnumerable<string> AutocompleteGetAll();
+        Task<IEnumerable<string>> AutocompleteGetAll();
     }
 }
 

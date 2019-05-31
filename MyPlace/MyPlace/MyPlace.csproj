@@ -26,7 +26,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Areas\Identity\Models\" />
     <Folder Include="Areas\Manager\Models\" />
     <Folder Include="Areas\Moderator\Models\" />
   </ItemGroup>

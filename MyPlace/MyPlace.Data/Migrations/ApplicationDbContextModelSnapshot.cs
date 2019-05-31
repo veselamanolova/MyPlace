@@ -148,6 +148,8 @@ namespace MyPlace.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Author");
+
                     b.Property<string>("Content");
 
                     b.Property<DateTime>("CreatedOn");
@@ -365,7 +367,7 @@ namespace MyPlace.Data.Migrations
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyPlace.Data.Models.ApplicationUser", "User")
+                    b.HasOne("MyPlace.DataModels.User", "User")
                         .WithMany("Notes")
                         .HasForeignKey("UserId");
                 });
