@@ -48,9 +48,10 @@ namespace MyPlace.Services
                 .ToList();
 
 
-        public async Task<List<NoteDTO>> SearchAsync(int entityId, string searchedString, int? categoryId)
+        public async Task<List<NoteDTO>> SearchAsync(int entityId, string searchedString, int? categoryId, DateTime? exactDate, DateTime? startDate, DateTime? endDate)
         {
-            var result = (await _repository.SearchAsync(entityId, searchedString, categoryId))
+
+            var result = (await _repository.SearchAsync(entityId, searchedString, categoryId, exactDate, startDate, endDate))
                .OrderByDescending(note => note.Date)
                .Select(note => ConvertToNoteDTO(note))
                .ToList();

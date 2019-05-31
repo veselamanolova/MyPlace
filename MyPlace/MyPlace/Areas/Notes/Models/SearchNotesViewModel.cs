@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MyPlace.Areas.Notes.Models
+﻿namespace MyPlace.Areas.Notes.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class SearchNotesViewModel
     {
         public int EntityId { get; set;  }
@@ -19,6 +18,12 @@ namespace MyPlace.Areas.Notes.Models
 
         public bool IsCompleted { get; set; }
 
+
+
+        [Required]
+        [Display(Name = "Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd'/'MM'/'yyyy}")]
+        [DataType(DataType.Date)]
         public DateTime ExactDate { get; set; }
 
         public DateTime FromDate { get; set; }

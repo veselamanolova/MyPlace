@@ -31,7 +31,7 @@
 
         //[Authorize(Roles = "Manager")]
         [HttpGet("Notes")]
-        public async Task<IActionResult> Notes(int? entityId, string searchedStringInText, int? categoryId)
+        public async Task<IActionResult> Notes(int? entityId, string searchedStringInText, int? categoryId, DateTime? exactDate, DateTime? startDate, DateTime? endDate)
         {
             string idClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
             if (HttpContext.User == null || !HttpContext.User.HasClaim(x => x.Type == idClaimType))
@@ -48,7 +48,7 @@
 
             var selectedEntityCategories = await _entityCategoriesService.GetAllEntityCategoriesAsync(selectedEntityId);
 
-            var notes = await _notesService.SearchAsync(selectedEntityId, searchedStringInText, categoryId);
+            var notes = await _notesService.SearchAsync(selectedEntityId, searchedStringInText, categoryId, exactDate, startDate, endDate);
 
             var entityCategories = _mapper.Map<List<EntityCategoryDTO>, List<CategoryViewModel>>(selectedEntityCategories); 
             AddNoteViewModel addNoteVm = new AddNoteViewModel()
@@ -127,7 +127,7 @@
             }
         }
 
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         //[HttpGet("SearchNote")]
         public IActionResult SearchNote(SearchNotesViewModel model)
         {
@@ -143,7 +143,10 @@
                 {
                     entityId = model.EntityId,
                     searchedStringInText = model.SearchedStringInText,
-                    categoryId = model.SearchCategoryId
+                    categoryId = model.SearchCategoryId,
+                    exactDate = model.ExactDate,
+                    startDate = model.FromDate,
+                    endDate = model.ToDate
                 });
             }
             catch (ArgumentException ex)
