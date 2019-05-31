@@ -13,8 +13,8 @@ namespace MyPlace.Services
 
     public class CatalogService : ICatalogService
     {
-        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ApplicationDbContext _context;
 
         public CatalogService(ApplicationDbContext context, IMapper mapper)
         {

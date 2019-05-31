@@ -1,11 +1,14 @@
-﻿namespace MyPlace.Services.Contracts
+﻿
+namespace MyPlace.Services.Contracts
 {
-    using MyPlace.Services.DTOs;
-    using System.Collections.Generic;    
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using MyPlace.Services.DTOs;
 
     public interface IEntityCategoriesService
     {
        Task<List<EntityCategoryDTO>> GetAllEntityCategoriesAsync(int entityId); 
     }
 }
+
+

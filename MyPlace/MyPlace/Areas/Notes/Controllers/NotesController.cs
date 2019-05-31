@@ -1,37 +1,36 @@
-﻿namespace MyPlace.Areas.Notes.Controllers
+﻿
+namespace MyPlace.Areas.Notes.Controllers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using System.Linq;
-    using AutoMapper;
+    using System.Threading.Tasks;
+    using System.Collections.Generic;    
     using Microsoft.AspNetCore.Mvc;
-    using MyPlace.Areas.Mappers;
     using MyPlace.Areas.Notes.Models;
-    using MyPlace.DataModels;
     using MyPlace.Services.Contracts;
     using MyPlace.Services.DTOs;
+    using AutoMapper;
 
     [Area("Notes")]
-    //  [Authorize(Roles = "Manager")]
     public class NotesController : Controller
     {
-        private readonly INoteService _notesService;
         private readonly IMapper _mapper;
+        private readonly INoteService _notesService;
         private readonly IUserEntitiesService _userEntitiesService;
         private readonly IEntityCategoriesService _entityCategoriesService;
 
-        public NotesController(INoteService notesService, IMapper mapper, IUserEntitiesService userEntitiesService, IEntityCategoriesService entityCategoriesService)
+        public NotesController(INoteService notesService, IMapper mapper, 
+            IUserEntitiesService userEntitiesService, IEntityCategoriesService entityCategoriesService)
         {
-            _notesService = notesService ?? throw new ArgumentNullException(nameof(notesService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _notesService = notesService ?? throw new ArgumentNullException(nameof(notesService));
             _userEntitiesService = userEntitiesService ?? throw new ArgumentNullException(nameof(userEntitiesService));
             _entityCategoriesService = entityCategoriesService ?? throw new ArgumentNullException(nameof(entityCategoriesService));  
         }
 
-        //[Authorize(Roles = "Manager")]
         [HttpGet("Notes")]
-        public async Task<IActionResult> Notes(int? entityId, string searchedStringInText, int? categoryId, DateTime? exactDate, DateTime? startDate, DateTime? endDate)
+        public async Task<IActionResult> Notes(
+            int? entityId, string searchedStringInText, int? categoryId, DateTime? exactDate, DateTime? startDate, DateTime? endDate)
         {
             string idClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
             if (HttpContext.User == null || !HttpContext.User.HasClaim(x => x.Type == idClaimType))
@@ -63,16 +62,12 @@
                     }
                 },
                 EntityCategories = entityCategories,
-                
             };
-
-
-
+            
             NotesViewModel vm = new NotesViewModel()
             {
                 UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
                 SelectedEntityId = selectedEntityId,
-                // Notes = //_mapper.Map<List<NoteDTO>, List<NoteViewModel>>(notes),
                 Notes = notes.Select(x => new NoteViewModel
                 {
                     Id = x.Id,
@@ -98,16 +93,12 @@
                     EntityCategories = entityCategories
                 }
             };
-            
-           
-
 
             return View(vm);
         }
 
-       // [Authorize(Roles = "Manager")]
-        [ValidateAntiForgeryToken]
         [HttpPost("AddNote")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddNote(AddNoteViewModel model)
         {
             if (!this.ModelState.IsValid)
@@ -128,17 +119,13 @@
         }
 
         [ValidateAntiForgeryToken]
-        //[HttpGet("SearchNote")]
         public IActionResult SearchNote(SearchNotesViewModel model)
         {
             if (!this.ModelState.IsValid)
-            {
                 return View(nameof(Notes), model);
-            }
 
             try
             {
-               
                 return RedirectToAction(nameof(Notes), new
                 {
                     entityId = model.EntityId,

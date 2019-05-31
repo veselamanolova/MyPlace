@@ -19,6 +19,8 @@ namespace MyPlace.DataModels
 
         public int EntityId { get; set; }
 
+        public string Author { get; set; }
+
         public string Content { get; set; }
 
         public DateTime CreatedOn { get; set; }

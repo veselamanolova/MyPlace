@@ -2,12 +2,12 @@
 namespace MyPlace.Controllers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
+    using System.Diagnostics;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
     using Microsoft.Extensions.Caching.Memory;
+    using Microsoft.AspNetCore.Mvc;
     using MyPlace.Models;
     using MyPlace.Models.Catalog;
     using MyPlace.Services.Contracts;
