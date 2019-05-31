@@ -6,6 +6,7 @@
 
 <div class="form-group">
     <form>
+        <input type="text" id="userInput" />
         <textarea class="form-control" placeholder="Add comment!" id="comment-area" rows="5"></textarea>
         <input type="hidden" id="establishment-id" name="name" value="@Model.Id" />
         <input type="button" id="sendButton" value="Send Message" class="btn btn-primary" style="margin-top:10px" />
@@ -24,7 +25,7 @@
     @foreach (var comment in Model.Comments.OrderByDescending(date => date.CreatedOn))
     {
         <article>
-            <h4><a href="#">chrisburton</a></h4>
+            <h4><a href="#">@comment.Author</a></h4>
             <time>Created On: @comment.CreatedOn</time>
             <like></like>
             <h6>
