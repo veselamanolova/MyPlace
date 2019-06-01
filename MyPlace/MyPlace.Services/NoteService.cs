@@ -51,9 +51,7 @@ namespace MyPlace.Services
         public async Task<List<NoteDTO>> SearchAsync(int entityId, string searchedString, int? categoryId,
             DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator)
         {
-            //exactDate = VadlidateDate(exactDate);
-            //fromDate = VadlidateDate(fromDate);
-            //toDate = VadlidateDate(toDate);
+            
             if (fromDate != null && toDate != null)
             {
                 if (fromDate > toDate)
@@ -67,16 +65,7 @@ namespace MyPlace.Services
                .Select(note => ConvertToNoteDTO(note))
                .ToList();
             return result;
-        }
-
-        private static DateTime? VadlidateDate(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                date = null;
-            }
-            return date;
-        }
+        }       
 
         private static NoteDTO ConvertToNoteDTO(Note note)
         {
@@ -87,6 +76,7 @@ namespace MyPlace.Services
                 Text = note.Text,
                 Date = note.Date,
                 IsCompleted = note.IsCompleted,
+                HasStatus = note.HasStatus,
                 NoteUser = new NoteUserDTO
                 {
                     Id = note.User.Id,

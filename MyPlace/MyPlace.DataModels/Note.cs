@@ -19,6 +19,8 @@ namespace MyPlace.DataModels
 
         public bool IsCompleted { get; set; }
 
+        public bool HasStatus { get; set; }
+
         public Entity Entity { get; set; }
 
         public User User { get;  set; } 

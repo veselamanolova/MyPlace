@@ -93,7 +93,9 @@
                         CategoryId = x.Category.CategoryId,
                         Name = x.Category.Name
                     },
-                    CurrentUserId = userId
+                    CurrentUserId = userId,
+                    IsCompleted = x.IsCompleted, 
+                    HasStatus = x.HasStatus
                 }).ToList(),
                 AddNote = addNoteVm,
                 SearchNotes = new SearchNotesViewModel

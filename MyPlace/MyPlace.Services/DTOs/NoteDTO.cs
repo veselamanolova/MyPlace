@@ -15,7 +15,9 @@ namespace MyPlace.Services.DTOs
 
         public DateTime Date { get; set; }
 
-        public bool IsCompleted { get; set; }        
+        public bool IsCompleted { get; set; }  
+        
+        public bool HasStatus { get; set; }
 
         public NoteUserDTO NoteUser { get; set; }
 
