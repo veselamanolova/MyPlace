@@ -8,18 +8,20 @@
 
 <div class="form-group">
     <form>
-        <div class="wrap-input100 col-md-4">
-            <input type="text" id="userInput" class="input101" placeholder="Name (Optional)" style="background-color: azure" />
-            <span class="focus-input100"></span>
-        </div><br>
+        <div class="col-md-4 col-sm-4 contact-form">
+            <div class="form-group">
+                <input type="text" class="form-control label-floating is-empty" name="userInput" id="userInput" placeholder="Name (Optional)" />
+                <div class="validation"></div>
+            </div>
+        </div>
 
-        <textarea class="form-control" placeholder="Leave a comment!" id="comment-area" name="comment-area" rows="5"></textarea>
-        <h6 class="pull-left" id="count_message"></h6>
+        <textarea class="form-control" id="comment-area" name="comment-area" rows="5" placeholder="Please write something for us"></textarea>
+        <h6 id="count_message"></h6>
         <input type="hidden" id="establishment-id" name="name" value="@Model.Id" />
-        <input type="button" id="sendButton" value="Send Message" class="btn btn-info" style="margin-top:10px" />
+        <input type="button" id="sendButton" value="Leave a comment!" class="btn btn-info" 
+               style="margin-top:10px; background-color:#5ce500; border:none;" />
     </form>
 </div>
-
 
 <section id="app" class="comments">
     <article>
