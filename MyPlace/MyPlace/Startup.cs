@@ -2,21 +2,26 @@
 namespace MyPlace
 {
     using System;
+    using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc.Razor;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.EntityFrameworkCore;
     using MyPlace.Hubs;
     using MyPlace.Data;
     using MyPlace.Services;
     using MyPlace.DataModels;
     using MyPlace.Infrastructure;
+    using MyPlace.Data.Repositories;
     using MyPlace.Services.Contracts;
+    using MyPlace.Services.DTOs;
+    using MyPlace.Areas.Mappers;
+    using MyPlace.Areas.Notes.Models;
+    
     using AutoMapper;
 
     public class Startup
@@ -63,12 +68,17 @@ namespace MyPlace
                 options.AccessDeniedPath = $"/Account/AccessDenied";
             });
 
-
             // Add services
             services.AddScoped<ICatalogService, CatalogService>();
+            services.AddScoped<IAdminService, AdminService>();
+
             services.AddScoped<INoteService, NoteService>();
+            services.AddScoped<INotesRepository, NotesRepository>();
             services.AddScoped<IUserEntitiesService, UserEntitiesService>();
             services.AddScoped<IEntityCategoriesService, EntityCategoriesService>();
+
+            services.AddSingleton<IViewModelMapper<NoteDTO, NoteViewModel>, NoteViewModelMapper>();           
+            services.AddSingleton<IViewModelMapper<List<NoteDTO>, NotesViewModel>, NotesViewModelMapper>();
 
             // Important! -> Use Distributed cache
             // Configuring Distributed Cache
@@ -156,6 +166,10 @@ namespace MyPlace
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Account}/{action=Login}/{id?}"
+            );
                 routes.MapRoute(
                     name: "areas",
                     template: "{area:exists}/{controller=Admin}/{action=Index}/{id?}"

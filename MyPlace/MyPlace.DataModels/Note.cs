@@ -9,6 +9,8 @@ namespace MyPlace.DataModels
 
         public int EntityId { get; set; }
 
+        public string UserId { get; set; }
+
         public string Text { get; set; }
 
         public int? CategoryId { get; set; }
@@ -18,6 +20,8 @@ namespace MyPlace.DataModels
         public bool IsCompleted { get; set; }
 
         public Entity Entity { get; set; }
+
+        public User User { get;  set; } 
 
         public Category Category { get; set; }
     }

@@ -20,10 +20,12 @@ namespace MyPlace.Infrastructure
             {
                 var roleStore = new RoleStore<IdentityRole>(context);
 
-                if (!context.Roles.Any(r => r.Name == role)) 
+                if (!context.Roles.Any(r => r.Name == role))
+                {
                     roleStore.CreateAsync(new IdentityRole(role));
+                    context.SaveChangesAsync();
+                }
             }
-            context.SaveChangesAsync();
         }
     }
 }
