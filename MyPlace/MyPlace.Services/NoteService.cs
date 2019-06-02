@@ -46,6 +46,11 @@ namespace MyPlace.Services
             await _repository.EditAsync(editableNote); 
         }
 
+        public async Task DeleteAsync(int noteId)
+        {
+            await _repository.DeleteAsync(noteId);
+        }
+
         public async Task<NoteDTO> GetByIdAsync(int noteId)
         {
             var note = await _repository.GetByIdAsync(noteId); 

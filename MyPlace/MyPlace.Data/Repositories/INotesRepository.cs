@@ -11,6 +11,8 @@
 
         Task EditAsync(Note note);
 
+        Task DeleteAsync(int noteId);
+
         Task<Note> GetByIdAsync(int noteId);
 
         Task<List<UserEntity>> GetAllUserEntitiesAsync(string userId);

@@ -29,7 +29,7 @@ namespace MyPlace.Areas.Notes.Controllers
             _entityCategoriesService = entityCategoriesService ?? throw new ArgumentNullException(nameof(entityCategoriesService));
         }
 
-        [HttpGet("Notes")]
+        [HttpGet("Notes")] 
         public async Task<IActionResult> Notes(int? entityId, string searchedStringInText,
             int? categoryId, string exactDate,
             string fromDate, string toDate, string creator)
@@ -170,6 +170,16 @@ namespace MyPlace.Areas.Notes.Controllers
             };
 
             return View(nameof(Edit), model);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost("Notes/DeleteNote")]
+        // public async Task<IActionResult> DeleteNote(int noteId, int entityId)
+        public async Task<IActionResult> DeleteNote(NoteViewModel model)
+        {
+            
+            await _notesService.DeleteAsync(model.Id);
+            return RedirectToAction(nameof(Notes), new { entityId = model.EntityId });
         }
 
 

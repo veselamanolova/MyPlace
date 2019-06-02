@@ -13,11 +13,13 @@ namespace MyPlace.Services.Contracts
 
         Task EditAsync(int noteId, string text, int categoryId, bool isCompleted, bool hasStatus);
 
+        Task DeleteAsync(int noteId);
+
         Task<NoteDTO> GetByIdAsync(int noteId); 
 
         Task<List<NoteDTO>> SearchAsync(int entityId, string searchedString,
             int? categoryId, DateTime? exactDate, 
             DateTime? startDate, DateTime? endDate, 
-            string creator);
+            string creator);       
     }
 }

@@ -26,10 +26,17 @@ namespace MyPlace.Data.Repositories
 
         public async Task EditAsync(Note note)
         {
-            var result = _context.Update(note);
+            var result =  _context.Update(note);
             await _context.SaveChangesAsync();
             //return result.Entity; 
-        }        
+        }
+
+        public async Task DeleteAsync(int noteId)
+        {
+            var result =  _context.Notes.Find(noteId);
+            _context.Notes.Remove(result);
+            await _context.SaveChangesAsync(); 
+        }
 
         public async Task<Note> GetByIdAsync(int noteId)
         {
@@ -99,7 +106,7 @@ namespace MyPlace.Data.Repositories
             }            
 
             return await query.ToListAsync();
-        }
+        }        
     }
 }
 
