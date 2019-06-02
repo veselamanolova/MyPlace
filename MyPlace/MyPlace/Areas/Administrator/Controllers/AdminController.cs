@@ -3,7 +3,9 @@ namespace MyPlace.Areas.Admin.Controllers
 {
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using MyPlace.Areas.Administrator.Models;
+    using Microsoft.AspNetCore.Identity;
+    using MyPlace.DataModels;
+    using MyPlace.Models.Account;
 
     [Area("Administrator")]
     public class AdminController : Controller

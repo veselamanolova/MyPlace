@@ -13,9 +13,9 @@ namespace MyPlace.Hubs
         public CommentHub(ICatalogService catalogService) =>
             _catalogService = catalogService ?? throw new ArgumentNullException(nameof(catalogService));
 
-        public async Task SendMessage(int Id, string comment)
+        public async Task SendMessage(int Id, string user, string comment)
         {
-            await _catalogService.CreateReplyAsync(Id, comment);
+            await _catalogService.CreateReplyAsync(Id, user, comment);
             await Clients.All.SendAsync("AddComment", comment);
         }
     }

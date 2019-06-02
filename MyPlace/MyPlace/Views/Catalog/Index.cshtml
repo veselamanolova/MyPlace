@@ -62,14 +62,19 @@
     <script src="~/lib/kendo-ui-core/js/kendo.ui.core.min.js"></script>
 
     <script>
-        $.ajax({
-            url: "https://localhost:44315/Catalog/GetAll",
-            type: 'GET',
-            success: function (data) {
-                $("#objects").kendoAutoComplete({
-                    dataSource: data
-                });
-            }
+
+        $('#objects').kendoAutoComplete({
+            filter: 'contains',
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "https://localhost:44315/Catalog/GetAll",
+                        dataType: "json",
+                        serverPaging: true,
+                        serverFiltering: true
+                    }
+                }
+            })
         });
     </script>
 }

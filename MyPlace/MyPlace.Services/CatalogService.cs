@@ -35,14 +35,16 @@ namespace MyPlace.Services
                 .FirstOrDefault());
 
 
-        public Task CreateReplyAsync(int Id, string text)
+        public Task CreateReplyAsync(int Id, string user, string text)
         {
             var selectedEntity = _context.Entities
             .Where(entity => entity.Id.Equals(Id))
                 .Include(comments => comments.Comments)
             .FirstOrDefault();
 
-            selectedEntity.Comments.Add(new Comment(Id, text, DateTime.Now, selectedEntity));
+            if (String.IsNullOrEmpty(user)) user = "anonymous";
+
+            selectedEntity.Comments.Add(new Comment(Id, user, text, DateTime.Now, selectedEntity));
             return _context.SaveChangesAsync();
         }
 

@@ -14,8 +14,13 @@ namespace MyPlace.Controllers
     {
         private readonly ICatalogService _catalogService;
 
-        public CatalogController(ICatalogService catalogContex) =>
-            _catalogService = catalogContex ?? throw new ArgumentNullException(nameof(catalogContex));
+        public CatalogController(ICatalogService catalogContex, IMemoryCache cache)
+        {
+            _cache = cache;
+            _catalogService = catalogContex;
+        }
+
+        public IActionResult Demo() => View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() =>
