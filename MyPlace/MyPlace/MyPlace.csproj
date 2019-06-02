@@ -40,6 +40,7 @@
     <Folder Include="Areas\Manager\Models\" />
     <Folder Include="Areas\Moderator\Models\" />
     <Folder Include="Areas\Notes\Controllers\" />
+    <Folder Include="wwwroot\images\notes\" />
   </ItemGroup>
 
 </Project>

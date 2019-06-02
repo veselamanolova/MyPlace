@@ -2,7 +2,6 @@
 
 @{
     var noteId = "noteId" + @Model.Id;
-    var noteChBoxId = "noteChBoxId"+@Model.Id;
  }
 <tr id="@noteId">
     <td><input type="hidden" asp-for="@Model.Id" /></td>
@@ -12,7 +11,14 @@
     <td>
         @if (@Model.HasStatus)
         {
-            <input type="checkbox" asp-for="@Model.IsCompleted" id="@noteChBoxId"/>
+            if (Model.IsCompleted)
+            {
+                <img src="~/images/notes/completed.svg" style="height: 2rem" alt="Completed" />
+            }
+            else
+            {
+                <img src="~/images/notes/in-progress.png" style="height: 2rem" alt="Completed" />
+            }
         }
     </td>
     @if (@Model.Category == null || @Model.Category.Name == null)
