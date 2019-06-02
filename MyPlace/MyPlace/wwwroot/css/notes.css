@@ -9,3 +9,26 @@
 .nav-tabs {
     margin-bottom: 0;
 }
+
+.card-header {
+    padding: 0;
+}
+
+.collapsible-panel {
+    padding: 1rem;
+    border-right: 1px solid rgba(0, 0, 0, 0.125);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    border-left: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.collapsible-header {
+    cursor: pointer;
+}
+
+.collapsible-header button {
+    font-weight: bold;
+}
+
+.collapsible-header.collapsed button {
+    font-weight: normal;
+}
