@@ -13,8 +13,8 @@ namespace MyPlace.Services
 
     public class CatalogService : ICatalogService
     {
-        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ApplicationDbContext _context;
 
         public CatalogService(ApplicationDbContext context, IMapper mapper)
         {
@@ -35,19 +35,21 @@ namespace MyPlace.Services
                 .FirstOrDefault());
 
 
-        public Task CreateReplyAsync(int Id, string text)
+        public Task CreateReplyAsync(int Id, string user, string text)
         {
             var selectedEntity = _context.Entities
             .Where(entity => entity.Id.Equals(Id))
                 .Include(comments => comments.Comments)
             .FirstOrDefault();
 
-            selectedEntity.Comments.Add(new Comment(Id, text, DateTime.Now, selectedEntity));
+            if (String.IsNullOrEmpty(user)) user = "anonymous";
+
+            selectedEntity.Comments.Add(new Comment(Id, user, text, DateTime.Now, selectedEntity));
             return _context.SaveChangesAsync();
         }
 
-        public IEnumerable<string> AutocompleteGetAll() => 
-            _context.Entities.Select(entity => entity.Title);
+        public async Task<IEnumerable<string>> AutocompleteGetAll() => 
+            await _context.Entities.Select(entity => entity.Title).ToListAsync();
     }
 }
 

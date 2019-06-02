@@ -1,36 +1,34 @@
-﻿namespace MyPlace.Areas.Notes.Controllers
+﻿
+namespace MyPlace.Areas.Notes.Controllers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using System.Linq;
-    using AutoMapper;
+    using System.Threading.Tasks;
+    using System.Collections.Generic;    
     using Microsoft.AspNetCore.Mvc;
     using MyPlace.Areas.Notes.Models;
-    using MyPlace.DataModels;
     using MyPlace.Services.Contracts;
     using MyPlace.Services.DTOs;
     using System.Globalization;
+    using AutoMapper;
 
     [Area("Notes")]
-    //  [Authorize(Roles = "Manager")]
     public class NotesController : Controller
     {
-        private readonly INoteService _notesService;
         private readonly IMapper _mapper;
+        private readonly INoteService _notesService;
         private readonly IUserEntitiesService _userEntitiesService;
         private readonly IEntityCategoriesService _entityCategoriesService;
 
         public NotesController(INoteService notesService, IMapper mapper,
             IUserEntitiesService userEntitiesService, IEntityCategoriesService entityCategoriesService)
         {
-            _notesService = notesService ?? throw new ArgumentNullException(nameof(notesService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _notesService = notesService ?? throw new ArgumentNullException(nameof(notesService));
             _userEntitiesService = userEntitiesService ?? throw new ArgumentNullException(nameof(userEntitiesService));
             _entityCategoriesService = entityCategoriesService ?? throw new ArgumentNullException(nameof(entityCategoriesService));
         }
 
-        //[Authorize(Roles = "Manager")]
         [HttpGet("Notes")]
         public async Task<IActionResult> Notes(int? entityId, string searchedStringInText,
             int? categoryId, string exactDate,
@@ -65,9 +63,7 @@
                 EntityCategories = entityCategories,
 
             };
-
-
-
+            
             NotesViewModel vm = new NotesViewModel()
             {
                 UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
@@ -136,8 +132,8 @@
         }
 
         // [Authorize(Roles = "Manager")]
+        [HttpPost("AddNote")]       
         [ValidateAntiForgeryToken]
-        [HttpPost("AddNote")]
         public async Task<IActionResult> AddNote(AddNoteViewModel model)
         {
             if (!this.ModelState.IsValid)
@@ -202,13 +198,10 @@
 
 
         [ValidateAntiForgeryToken]
-        //[HttpGet("SearchNote")]
         public IActionResult SearchNote(SearchNotesViewModel model)
         {
             if (!this.ModelState.IsValid)
-            {
                 return View(nameof(Notes), model);
-            }
 
             try
             {

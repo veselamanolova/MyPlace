@@ -2,26 +2,26 @@
 namespace MyPlace
 {
     using System;
+    using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc.Razor;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.EntityFrameworkCore;
     using MyPlace.Hubs;
     using MyPlace.Data;
     using MyPlace.Services;
     using MyPlace.DataModels;
     using MyPlace.Infrastructure;
-    using MyPlace.Services.Contracts;
-    using AutoMapper;
     using MyPlace.Data.Repositories;
     using MyPlace.Services.DTOs;    
     using MyPlace.Areas.Notes.Models;
-    using System.Collections.Generic;
+    
+    using AutoMapper;
+    using MyPlace.Services.Contracts;
 
     public class Startup
     {
@@ -66,7 +66,6 @@ namespace MyPlace
                 options.LogoutPath = $"/Account/Logout";
                 options.AccessDeniedPath = $"/Account/AccessDenied";
             });
-
 
             // Add services
             services.AddScoped<ICatalogService, CatalogService>();
@@ -164,6 +163,10 @@ namespace MyPlace
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Account}/{action=Login}/{id?}"
+            );
                 routes.MapRoute(
                     name: "areas",
                     template: "{area:exists}/{controller=Admin}/{action=Index}/{id?}"

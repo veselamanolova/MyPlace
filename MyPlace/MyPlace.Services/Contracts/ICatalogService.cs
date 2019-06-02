@@ -11,9 +11,9 @@ namespace MyPlace.Services.Contracts
 
         Task<TSource> GetByIdAsync<TSource>(int Id);
 
-        Task CreateReplyAsync(int Id, string text);
+        Task CreateReplyAsync(int Id, string user, string text);
 
-        IEnumerable<string> AutocompleteGetAll();
+        Task<IEnumerable<string>> AutocompleteGetAll();
     }
 }
 

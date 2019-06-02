@@ -15,8 +15,7 @@ a.navbar-brand {
 
 p {
     margin-top: 15px;
-    color: #e5af0d;
-    font-weight: bold;
+    color: #5ce500;
 }
 
 h6 {
@@ -369,17 +368,16 @@ html body .comments {
         html body .comments article h4 {
             display: inline-block;
             font-weight: 400;
-            margin-bottom: 25px;
         }
 
             html body .comments article h4 a {
-                color: #404040;
+                color: #5ce500;
                 text-transform: lowercase;
                 text-decoration: none;
             }
 
                 html body .comments article h4 a:hover {
-                    color: #BFBFA8;
+                    color: #9def66;
                 }
 
         html body .comments article time {
@@ -441,7 +439,6 @@ html body .comments {
 
 @media (max-width: 650px) {
     .comments {
-        border-left: 1px solid;
         width: 100%;
         padding: 0 1rem;
     }
@@ -467,6 +464,47 @@ html body .comments {
                 margin-left: 0 !important;
                 opacity: .5 !important;
                 }
+}
+
+
+/* Contact form */
+
+.contact-form .form-control {
+    color: #000 !important;
+    font-size: 16px;
+    font-weight: normal;
+    height: 38px;
+    line-height: 1.42857;
+    padding: 7px 0;
+}
+
+
+.contact-form {
+    margin: 8px 0 9px !important;
+}
+    .contact-form input:focus, .contact-form textarea:focus {
+        border: 1px solid #5ce500 !important;
+        border-radius: 7px;
+    }
+     
+        input:focus, textarea:focus, select:focus {
+            outline-offset: 0px !important;
+            outline: none !important;
+        }
+
+    .contact-form textarea.form-control {
+        color: #000 !important;
+        height: auto;
+    }
+
+.form-control, .form-group .form-control input:focus, .form-control, .form-group .form-control textarea:focus {
+    border: 1px solid #5ce500 !important;
+    border-radius: 25px;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline-offset: 0px !important;
+    outline: none !important;
 }
 
 

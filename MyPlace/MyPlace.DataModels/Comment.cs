@@ -7,9 +7,10 @@ namespace MyPlace.DataModels
     {
         public Comment() { }
 
-        public Comment(int entityId, string content, DateTime created, Entity entity)
+        public Comment(int entityId, string author, string content, DateTime created, Entity entity)
         {
             EntityId = entityId;
+            Author = author;
             Content = content;
             CreatedOn = created;
             Entity = entity;

@@ -21,8 +21,9 @@ window.onload = function () {
     document.getElementById("sendButton").addEventListener("click", function (event) {
         var establishmentId = document.getElementById("establishment-id").value;
         var commentElement = document.getElementById("comment-area");
+        var user = document.getElementById("userInput").value;
         var comment = commentElement.value
-        connection.invoke("SendMessage", establishmentId, comment).catch(function (err) {
+        connection.invoke("SendMessage", establishmentId, user, comment).catch(function (err) {
             return console.error(err.toString());
         });
 

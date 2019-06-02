@@ -3,19 +3,41 @@ namespace MyPlace.Areas.Admin.Controllers
 {
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using MyPlace.Areas.Administrator.Models;
+    using Microsoft.AspNetCore.Identity;
+    using MyPlace.DataModels;
+    using MyPlace.Models.Account;
 
     [Area("Administrator")]
     public class AdminController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        private readonly SignInManager<User> _signIn;
 
-        public async Task<IActionResult> Create(CreateEstablishmentBindingModel model)
+        public AdminController(SignInManager<User> signIn) =>
+            _signIn = signIn;
+
+        [HttpGet]
+        public IActionResult Register() => View();
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Register([FromForm]RegisterBindingModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var user = new User() { UserName = model.UserName };
+
+                IdentityResult irUser = await _signIn.UserManager.CreateAsync(user, model.Password);
+
+                if (irUser.Succeeded)
+                {
+                    await _signIn.UserManager.AddToRoleAsync(user, model.Role);
+
+                    return RedirectToAction("Login", "Account", new { area = "Identity" });
+                }
+
+                return View("Register");
+            }
+            return View(model);
         }
     }
 }

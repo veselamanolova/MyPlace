@@ -26,7 +26,7 @@
     @if (Model.NoteUser.Id == Model.CurrentUserId)
     {
         <td>
-            @Html.ActionLink("Edit", "EditNote", "Notes", new { noteId = @Model.Id}); 
+            @Html.ActionLink("Edit", "EditNote", "Notes", new { noteId = @Model.Id}) 
         </td>
     }
 </tr>
