@@ -11,6 +11,10 @@ namespace MyPlace.Services.Contracts
     {  
         Task<Note> AddAsync(int entityId,  string userId, string text, int? categoryId);
 
+        Task EditAsync(int noteId, string text, int categoryId, bool isCompleted, bool hasStatus);
+
+        Task<NoteDTO> GetByIdAsync(int noteId); 
+
         Task<List<NoteDTO>> SearchAsync(int entityId, string searchedString,
             int? categoryId, DateTime? exactDate, 
             DateTime? startDate, DateTime? endDate, 

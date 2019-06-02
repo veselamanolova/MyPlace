@@ -36,6 +36,22 @@ namespace MyPlace.Services
             return await _repository.AddAsync(newNote);
         }
 
+        public async Task EditAsync(int noteId, string text, int categoryId, bool isCompleted, bool hasStatus)
+        {
+            var editableNote = await _repository.GetByIdAsync(noteId);
+            editableNote.Text = text;
+            editableNote.CategoryId = categoryId;
+            editableNote.IsCompleted = isCompleted;
+            editableNote.HasStatus = hasStatus;
+            await _repository.EditAsync(editableNote); 
+        }
+
+        public async Task<NoteDTO> GetByIdAsync(int noteId)
+        {
+            var note = await _repository.GetByIdAsync(noteId); 
+            return ConvertToNoteDTO(note); 
+        }
+
 
         public async Task<List<UserEntityDTO>> GetAllUserEntitiesAsync(string userId) =>
             (await _repository.GetAllUserEntitiesAsync(userId))
@@ -68,7 +84,7 @@ namespace MyPlace.Services
         }       
 
         private static NoteDTO ConvertToNoteDTO(Note note)
-        {
+        {            
             return new NoteDTO
             {
                 Id = note.Id,
@@ -88,6 +104,6 @@ namespace MyPlace.Services
                     Name = note.Category.Name
                 }
             };
-        }
+        }        
     }
 }

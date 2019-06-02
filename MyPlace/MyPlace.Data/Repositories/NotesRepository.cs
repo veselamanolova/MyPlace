@@ -24,6 +24,23 @@ namespace MyPlace.Data.Repositories
             return result.Entity;
         }
 
+        public async Task EditAsync(Note note)
+        {
+            var result = _context.Update(note);
+            await _context.SaveChangesAsync();
+            //return result.Entity; 
+        }        
+
+        public async Task<Note> GetByIdAsync(int noteId)
+        {
+            var result=  await _context.Notes.
+                Include(note=>note.Category).
+                Include(note=>note.User).
+                Where(note => note.Id == noteId).
+                FirstOrDefaultAsync();
+            return result; 
+        }
+
         public async Task<List<UserEntity>> GetAllUserEntitiesAsync(string userId) =>
              await _context.UsersEntities
                 .Where(ue => ue.UserId == userId)
