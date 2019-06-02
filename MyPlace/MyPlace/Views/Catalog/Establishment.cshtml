@@ -2,6 +2,7 @@
 @model MyPlace.Models.Catalog.EstablishmentIndexModel
 <br>
 <link href="~/lib/login-form/css/main.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div id="contact" class="contact-area">
     <div class="contact-inner area-padding">
@@ -72,16 +73,17 @@
     {
         <article>
             <h4><a href="#"><strong>@comment.Author</strong></a></h4>
-            <time>Created On: @comment.CreatedOn </time>
+            <time>
+                Created On: @comment.CreatedOn
+                <a asp-area="Administrator" asp-controller="Admin" asp-action="Delete" asp-route-entityId="@Model.Id" 
+                   asp-route-commentId="@comment.Id"; style="margin-left:90%">
+                    remove
+                </a>
+            </time>
             <h6>
                 @comment.Content
             </h6>
         </article>
-        <a asp-area="Administrator" asp-controller="Admin" asp-action="Delete" asp-route-entityId="@Model.Id"
-           asp-route-commentId="@comment.Id">
-            <input type="button" value="Delete" class="btn btn-info"
-                   style="margin-top:10px; background-color:#5ce500; border:none;" />
-        </a>
     }
 </section>
 <br>
@@ -89,3 +91,5 @@
 @section scripts {
     <script src="~/js/site.js"></script>
 }
+
+
