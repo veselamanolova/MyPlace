@@ -24,7 +24,8 @@ namespace MyPlace.Controllers
             _cache = cache;
             _catalogService = catalogContex;
         }
-            
+
+        public IActionResult Demo() => View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() =>
