@@ -55,9 +55,7 @@ namespace MyPlace.Controllers
 
         public async Task<JsonResult> GetAll()
         {
-            IEnumerable<string> cacheEntry;
-
-            if (!_cache.TryGetValue("AutocompleteValues", out cacheEntry))
+            if (!_cache.TryGetValue("AutocompleteValues", out IEnumerable<string> cacheEntry))
             {
                 cacheEntry = await _catalogService.AutocompleteGetAll();
 

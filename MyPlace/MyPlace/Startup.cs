@@ -2,7 +2,6 @@
 namespace MyPlace
 {
     using System;
-    using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Hosting;
@@ -17,11 +16,9 @@ namespace MyPlace
     using MyPlace.DataModels;
     using MyPlace.Infrastructure;
     using MyPlace.Data.Repositories;
-    using MyPlace.Services.DTOs;    
-    using MyPlace.Areas.Notes.Models;
-    
-    using AutoMapper;
     using MyPlace.Services.Contracts;
+    using MyPlace.Infrastructure.Contracts;
+    using AutoMapper;
 
     public class Startup
     {
@@ -69,6 +66,9 @@ namespace MyPlace
 
             // Add services
             services.AddScoped<ICatalogService, CatalogService>();
+            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<ISeeder, Seeder>();
+
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<INotesRepository, NotesRepository>();
             services.AddScoped<IUserEntitiesService, UserEntitiesService>();
@@ -128,7 +128,7 @@ namespace MyPlace
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, ISeeder seeder)
         {
             if (env.IsDevelopment())
             {
@@ -141,7 +141,7 @@ namespace MyPlace
                 app.UseHsts();
             }
 
-            RoleSeeder.Seed(serviceProvider);
+            seeder.SeedRoleAndAdmin(serviceProvider);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

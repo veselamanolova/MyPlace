@@ -3,14 +3,22 @@ namespace MyPlace.Infrastructure
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using MyPlace.Data;
+    using MyPlace.DataModels;
+    using MyPlace.Infrastructure.Contracts;
 
-    public static class RoleSeeder
+    public class Seeder : ISeeder
     {
-        public static void Seed(IServiceProvider serviceProvider)
+        private readonly SignInManager<User> _signIn;
+
+        public Seeder(SignInManager<User> signIn) =>
+            _signIn = signIn;
+
+        public void SeedRoleAndAdmin(IServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetService<ApplicationDbContext>();
 
@@ -25,6 +33,14 @@ namespace MyPlace.Infrastructure
                     roleStore.CreateAsync(new IdentityRole(role));
                     context.SaveChangesAsync();
                 }
+            }
+
+            if (!context.Users.Any(user => user.UserName == "admin"))
+            {
+                var admin = new User { UserName = "admin" };
+                _signIn.UserManager.CreateAsync(admin, "admin123");
+                _signIn.UserManager.AddToRoleAsync(admin, "Administrator");
+                context.SaveChangesAsync();
             }
         }
     }
