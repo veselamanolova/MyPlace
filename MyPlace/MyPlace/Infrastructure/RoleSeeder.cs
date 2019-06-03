@@ -24,7 +24,7 @@ namespace MyPlace.Infrastructure
                 {
                     roleStore.CreateAsync(new IdentityRole(role));
                     context.SaveChangesAsync();
-                }
+                }               
             }
         }
     }
