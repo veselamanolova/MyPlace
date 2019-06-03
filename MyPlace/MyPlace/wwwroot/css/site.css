@@ -498,7 +498,7 @@ html body .comments {
     }
 
 .form-control, .form-group .form-control input:focus, .form-control, .form-group .form-control textarea:focus {
-    border: 1px solid #5ce500 !important;
+    border: 1px solid #ffc107 !important;
     border-radius: 25px;
 }
 
