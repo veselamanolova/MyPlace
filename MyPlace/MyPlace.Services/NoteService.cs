@@ -36,6 +36,27 @@ namespace MyPlace.Services
             return await _repository.AddAsync(newNote);
         }
 
+        public async Task EditAsync(int noteId, string text, int categoryId, bool isCompleted, bool hasStatus)
+        {
+            var editableNote = await _repository.GetByIdAsync(noteId);
+            editableNote.Text = text;
+            editableNote.CategoryId = categoryId;
+            editableNote.IsCompleted = isCompleted;
+            editableNote.HasStatus = hasStatus;
+            await _repository.EditAsync(editableNote); 
+        }
+
+        public async Task DeleteAsync(int noteId)
+        {
+            await _repository.DeleteAsync(noteId);
+        }
+
+        public async Task<NoteDTO> GetByIdAsync(int noteId)
+        {
+            var note = await _repository.GetByIdAsync(noteId); 
+            return ConvertToNoteDTO(note); 
+        }
+
 
         public async Task<List<UserEntityDTO>> GetAllUserEntitiesAsync(string userId) =>
             (await _repository.GetAllUserEntitiesAsync(userId))
@@ -48,19 +69,27 @@ namespace MyPlace.Services
                 .ToList();
 
 
-        public async Task<List<NoteDTO>> SearchAsync(
-            int entityId, string searchedString, int? categoryId, DateTime? exactDate, DateTime? startDate, DateTime? endDate)
+        public async Task<List<NoteDTO>> SearchAsync(int entityId, string searchedString, int? categoryId,
+            DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator)
         {
+            
+            if (fromDate != null && toDate != null)
+            {
+                if (fromDate > toDate)
+                {
+                    throw new ArgumentException("From date should be greater than to date."); 
+                }
+            }
 
-            var result = (await _repository.SearchAsync(entityId, searchedString, categoryId, exactDate, startDate, endDate))
+            var result = (await _repository.SearchAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator))
                .OrderByDescending(note => note.Date)
                .Select(note => ConvertToNoteDTO(note))
                .ToList();
             return result;
-        }
+        }       
 
         private static NoteDTO ConvertToNoteDTO(Note note)
-        {
+        {            
             return new NoteDTO
             {
                 Id = note.Id,
@@ -68,6 +97,7 @@ namespace MyPlace.Services
                 Text = note.Text,
                 Date = note.Date,
                 IsCompleted = note.IsCompleted,
+                HasStatus = note.HasStatus,
                 NoteUser = new NoteUserDTO
                 {
                     Id = note.User.Id,
@@ -79,6 +109,6 @@ namespace MyPlace.Services
                     Name = note.Category.Name
                 }
             };
-        }
+        }        
     }
 }

@@ -215,6 +215,8 @@ namespace MyPlace.Data.Migrations
 
                     b.Property<string>("UserId");
 
+                    b.Property<bool?>("hasStatus");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");

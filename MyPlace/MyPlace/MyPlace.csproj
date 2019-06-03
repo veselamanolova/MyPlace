@@ -7,6 +7,17 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Areas\Administrator\Data\**" />
+    <Compile Remove="Areas\Moderator\Data\**" />
+    <Content Remove="Areas\Administrator\Data\**" />
+    <Content Remove="Areas\Moderator\Data\**" />
+    <EmbeddedResource Remove="Areas\Administrator\Data\**" />
+    <EmbeddedResource Remove="Areas\Moderator\Data\**" />
+    <None Remove="Areas\Administrator\Data\**" />
+    <None Remove="Areas\Moderator\Data\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.1.0" />
@@ -28,6 +39,8 @@
   <ItemGroup>
     <Folder Include="Areas\Manager\Models\" />
     <Folder Include="Areas\Moderator\Models\" />
+    <Folder Include="Areas\Notes\Controllers\" />
+    <Folder Include="wwwroot\images\notes\" />
   </ItemGroup>
 
 </Project>

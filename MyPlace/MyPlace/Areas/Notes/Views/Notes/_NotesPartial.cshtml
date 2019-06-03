@@ -1,11 +1,26 @@
 ﻿@model MyPlace.Areas.Notes.Models.NoteViewModel
 
-<tr>
+@{
+    var noteId = "noteId" + @Model.Id;
+}
+<tr id="@noteId">
     <td><input type="hidden" asp-for="@Model.Id" /></td>
     <td>@Model.Text</td>
     <td>@Model.Date</td>
     <td>@Model.NoteUser.Name</td>
-    <td><input type="checkbox" asp-for="@Model.IsCompleted" /></td>
+    <td>
+        @if (@Model.HasStatus)
+        {
+            if (Model.IsCompleted)
+            {
+                <img src="~/images/notes/completed.svg" style="height: 2rem" alt="Completed" />
+            }
+            else
+            {
+                <img src="~/images/notes/in-progress.png" style="height: 2rem" alt="Completed" />
+            }
+        }
+    </td>
     @if (@Model.Category == null || @Model.Category.Name == null)
     {
         <td></td>
@@ -17,7 +32,35 @@
     @if (Model.NoteUser.Id == Model.CurrentUserId)
     {
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Edit", "EditNote", "Notes", new { noteId = @Model.Id })
         </td>
-    }
-</tr>
+        <td>
+            <container>
+                @*@Html.ActionLink("Delete", "DeleteNote", "Notes", new { noteId = @Model.Id, entityId = @Model.EntityId })*@
+                <!-- Button trigger modal -->                
+                <a href="#" data-toggle="modal" data-target="#confirmDeleteModal">Delete</a>
+                <!-- Modal -->
+                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmDeleteModalLabel">Delete this note?</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
+                                <form asp-action="DeleteNote" method="post">
+                                    <input type="hidden" asp-for="@Model.Id" />
+                                    <input type="hidden" asp-for="@Model.EntityId" />
+                                     <input type="submit" value="Delete" class="btn btn-primary"/>                                 
+                                </form>
+                            </div>
+                                </div>
+                            </div>
+                        </div>
+                    </container>
+                </td>
+            }
+        </tr>

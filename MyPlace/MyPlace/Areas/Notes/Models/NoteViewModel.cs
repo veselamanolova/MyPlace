@@ -19,6 +19,8 @@
 
         public bool IsCompleted { get; set; }
 
+        public bool HasStatus { get; set; }
+
         public DateTime Date { get; set; }
 
         public string CurrentUserId { get; set; }

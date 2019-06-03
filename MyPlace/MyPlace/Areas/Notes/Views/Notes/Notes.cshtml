@@ -15,12 +15,29 @@
 </ul>
 <div class="tab-content clearfix">
     <div class="tab-pane active">
-        <p>
-            <partial name="_AddNotePartial" model="Model.AddNote" />
-        </p>
-        <p>
-            <partial name="_SearchNotesPartial" model="Model.SearchNotes" />
-        </p>        
+        <div id="accordion">
+            <div>
+                <div class="card-header" id="headingAddNote">
+                    <h5 class="mb-0 collapsible-header" data-toggle="collapse" data-target="#collapseAddNote" aria-expanded="true" aria-controls="collapseAddNote">
+                        <button class="btn btn-link">Add Note</button>
+                    </h5>
+                </div>
+                <div id="collapseAddNote" class="collapse show collapsible-panel" aria-labelledby="headingAddNote" data-parent="#accordion">
+                    <partial name="_AddNotePartial" model="Model.AddNote" />
+                </div>
+            </div>
+
+            <div>
+                <div class="card-header" id="headingSearch">
+                    <h5 class="mb-0 collapsible-header collapsed" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+                        <button class="btn btn-link">Search</button>
+                    </h5>
+                </div>
+                <div id="collapseSearch" class="collapse collapsible-panel" aria-labelledby="headingSearch" data-parent="#accordion">
+                    <partial name="_SearchNotesPartial" model="Model.SearchNotes" />
+                </div>
+            </div>
+        </div>
         <table class="table">
             <thead>
                 <tr>

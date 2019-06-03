@@ -4,7 +4,6 @@
     <form asp-action="SearchNote" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
-
             <div class="form-group">
                 <input type="hidden" asp-for="@Model.EntityId" class="form-control" />
                 @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
@@ -24,13 +23,28 @@
                     </select>
                 </div>
             </div>
-            @*<div class="col-md-3">
+            <div class="col-md-3">
                 <div class="form-group">
-                  <input type="text" value=@Model.ExactDate name="Date" id="Date" class="datepicker hasDatepicker form-control" />
-                    <input type="datetime" value="@Model.ExactDate" class="datepicker form-control" />
-                    <span asp-validation-for="@Model.ExactDate" class="text-danger"></span>
+                    <input type="date" asp-for="@Model.ExactDate" class="datepicker form-control" />
                 </div>
-            </div>*@
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <input type="date" asp-for="@Model.FromDate" class="datepicker form-control" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <input type="date" asp-for="@Model.ToDate" class="datepicker form-control" />
+                    @*<span asp-validation-for="@Model.ToDate" class="text-danger"></span>*@
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <input asp-for="@Model.Creator " class="form-control" placeholder="Search by Creator" />
+                    @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
+                </div>
+            </div>
             <div>
                 <div class="col-md-4">
                     <div class="form-group">
@@ -38,14 +52,22 @@
                     </div>
                 </div>
             </div>
+        </div>
     </form>
 </div>
 
 @section Scripts {
     @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
-    $(document).off('.datepicker.data-api');
-    $('.datepicker').datepicker({
-    startDate: '-3d'
-    });*@
+        $(document).off('.datepicker.data-api');
+        $('.datepicker').datepicker({
+        startDate: '-3d'
+        });*@
+
+    $(function() {
+        $('#datepicker').val('<%= DateTime.Now.ToString("yyyy-MM-dd") %>');
+        $('#datepicker').datepicker({
+        dateFormat: 'yyyy-MM-dd'
+        });
+      });
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

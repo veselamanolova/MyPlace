@@ -10,8 +10,8 @@ using MyPlace.Data;
 namespace MyPlace.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190531150402_Initial")]
-    partial class Initial
+    [Migration("20190601053522_hasStatusInNote")]
+    partial class hasStatusInNote
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -216,6 +216,8 @@ namespace MyPlace.Data.Migrations
                     b.Property<string>("Text");
 
                     b.Property<string>("UserId");
+
+                    b.Property<bool?>("hasStatus");
 
                     b.HasKey("Id");
 

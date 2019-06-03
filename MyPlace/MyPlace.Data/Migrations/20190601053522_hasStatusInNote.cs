@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyPlace.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class hasStatusInNote : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -240,7 +240,8 @@ namespace MyPlace.Data.Migrations
                     Text = table.Column<string>(nullable: true),
                     CategoryId = table.Column<int>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
-                    IsCompleted = table.Column<bool>(nullable: false)
+                    IsCompleted = table.Column<bool>(nullable: false),
+                    hasStatus = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
                 {
