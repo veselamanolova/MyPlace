@@ -44,7 +44,7 @@ namespace MyPlace.Controllers
                     .Where(filter =>
                         filter.Title.ToLower().Contains(searchString.ToLower()));
 
-            int pageSize = 1;
+            int pageSize = 5;
             return View(await PaginatedList<CatalogListingModel>.CreateAsync(establishments, pageNumber ?? 1, pageSize));
         }
 

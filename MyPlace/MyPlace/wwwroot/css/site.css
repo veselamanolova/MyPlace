@@ -15,7 +15,7 @@ a.navbar-brand {
 
 p {
     margin-top: 15px;
-    color: #5ce500;
+    color: #FFC107;
 }
 
 h6 {
@@ -483,7 +483,7 @@ html body .comments {
     margin: 8px 0 9px !important;
 }
     .contact-form input:focus, .contact-form textarea:focus {
-        border: 1px solid #5ce500 !important;
+        border: 1px solid;
         border-radius: 7px;
     }
      
@@ -498,7 +498,7 @@ html body .comments {
     }
 
 .form-control, .form-group .form-control input:focus, .form-control, .form-group .form-control textarea:focus {
-    border: 1px solid #5ce500 !important;
+    border: 1px solid;
     border-radius: 25px;
 }
 
