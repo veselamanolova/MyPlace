@@ -32,6 +32,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MyPlace.DataModels\MyPlace.DataModels.csproj" />
     <ProjectReference Include="..\MyPlace.Data\MyPlace.Data.csproj" />
+    <ProjectReference Include="..\MyPlace.Infrastructure\MyPlace.Infrastructure.csproj" />
     <ProjectReference Include="..\MyPlace.Services\MyPlace.Services.csproj" />
   </ItemGroup>
 
