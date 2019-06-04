@@ -32,7 +32,7 @@ namespace MyPlace.Areas.Notes.Controllers
         [HttpGet("Notes")] 
         public async Task<IActionResult> Notes(int? entityId, string searchedStringInText,
             int? categoryId, string exactDate,
-            string fromDate, string toDate, string creator)
+            string fromDate, string toDate, string creator, int? pageNumber)
         {
 
             string userId = GetLoggedUserId();
@@ -43,13 +43,19 @@ namespace MyPlace.Areas.Notes.Controllers
             var selectedEntityId = entityId ?? entities[0].EntityId;
 
 
-            List<CategoryViewModel> entityCategories = await GetEntityCategoriesAsync(selectedEntityId);
-
-            int? skip = 3;
-            int? take = 3; 
+            List<CategoryViewModel> entityCategories = await GetEntityCategoriesAsync(selectedEntityId);         
+            
+          
+            int pageSize = 3;
+            int pageIndex = pageNumber ?? 1; 
+            int? skip = (pageIndex-1) * (pageSize); //0leva stranica, 1 -va str. 1*3, 2*3
+            int? take = pageSize; 
+            
 
             var notesSearchResult = await _notesService.SearchAsync(selectedEntityId, searchedStringInText,
-                categoryId, ParseNullableDate(exactDate), ParseNullableDate(fromDate), ParseNullableDate(toDate), creator, skip, take);
+                categoryId, ParseNullableDate(exactDate), ParseNullableDate(fromDate), 
+                ParseNullableDate(toDate), creator, 
+                skip, pageSize);
 
             var notes = notesSearchResult.Notes;
             var notesCount = notesSearchResult.NotesCount; 
@@ -68,14 +74,16 @@ namespace MyPlace.Areas.Notes.Controllers
                 },
                 EntityCategories = entityCategories,
             };
-            
+           
             NotesViewModel vm = new NotesViewModel()
             {
                 UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
                 SelectedEntityId = selectedEntityId,
                 // Notes = //_mapper.Map<List<NoteDTO>, List<NoteViewModel>>(notes),
                 //use PaginatedList instead of NotesList for Notes
-                Notes = notes.Select(x => ConvertNoteDtoToNoteViewModel(x, userId)).ToList(),
+                Notes = new PaginatedList<NoteViewModel>(
+                    notes.Select(x => ConvertNoteDtoToNoteViewModel(x, userId)).ToList(),
+                    notesCount, pageIndex, pageSize),
                 AddNote = addNoteVm,
                 SearchNotes = new SearchNotesViewModel
                 {

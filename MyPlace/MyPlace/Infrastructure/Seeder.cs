@@ -8,10 +8,9 @@ namespace MyPlace.Infrastructure
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using MyPlace.Data;
-    using MyPlace.DataModels;
-    using MyPlace.Infrastructure.Contracts;
+    using MyPlace.DataModels;    
 
-    public class Seeder : ISeeder
+    public class Seeder
     {
         private readonly SignInManager<User> _signIn;
 

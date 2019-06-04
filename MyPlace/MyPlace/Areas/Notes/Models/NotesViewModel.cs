@@ -10,7 +10,9 @@
 
         public string UserId { get; set; }
 
-        public List<NoteViewModel> Notes{ get; set; }
+        public PaginatedList<NoteViewModel> Notes { get; set; }
+
+        //public List<NoteViewModel> Notes{ get; set; }
 
         public AddNoteViewModel AddNote { get; set;  }
 

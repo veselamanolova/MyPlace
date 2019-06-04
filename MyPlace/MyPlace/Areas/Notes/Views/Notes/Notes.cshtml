@@ -59,6 +59,24 @@
     </div>
 </div>
 
+@{
+    var prevDisabled = !Model.Notes.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Notes.HasNextPage ? "disabled" : "";
+}
+
+<a asp-area="Notes" asp-action="Notes"
+   asp-route-pageNumber="@(Model.Notes.PageIndex - 1)"
+   @*asp-route-currentFilter="@ViewData[" CurrentFilter"]"*@
+   class="btn @prevDisabled">
+    <strong>Previous</strong>
+</a>
+<a  asp-area="Notes" asp-action="Notes"
+   asp-route-pageNumber="@(Model.Notes.PageIndex + 1)"
+   @*asp-route-currentFilter="@ViewData[" CurrentFilter"]"*@
+   class="btn @nextDisabled">
+    Next
+</a>
+
 @section Styles
     {
     <link rel="stylesheet" href="~/css/notes.css" />
