@@ -20,6 +20,9 @@ namespace MyPlace.Data
         public DbSet<UserEntity> UsersEntities { get; set; }
         public DbSet<Note> Notes { get; set; }
 
+        // For Profanity filter
+        public DbSet<ForbiddenWord> ForbiddenWords { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

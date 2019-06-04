@@ -50,6 +50,9 @@ namespace MyPlace.Services
 
         public async Task<IEnumerable<string>> AutocompleteGetAll() => 
             await _context.Entities.Select(entity => entity.Title).ToListAsync();
+
+        public async Task<IEnumerable<string>> GetForbiddenWords() =>
+            await _context.ForbiddenWords.Select(word => word.Word).ToListAsync();
     }
 }
 

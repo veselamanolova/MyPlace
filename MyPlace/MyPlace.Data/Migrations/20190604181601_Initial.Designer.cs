@@ -10,8 +10,8 @@ using MyPlace.Data;
 namespace MyPlace.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190601053522_hasStatusInNote")]
-    partial class hasStatusInNote
+    [Migration("20190604181601_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -199,6 +199,19 @@ namespace MyPlace.Data.Migrations
                     b.ToTable("EntityCategories");
                 });
 
+            modelBuilder.Entity("MyPlace.DataModels.ForbiddenWord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Word");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ForbiddenWords");
+                });
+
             modelBuilder.Entity("MyPlace.DataModels.Note", b =>
                 {
                     b.Property<int>("Id")
@@ -211,13 +224,13 @@ namespace MyPlace.Data.Migrations
 
                     b.Property<int>("EntityId");
 
+                    b.Property<bool>("HasStatus");
+
                     b.Property<bool>("IsCompleted");
 
                     b.Property<string>("Text");
 
                     b.Property<string>("UserId");
-
-                    b.Property<bool?>("hasStatus");
 
                     b.HasKey("Id");
 

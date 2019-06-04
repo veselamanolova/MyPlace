@@ -14,6 +14,8 @@ namespace MyPlace.Services.Contracts
         Task CreateReplyAsync(int Id, string user, string text);
 
         Task<IEnumerable<string>> AutocompleteGetAll();
+
+        Task<IEnumerable<string>> GetForbiddenWords();
     }
 }
 
