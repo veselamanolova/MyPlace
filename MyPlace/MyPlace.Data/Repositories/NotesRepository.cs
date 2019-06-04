@@ -57,12 +57,34 @@ namespace MyPlace.Data.Repositories
 
         public async Task<List<Note>> SearchAsync(int entityId, string searchedString,
             int? categoryId, DateTime? exactDate,
-            DateTime? fromDate, DateTime? toDate, string creator)
+            DateTime? fromDate, DateTime? toDate, string creator, int? skip, int? take)
+        {
+            IQueryable<Note> query = GenerateSearchQuery(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator);           
+
+            if (skip != null && skip > 0)
+                query = query.Skip<Note>((int)skip);
+
+            if (take != null && take > 0)
+                query = query.Take<Note>((int)take);
+
+            return await query.ToListAsync();
+        }     
+
+        public async Task<int> CountAsync(int entityId, string searchedString,
+          int? categoryId, DateTime? exactDate,
+          DateTime? fromDate, DateTime? toDate, string creator)
+        {
+            IQueryable<Note> query = GenerateSearchQuery(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator);
+            return await query.CountAsync(); 
+        }
+
+        private IQueryable<Note> GenerateSearchQuery(int entityId, string searchedString, int? categoryId, DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator)
         {
             var query = _context.Notes.Where(note => note.EntityId == entityId)
                 .Include(note => note.User)
                 .Include(note => note.Category)
                 .AsQueryable();
+
             if (!string.IsNullOrWhiteSpace(searchedString))
                 query = query.Where(note => note.Text.Contains(searchedString));
 
@@ -70,10 +92,15 @@ namespace MyPlace.Data.Repositories
                 query = query.Where(note => note.CategoryId == categoryId);
 
             if (!string.IsNullOrWhiteSpace(creator))
-            {
                 query = query.Where(note => note.User.UserName.Contains(creator));
-            }
 
+            query = FilterByDates(exactDate, fromDate, toDate, query);
+            return query;
+        }
+
+
+        private static IQueryable<Note> FilterByDates(DateTime? exactDate, DateTime? fromDate, DateTime? toDate, IQueryable<Note> query)
+        {
             if (exactDate != null)
             {
                 query = query.Where(note => note.Date >=
@@ -97,16 +124,16 @@ namespace MyPlace.Data.Repositories
                             Where(note => note.Date >= ((DateTime)fromDate).Date);
                     }
                 }
-                else 
+                else
                 {
-                    if(toDate != null && fromDate == null)
-                    query = query.
-                            Where(note => note.Date <= ((DateTime)toDate).Date.AddMinutes(60 * 24));
+                    if (toDate != null && fromDate == null)
+                        query = query.
+                                Where(note => note.Date <= ((DateTime)toDate).Date.AddMinutes(60 * 24));
                 }
-            }            
+            }
 
-            return await query.ToListAsync();
-        }        
+            return query;
+        }
     }
 }
 

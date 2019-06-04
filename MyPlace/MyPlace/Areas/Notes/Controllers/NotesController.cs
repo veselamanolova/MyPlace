@@ -45,8 +45,14 @@ namespace MyPlace.Areas.Notes.Controllers
 
             List<CategoryViewModel> entityCategories = await GetEntityCategoriesAsync(selectedEntityId);
 
-            var notes = await _notesService.SearchAsync(selectedEntityId, searchedStringInText,
-                categoryId, ParseNullableDate(exactDate), ParseNullableDate(fromDate), ParseNullableDate(toDate), creator);
+            int? skip = 3;
+            int? take = 3; 
+
+            var notesSearchResult = await _notesService.SearchAsync(selectedEntityId, searchedStringInText,
+                categoryId, ParseNullableDate(exactDate), ParseNullableDate(fromDate), ParseNullableDate(toDate), creator, skip, take);
+
+            var notes = notesSearchResult.Notes;
+            var notesCount = notesSearchResult.NotesCount; 
 
 
             AddNoteViewModel addNoteVm = new AddNoteViewModel()
@@ -61,7 +67,6 @@ namespace MyPlace.Areas.Notes.Controllers
                     }
                 },
                 EntityCategories = entityCategories,
-
             };
             
             NotesViewModel vm = new NotesViewModel()
@@ -79,6 +84,8 @@ namespace MyPlace.Areas.Notes.Controllers
             };
             return View(vm);
         }
+
+
 
         private async Task<List<CategoryViewModel>> GetEntityCategoriesAsync(int entityId)
         {

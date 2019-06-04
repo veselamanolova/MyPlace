@@ -19,6 +19,10 @@
 
         Task<List<Note>> SearchAsync(int entityId, string searchedString, 
             int? categoryId, DateTime? exactDate,
-            DateTime? startDate, DateTime? endDate, string creator);
+            DateTime? startDate, DateTime? endDate, string creator, int? skip, int? take);
+
+        Task<int> CountAsync(int entityId, string searchedString,
+          int? categoryId, DateTime? exactDate,
+          DateTime? fromDate, DateTime? toDate, string creator); 
     }
 }
