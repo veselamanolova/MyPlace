@@ -12,6 +12,14 @@ window.onload = function () {
         document.getElementById("messagesList").appendChild(li);
     });
 
+    connection.on("OffensiveComment", function (message) {
+        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var li = document.createElement("h6");
+        li.style.color = 'red'
+        li.textContent = msg;
+        document.getElementById("messagesList").appendChild(li);
+    });
+
     connection.start().then(function () {
         document.getElementById("sendButton").disabled = false;
     }).catch(function (err) {
