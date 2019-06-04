@@ -14,10 +14,9 @@ namespace MyPlace
     using MyPlace.Data;
     using MyPlace.Services;
     using MyPlace.DataModels;
-    using MyPlace.Infrastructure;
     using MyPlace.Data.Repositories;
     using MyPlace.Services.Contracts;
-    using MyPlace.Infrastructure.Contracts;
+    using MyPlace.Infrastructure.Extensions;
     using AutoMapper;
 
     public class Startup
@@ -67,7 +66,7 @@ namespace MyPlace
             // Add services
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<IAdminService, AdminService>();
-            services.AddScoped<ISeeder, Seeder>();
+
 
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<INotesRepository, NotesRepository>();
@@ -128,7 +127,7 @@ namespace MyPlace
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, ISeeder seeder)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -141,12 +140,12 @@ namespace MyPlace
                 app.UseHsts();
             }
 
-            seeder.SeedRoleAndAdmin(serviceProvider);
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+
+            app.SeedRolesAndAdmin();
 
             app.UseSignalR(routes =>
             {
