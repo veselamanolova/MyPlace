@@ -197,6 +197,19 @@ namespace MyPlace.Data.Migrations
                     b.ToTable("EntityCategories");
                 });
 
+            modelBuilder.Entity("MyPlace.DataModels.ForbiddenWord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Word");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ForbiddenWords");
+                });
+
             modelBuilder.Entity("MyPlace.DataModels.Note", b =>
                 {
                     b.Property<int>("Id")

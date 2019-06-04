@@ -42,7 +42,7 @@ namespace MyPlace
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-
+         
             // Configuring user Identity
             services.AddIdentity<User, IdentityRole>(options =>
             {
@@ -145,7 +145,8 @@ namespace MyPlace
             app.UseCookiePolicy();
             app.UseAuthentication();
 
-            app.SeedRolesAndAdmin();
+            // Seed roles and Admin account in the first build
+            app.SeedRolesAndAdmin(); 
 
             app.UseSignalR(routes =>
             {

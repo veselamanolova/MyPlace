@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyPlace.Data.Migrations
 {
-    public partial class hasStatusInNote : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -74,6 +74,19 @@ namespace MyPlace.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Entities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ForbiddenWords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Word = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ForbiddenWords", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -241,7 +254,7 @@ namespace MyPlace.Data.Migrations
                     CategoryId = table.Column<int>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
                     IsCompleted = table.Column<bool>(nullable: false),
-                    hasStatus = table.Column<bool>(nullable: true)
+                    HasStatus = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -382,6 +395,9 @@ namespace MyPlace.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "EntityCategories");
+
+            migrationBuilder.DropTable(
+                name: "ForbiddenWords");
 
             migrationBuilder.DropTable(
                 name: "Notes");
