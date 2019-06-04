@@ -74,6 +74,7 @@ namespace MyPlace.Areas.Notes.Controllers
                 UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
                 SelectedEntityId = selectedEntityId,
                 // Notes = //_mapper.Map<List<NoteDTO>, List<NoteViewModel>>(notes),
+                //use PaginatedList instead of NotesList for Notes
                 Notes = notes.Select(x => ConvertNoteDtoToNoteViewModel(x, userId)).ToList(),
                 AddNote = addNoteVm,
                 SearchNotes = new SearchNotesViewModel
