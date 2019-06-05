@@ -48,7 +48,6 @@
   <ItemGroup>
     <Folder Include="Areas\Notes\Controllers\" />
     <Folder Include="wwwroot\images\notes\" />
-    <Folder Include="wwwroot\json\" />
   </ItemGroup>
 
 </Project>

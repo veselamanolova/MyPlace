@@ -51,7 +51,9 @@ namespace MyPlace
                 options.Password.RequireUppercase = false;
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
-            }).AddDefaultTokenProviders()
+            })  
+                .AddDefaultTokenProviders()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Configuring default paths

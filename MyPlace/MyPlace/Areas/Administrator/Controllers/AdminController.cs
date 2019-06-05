@@ -4,11 +4,14 @@ namespace MyPlace.Areas.Admin.Controllers
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Authorization;
+    using MyPlace.Common;
     using MyPlace.DataModels;
     using MyPlace.Models.Account;
     using MyPlace.Services.Contracts;
 
     [Area("Administrator")]
+    [Authorize(Roles = GlobalConstants.AdminRole)]
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;
@@ -36,10 +39,8 @@ namespace MyPlace.Areas.Admin.Controllers
                 if (irUser.Succeeded)
                 {
                     await _signIn.UserManager.AddToRoleAsync(user, model.Role);
-
                     return RedirectToAction("Login", "Account", new { area = "Identity" });
                 }
-
                 return View("Register");
             }
             return View(model);
