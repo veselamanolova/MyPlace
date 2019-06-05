@@ -1,8 +1,8 @@
 ﻿
-using System.ComponentModel.DataAnnotations;
-
 namespace MyPlace.Models.Account
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class LoginBindingModel
     {
         [Required]

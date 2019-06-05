@@ -9,13 +9,21 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Administrator\Data\**" />
+    <Compile Remove="Areas\Manager\Models\**" />
     <Compile Remove="Areas\Moderator\Data\**" />
+    <Compile Remove="Areas\Moderator\Models\**" />
     <Content Remove="Areas\Administrator\Data\**" />
+    <Content Remove="Areas\Manager\Models\**" />
     <Content Remove="Areas\Moderator\Data\**" />
+    <Content Remove="Areas\Moderator\Models\**" />
     <EmbeddedResource Remove="Areas\Administrator\Data\**" />
+    <EmbeddedResource Remove="Areas\Manager\Models\**" />
     <EmbeddedResource Remove="Areas\Moderator\Data\**" />
+    <EmbeddedResource Remove="Areas\Moderator\Models\**" />
     <None Remove="Areas\Administrator\Data\**" />
+    <None Remove="Areas\Manager\Models\**" />
     <None Remove="Areas\Moderator\Data\**" />
+    <None Remove="Areas\Moderator\Models\**" />
   </ItemGroup>
 
 
@@ -38,8 +46,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Areas\Manager\Models\" />
-    <Folder Include="Areas\Moderator\Models\" />
     <Folder Include="Areas\Notes\Controllers\" />
     <Folder Include="wwwroot\images\notes\" />
     <Folder Include="wwwroot\json\" />
