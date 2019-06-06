@@ -54,29 +54,86 @@ namespace MyPlace.Data.Repositories
                 .Include(ue => ue.Entity)
                 .ToListAsync();
 
+        public async Task<int> CountAsync(int entityId, string searchedString,
+        int? categoryId, DateTime? exactDate,
+        DateTime? fromDate, DateTime? toDate, string creator)
+        {
+            IQueryable<Note> query = GenerateSearchQuery(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator);
+            return await query.CountAsync();
+        }
+
 
         public async Task<List<Note>> SearchAsync(int entityId, string searchedString,
             int? categoryId, DateTime? exactDate,
-            DateTime? fromDate, DateTime? toDate, string creator, int? skip, int? take)
+            DateTime? fromDate, DateTime? toDate, string creator, 
+            string sortOption, bool sortIsAscending, int? skip, int? take)
         {
-            IQueryable<Note> query = GenerateSearchQuery(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator);           
+            IQueryable<Note> query = GenerateSearchQuery(entityId, searchedString,
+                categoryId, exactDate, fromDate, toDate, creator);
+            query = AddSortingToQuery(sortOption, sortIsAscending, query);
+            query = AddPagingToQuery(skip, take, query);
+            return await query.ToListAsync();
+        }
 
+        private static IQueryable<Note> AddPagingToQuery(int? skip, int? take, IQueryable<Note> query)
+        {
             if (skip != null && skip > 0)
                 query = query.Skip<Note>((int)skip);
 
             if (take != null && take > 0)
                 query = query.Take<Note>((int)take);
-
-            return await query.ToListAsync();
-        }     
-
-        public async Task<int> CountAsync(int entityId, string searchedString,
-          int? categoryId, DateTime? exactDate,
-          DateTime? fromDate, DateTime? toDate, string creator)
-        {
-            IQueryable<Note> query = GenerateSearchQuery(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator);
-            return await query.CountAsync(); 
+            return query;
         }
+
+        private static IQueryable<Note> AddSortingToQuery(string sortOption, bool sortIsAscending, IQueryable<Note> query)
+        {
+            if (!string.IsNullOrWhiteSpace(sortOption))
+            {
+
+                if (sortOption == "Text")
+                {
+                    query = sortIsAscending ?
+                        query.OrderBy(note => note.Text) :
+                        query.OrderByDescending(note => note.Text);
+                }
+                else if (sortOption == "Creator")
+                {
+                    query = sortIsAscending ?
+                        query.OrderBy(note => note.User.UserName) :
+                        query.OrderByDescending(note => note.User.UserName);
+                }
+                else if (sortOption == "Category")
+                {
+                    query = sortIsAscending ?
+                        query.OrderBy(note => note.Category.Name) :
+                        query.OrderByDescending(note => note.Category.Name);
+                }
+                else if (sortOption == "Category")
+                {
+                    query = sortIsAscending ?
+                        query.OrderBy(note => note.Category.Name) :
+                        query.OrderByDescending(note => note.Category.Name);
+                }
+                else if (sortOption == "Satus")
+                {
+                    query = sortIsAscending ?
+                        query.OrderBy(note => note.HasStatus).ThenByDescending(note => note.IsCompleted) :
+                        query.OrderByDescending(note => note.HasStatus).ThenByDescending(note => note.IsCompleted);
+                }
+                else if (sortOption == "Date")
+                {
+                    query = sortIsAscending ?
+                        query.OrderBy(note => note.Date) :
+                        query.OrderByDescending(note => note.Date);
+                }
+                else
+                {
+                    query = query.OrderByDescending(note => note.Date);
+                }
+            }
+
+            return query;
+        }      
 
         private IQueryable<Note> GenerateSearchQuery(int entityId, string searchedString, int? categoryId, DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator)
         {

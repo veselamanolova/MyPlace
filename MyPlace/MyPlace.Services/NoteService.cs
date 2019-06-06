@@ -70,7 +70,7 @@ namespace MyPlace.Services
 
 
         public async Task<NotesSearchResultDTO> SearchAsync(int entityId, string searchedString, int? categoryId,
-            DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator, int? skip, int? take)
+            DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator, string sortOption, bool sortIsAscending, int? skip, int? take)
         {
             
             if (fromDate != null && toDate != null)
@@ -84,8 +84,8 @@ namespace MyPlace.Services
             return new NotesSearchResultDTO
             {
                 NotesCount = await _repository.CountAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator),
-                Notes = (await _repository.SearchAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator, skip, take))
-               .OrderByDescending(note => note.Date)
+                Notes = (await _repository.SearchAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator, sortOption, sortIsAscending, skip, take))
+               //.OrderByDescending(note => note.Date)
                .Select(note => ConvertToNoteDTO(note))
                .ToList()
             }; 

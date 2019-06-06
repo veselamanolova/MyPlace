@@ -14,18 +14,27 @@
 
         public int? SearchCategoryId { get; set; }
 
-        public List<CategoryViewModel> EntityCategories { get; set; }
+        public List<CategoryViewModel> EntityCategories { get; set; }       
 
         public bool IsCompleted { get; set; }
-
         
-        //[Display(Name = "Date")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd'/'MM'/'yyyy}")]
-        //[DataType(DataType.Date)]
         public DateTime? ExactDate { get; set; }
 
         public DateTime? FromDate { get; set; }
 
         public DateTime? ToDate { get; set; }
+
+        public string SortOption { get; set; }
+
+        public bool SortIsAscending { get; set; }
+
+        public bool IsSearchActive
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(Creator)
+                    || !string.IsNullOrEmpty(SearchedStringInText); 
+            }
+        }
     }
 }

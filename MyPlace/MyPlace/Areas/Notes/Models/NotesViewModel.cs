@@ -17,5 +17,9 @@
         public AddNoteViewModel AddNote { get; set;  }
 
         public SearchNotesViewModel SearchNotes { get; set; }
+
+        public string PreviousPageLink { get; set; }
+
+        public string NextPageLink { get; set; }
     }
 }

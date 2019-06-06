@@ -20,6 +20,6 @@ namespace MyPlace.Services.Contracts
         Task<NotesSearchResultDTO> SearchAsync(int entityId, string searchedString,
             int? categoryId, DateTime? exactDate,
             DateTime? fromDate, DateTime? toDate,
-            string creator, int? skip, int? take);
+            string creator, string sortOption, bool sortIsAscending, int? skip, int? take);
     }
 }
