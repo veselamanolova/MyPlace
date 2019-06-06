@@ -49,9 +49,12 @@
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
 
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input asp-for="Role" class="input101" placeholder="Assign Role">
-                        <span asp-validation-for="Role"></span>
+                    <div>
+                        <select asp-for="Role" style="width:100%; background-color:#e6e6e6; height: 35px; border:none; border-radius: 10px; outline:0">
+                            <option value="@GlobalConstants.AdminRole">Admin</option>
+                            <option value="@GlobalConstants.ManagerRole">Manager</option>
+                            <option value="@GlobalConstants.ModeratorRole">Moderator</option>
+                        </select>
                     </div>
 
                     <div class="container-login100-form-btn">

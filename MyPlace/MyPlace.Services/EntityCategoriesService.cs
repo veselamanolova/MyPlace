@@ -10,7 +10,7 @@ namespace MyPlace.Services
     using AutoMapper;
     using System.Collections.Generic;
 
-    public class EntityCategoriesService: IEntityCategoriesService
+    public class EntityCategoriesService : IEntityCategoriesService
     {
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _context;
