@@ -5,6 +5,16 @@ namespace MyPlace.DataModels
 
     public class Entity
     {
+        public Entity() { }
+
+        public Entity(string title, string address, string description, string imageUrl)
+        {
+            Title = title;
+            Address = address;
+            Description = description;
+            ImageUrl = imageUrl;
+        }
+
         public int Id { get; set; }
 
         public string Title { get; set; }
@@ -15,12 +25,6 @@ namespace MyPlace.DataModels
 
         public string ImageUrl { get; set; }
 
-        public int? EstablishmentId { get; set; }
-
-        public Entity Establishment { get; set; }
-
-        public bool IsCommentable { get; set; }
-
         public ICollection<EntityCategory> EntityCategories { get; set; }
 
         public ICollection<UserEntity> UserEntities { get; set; }
@@ -28,7 +32,5 @@ namespace MyPlace.DataModels
         public ICollection<Note> Notes { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
-
-        
     }
 }
