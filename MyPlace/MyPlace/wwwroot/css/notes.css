@@ -32,3 +32,12 @@
 .collapsible-header.collapsed button {
     font-weight: normal;
 }
+
+.icon {
+    vertical-align: middle;
+    font-size: 1.4rem;
+}
+
+.status-icon {
+   height: 1.4rem;
+}

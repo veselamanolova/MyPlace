@@ -11,7 +11,7 @@ namespace MyPlace.Areas.Admin.Controllers
     using MyPlace.Services.Contracts;
 
     [Area("Administrator")]
-    [Authorize(Roles = GlobalConstants.AdminRole)]
+    //[Authorize(Roles = GlobalConstants.AdminRole)]
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;

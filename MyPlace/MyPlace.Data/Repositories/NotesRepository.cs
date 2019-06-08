@@ -1,21 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyPlace.DataModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace MyPlace.Data.Repositories
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Collections.Generic;
+    using Microsoft.EntityFrameworkCore;
+    using MyPlace.DataModels;
+
     public class NotesRepository : INotesRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public NotesRepository(ApplicationDbContext context)
-        {
+        public NotesRepository(ApplicationDbContext context) =>
             _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
+        
 
         public async Task<Note> AddAsync(Note newNote)
         {
@@ -89,7 +88,6 @@ namespace MyPlace.Data.Repositories
         {
             if (!string.IsNullOrWhiteSpace(sortOption))
             {
-
                 if (sortOption == "Text")
                 {
                     query = sortIsAscending ?
@@ -131,9 +129,9 @@ namespace MyPlace.Data.Repositories
                     query = query.OrderByDescending(note => note.Date);
                 }
             }
-
             return query;
         }      
+
 
         private IQueryable<Note> GenerateSearchQuery(int entityId, string searchedString, int? categoryId, DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator)
         {
@@ -188,7 +186,6 @@ namespace MyPlace.Data.Repositories
                                 Where(note => note.Date <= ((DateTime)toDate).Date.AddMinutes(60 * 24));
                 }
             }
-
             return query;
         }
     }
