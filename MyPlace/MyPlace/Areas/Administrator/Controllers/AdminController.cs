@@ -1,6 +1,7 @@
 ﻿
 namespace MyPlace.Areas.Admin.Controllers
 {
+    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
@@ -9,6 +10,7 @@ namespace MyPlace.Areas.Admin.Controllers
     using MyPlace.DataModels;
     using MyPlace.Models.Account;
     using MyPlace.Services.Contracts;
+    using MyPlace.Areas.Administrator.Models;
 
     [Area("Administrator")]
     [Authorize(Roles = GlobalConstants.AdminRole)]
@@ -23,12 +25,31 @@ namespace MyPlace.Areas.Admin.Controllers
             _adminService = adminService;
         }
 
+        public IActionResult Index() => View();
+
+
         [HttpGet]
-        public IActionResult Register() => View();
+        public IActionResult CreateEntity() => View();
+
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Register([FromForm]RegisterBindingModel model)
+        public async Task<IActionResult> CreateEntity(CreateEntityBindingModel model)
+        {
+            if (ModelState.IsValid)
+                await _adminService.CreateEntityAsync(model.Title, model.Address, model.Description, model.ImageUrl);
+
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult CreateUser() => View();
+
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> CreateUser([FromForm]RegisterBindingModel model)
         {
             if (ModelState.IsValid)
             {
@@ -46,10 +67,24 @@ namespace MyPlace.Areas.Admin.Controllers
             return View(model);
         }
 
+
+        public async Task<IActionResult> ChangePassword()
+        {
+            return View();
+        }
+
+
         public IActionResult Delete(int entityId, int commentId)
         {
             _adminService.Delete(entityId, commentId);
             return RedirectToAction("Establishment", "Catalog", new { area = "", id = entityId });
+        }
+
+
+        public async Task<JsonResult> CheckUsernameAvailability(string name)
+        {
+            var registeredUsers = await _adminService.RegisteredUsers();
+            return Json(registeredUsers.Contains(name));
         }
     }
 }
