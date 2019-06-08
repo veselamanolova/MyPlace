@@ -32,7 +32,7 @@ namespace MyPlace.Areas.Notes.Controllers
         [HttpGet("Notes")] 
         public async Task<IActionResult> Notes(int? entityId, string searchedStringInText,
             int? categoryId, string exactDate,
-            string fromDate, string toDate, string creator, int? pageNumber)
+            string fromDate, string toDate, string creator, string sortOption,bool sortIsAscending,  int? pageNumber)
         {
 
             string userId = GetLoggedUserId();
@@ -48,13 +48,13 @@ namespace MyPlace.Areas.Notes.Controllers
           
             int pageSize = 3;
             int pageIndex = pageNumber ?? 1; 
-            int? skip = (pageIndex-1) * (pageSize); //0leva stranica, 1 -va str. 1*3, 2*3
+            int? skip = (pageIndex-1) * (pageSize); 
             int? take = pageSize; 
             
 
             var notesSearchResult = await _notesService.SearchAsync(selectedEntityId, searchedStringInText,
                 categoryId, ParseNullableDate(exactDate), ParseNullableDate(fromDate), 
-                ParseNullableDate(toDate), creator, 
+                ParseNullableDate(toDate), creator, sortOption, sortIsAscending,
                 skip, pageSize);
 
             var notes = notesSearchResult.Notes;
@@ -74,13 +74,41 @@ namespace MyPlace.Areas.Notes.Controllers
                 },
                 EntityCategories = entityCategories,
             };
-           
+
+            var previousPageLink = Url.Action(nameof(Notes), "Notes", new
+            {
+                entityId,
+                searchedStringInText,
+                categoryId,
+                exactDate,
+                fromDate,
+                toDate,
+                creator,
+                sortOption,
+                sortIsAscending,
+                pageNumber = (pageNumber ?? 1) - 1
+            });
+
+
+            var nextPageLink = Url.Action(nameof(Notes), "Notes", new
+            {
+                entityId,
+                searchedStringInText,
+                categoryId,
+                exactDate,
+                fromDate,
+                toDate,
+                creator,
+                sortOption,
+                sortIsAscending,
+                pageNumber = (pageNumber ?? 1) + 1
+            });
+
             NotesViewModel vm = new NotesViewModel()
             {
                 UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
                 SelectedEntityId = selectedEntityId,
                 // Notes = //_mapper.Map<List<NoteDTO>, List<NoteViewModel>>(notes),
-                //use PaginatedList instead of NotesList for Notes
                 Notes = new PaginatedList<NoteViewModel>(
                     notes.Select(x => ConvertNoteDtoToNoteViewModel(x, userId)).ToList(),
                     notesCount, pageIndex, pageSize),
@@ -88,10 +116,20 @@ namespace MyPlace.Areas.Notes.Controllers
                 SearchNotes = new SearchNotesViewModel
                 {
                     EntityId = selectedEntityId,
-                    EntityCategories = entityCategories
-                }
+                    EntityCategories = entityCategories,
+                    Creator = creator,
+                    SearchedStringInText = searchedStringInText,
+                    SearchCategoryId = categoryId,
+                    ExactDate = ParseNullableDate(exactDate), 
+                    FromDate = ParseNullableDate(fromDate),
+                    ToDate = ParseNullableDate(toDate),                    
+                    SortOption = sortOption, 
+                    SortIsAscending = sortIsAscending
+                },
+                PreviousPageLink = previousPageLink,
+                NextPageLink = nextPageLink
             };
-            return View(vm);
+            return View(vm);            
         }
 
 
@@ -239,7 +277,10 @@ namespace MyPlace.Areas.Notes.Controllers
                     exactDate = model.ExactDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
                     fromDate = model.FromDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
                     toDate = model.ToDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                    creator = model.Creator
+                    creator = model.Creator,
+                    sortOption = model.SortOption,
+                    sortIsAscending = model.SortIsAscending
+
                 });
             }
             catch (ArgumentException ex)

@@ -1,5 +1,6 @@
 ﻿
 @model MyPlace.Areas.Notes.Models.NotesViewModel
+
 <ul class="nav nav-tabs">
     @foreach (var entity in Model.UserEntites)
     {
@@ -13,27 +14,43 @@
         </li>
     }
 </ul>
+@{ 
+    string searchPanelClass = "";
+    string addPanelClass = "";
+    string searchHeaderClass = "";
+    string addHeaderClass = "";
+    if (Model.SearchNotes.IsSearchActive)
+    {
+        searchPanelClass += "show";
+        addHeaderClass += "collapsed";
+    }
+    else
+    {
+        addPanelClass += "show";
+        searchHeaderClass += "collapsed";
+    }
+}
 <div class="tab-content clearfix">
     <div class="tab-pane active">
         <div id="accordion">
             <div>
                 <div class="card-header" id="headingAddNote">
-                    <h5 class="mb-0 collapsible-header" data-toggle="collapse" data-target="#collapseAddNote" aria-expanded="true" aria-controls="collapseAddNote">
+                    <h5 class="mb-0 collapsible-header @addHeaderClass" data-toggle="collapse" data-target="#collapseAddNote" aria-expanded="true" aria-controls="collapseAddNote">
                         <button class="btn btn-link">Add Note</button>
                     </h5>
                 </div>
-                <div id="collapseAddNote" class="collapse show collapsible-panel" aria-labelledby="headingAddNote" data-parent="#accordion">
+                <div id="collapseAddNote" class="collapse collapsible-panel @addPanelClass" aria-labelledby="headingAddNote" data-parent="#accordion">
                     <partial name="_AddNotePartial" model="Model.AddNote" />
                 </div>
             </div>
 
             <div>
                 <div class="card-header" id="headingSearch">
-                    <h5 class="mb-0 collapsible-header collapsed" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+                    <h5 class="mb-0 collapsible-header @searchHeaderClass" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
                         <button class="btn btn-link">Search</button>
                     </h5>
                 </div>
-                <div id="collapseSearch" class="collapse collapsible-panel" aria-labelledby="headingSearch" data-parent="#accordion">
+                <div id="collapseSearch" class="collapse collapsible-panel @searchPanelClass" aria-labelledby="headingSearch" data-parent="#accordion">
                     <partial name="_SearchNotesPartial" model="Model.SearchNotes" />
                 </div>
             </div>
@@ -64,17 +81,12 @@
     var nextDisabled = !Model.Notes.HasNextPage ? "disabled" : "";
 }
 
-<a asp-area="Notes" asp-action="Notes"
-   asp-route-pageNumber="@(Model.Notes.PageIndex - 1)"
-   @*asp-route-currentFilter="@ViewData[" CurrentFilter"]"*@
-   class="btn @prevDisabled">
+<a href="@Model.PreviousPageLink"   class="btn @prevDisabled">
     <strong>Previous</strong>
 </a>
-<a  asp-area="Notes" asp-action="Notes"
-   asp-route-pageNumber="@(Model.Notes.PageIndex + 1)"
-   @*asp-route-currentFilter="@ViewData[" CurrentFilter"]"*@
-   class="btn @nextDisabled">
-    Next
+
+<a href="@Model.NextPageLink" class="btn @nextDisabled">
+    <strong>Next</strong>
 </a>
 
 @section Styles

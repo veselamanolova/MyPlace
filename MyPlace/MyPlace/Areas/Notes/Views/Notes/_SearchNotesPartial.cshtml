@@ -8,13 +8,13 @@
                 <input type="hidden" asp-for="@Model.EntityId" class="form-control" />
                 @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
             </div>
-            <div class="col-md-9">
+            <div class="col-md-6">
                 <div class="form-group">
                     <input asp-for="@Model.SearchedStringInText" class="form-control" placeholder="Search in text" />
                     @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-12">
                 <div class="form-group">
                     <select asp-for="@Model.SearchCategoryId"
                             asp-items="@(new SelectList(Model.EntityCategories,"CategoryId","Name"))"
@@ -23,30 +23,54 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <input type="date" asp-for="@Model.ExactDate" class="datepicker form-control" />
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <input type="date" asp-for="@Model.FromDate" class="datepicker form-control" />
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <input type="date" asp-for="@Model.ToDate" class="datepicker form-control" />
-                    @*<span asp-validation-for="@Model.ToDate" class="text-danger"></span>*@
-                </div>
-            </div>
-            <div class="col-md-3">
+
+            <div class="col-md-3 col-sm-12">
                 <div class="form-group">
                     <input asp-for="@Model.Creator " class="form-control" placeholder="Search by Creator" />
                     @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
                 </div>
             </div>
+            <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    <label>Exact date </label>
+                    <input type="date" asp-for="@Model.ExactDate" class="datepicker form-control" />
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    <label>From date </label>
+                    <input type="date" asp-for="@Model.FromDate" class="datepicker form-control" />
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                    <label>To date </label>
+                    <input type="date" asp-for="@Model.ToDate" class="datepicker form-control" />
+                </div>
+            </div>           
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select asp-for="@Model.SortOption" class="form-control">
+                        <option value="Default">Default order</option>
+                        <option value="Text">Text</option>
+                        <option value="Date">Date</option>
+                        <option value="Creator">Creator</option>
+                        <option value="Satus">Satus</option>
+                        <option value="Category">Category</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select asp-for="@Model.SortIsAscending" class="form-control">
+                        <option value="true">Ascending</option>
+                        <option value="false">Descending</option>
+                    </select>
+                </div>
+            </div>
             <div>
-                <div class="col-md-4">
+                <div class="col-md-12 col-sm-12">
                     <div class="form-group">
                         <input type="submit" value="Search" class="btn btn-primary" />
                     </div>
@@ -64,10 +88,10 @@
         });*@
 
     $(function() {
-        $('#datepicker').val('<%= DateTime.Now.ToString("yyyy-MM-dd") %>');
-        $('#datepicker').datepicker({
-        dateFormat: 'yyyy-MM-dd'
-        });
-      });
+    $('#datepicker').val('<%= DateTime.Now.ToString("yyyy-MM-dd") %>');
+    $('#datepicker').datepicker({
+    dateFormat: 'yyyy-MM-dd'
+    });
+    });
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
