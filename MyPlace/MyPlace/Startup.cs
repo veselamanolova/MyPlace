@@ -68,6 +68,7 @@ namespace MyPlace
             // Add services
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IEntityService, EntityService>(); 
 
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<INotesRepository, NotesRepository>();
@@ -172,6 +173,11 @@ namespace MyPlace
                     name: "areas",
                     template: "{area:exists}/{controller=Admin}/{action=Index}/{id?}"
             );
+
+             //   routes.MapRoute(
+             //     name: "areas",
+             //     template: "{area:exists}/{controller=Entities}/{action=Entities}/{id?}"
+             //);
 
                 routes.MapRoute(
                     name: "areas",

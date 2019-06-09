@@ -10,8 +10,8 @@ using MyPlace.Data;
 namespace MyPlace.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190605143439_AddSelfRelationEntityToParentEstablishment")]
-    partial class AddSelfRelationEntityToParentEstablishment
+    [Migration("20190609160332_EstablishmentLogBook")]
+    partial class EstablishmentLogBook
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -180,8 +180,6 @@ namespace MyPlace.Data.Migrations
                     b.Property<int?>("EstablishmentId");
 
                     b.Property<string>("ImageUrl");
-
-                    b.Property<bool>("IsCommentable");
 
                     b.Property<string>("Title");
 
@@ -369,8 +367,9 @@ namespace MyPlace.Data.Migrations
             modelBuilder.Entity("MyPlace.DataModels.Entity", b =>
                 {
                     b.HasOne("MyPlace.DataModels.Entity", "Establishment")
-                        .WithMany()
-                        .HasForeignKey("EstablishmentId");
+                        .WithMany("LogBooks")
+                        .HasForeignKey("EstablishmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("MyPlace.DataModels.EntityCategory", b =>

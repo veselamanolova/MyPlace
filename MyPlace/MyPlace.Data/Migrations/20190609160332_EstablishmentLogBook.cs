@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyPlace.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class EstablishmentLogBook : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -69,11 +69,18 @@ namespace MyPlace.Data.Migrations
                     Title = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    ImageUrl = table.Column<string>(nullable: true)
+                    ImageUrl = table.Column<string>(nullable: true),
+                    EstablishmentId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Entities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Entities_Entities_EstablishmentId",
+                        column: x => x.EstablishmentId,
+                        principalTable: "Entities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -346,6 +353,11 @@ namespace MyPlace.Data.Migrations
                 name: "IX_Comments_EntityId",
                 table: "Comments",
                 column: "EntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Entities_EstablishmentId",
+                table: "Entities",
+                column: "EstablishmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EntityCategories_CategoryId",
