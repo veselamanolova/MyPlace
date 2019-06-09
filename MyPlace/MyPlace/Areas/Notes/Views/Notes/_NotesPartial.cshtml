@@ -3,64 +3,71 @@
 @{
     var noteId = "noteId" + @Model.Id;
 }
-<tr id="@noteId">
-    <td><input type="hidden" asp-for="@Model.Id" /></td>
-    <td>@Model.Text</td>
-    <td>@Model.Date</td>
-    <td>@Model.NoteUser.Name</td>
-    <td>
-        @if (@Model.HasStatus)
+
+
+@*===============================================*@
+<div class="container">
+    <div class="row mt-2 mb-2 p-2 bg-light" id="@noteId">
+        <input type="hidden" asp-for="@Model.Id" />        
+        <div class="col-md-3 col-12 font-weight-bold">@Model.Text</div>
+        <div class="col-md-2 col-12">@Model.Date.ToShortDateString() @Model.Date.ToShortTimeString()</div>
+        <div class="col-md-2 col-12"><i class="fa fa-user"></i> @Model.NoteUser.Name</div>
+
+        @if (@Model.Category == null || @Model.Category.Name == null)
         {
-            if (Model.IsCompleted)
-            {
-                <img src="~/images/notes/completed.svg" style="height: 2rem" alt="Completed" />
-            }
-            else
-            {
-                <img src="~/images/notes/in-progress.png" style="height: 2rem" alt="Completed" />
-            }
+            <div class="col-md-2 col-12"></div>
         }
-    </td>
-    @if (@Model.Category == null || @Model.Category.Name == null)
-    {
-        <td></td>
-    }
-    else
-    {
-        <td>@Model.Category.Name</td>
-    }
-    @if (Model.NoteUser.Id == Model.CurrentUserId)
-    {
-        <td>
-            @Html.ActionLink("Edit", "EditNote", "Notes", new { noteId = @Model.Id })
-        </td>
-        <td>
-            <container>
-                @*@Html.ActionLink("Delete", "DeleteNote", "Notes", new { noteId = @Model.Id, entityId = @Model.EntityId })*@
-                <!-- Button trigger modal -->                
-                <a href="#" data-toggle="modal" data-target="#confirmDeleteModal">Delete</a>
-                <!-- Modal -->
-                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="confirmDeleteModalLabel">Delete this note?</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
-                                <form asp-action="DeleteNote" method="post">
-                                    <input type="hidden" asp-for="@Model.Id" />
-                                    <input type="hidden" asp-for="@Model.EntityId" />
-                                     <input type="submit" value="Delete" class="btn btn-primary"/>                                 
-                                </form>
-                            </div>
+        else
+        {
+            <div class="col-md-2 col-12"><i class="fa fa-tag"></i> @Model.Category.Name</div>
+        }
+        <div class="col-md-1 col-4">
+            @if (@Model.HasStatus)
+            {
+                if (Model.IsCompleted)
+                {
+
+                    <img src="~/images/notes/completed.svg" class="status-icon" alt="Completed" />
+                }
+                else
+                {
+                    <img src="~/images/notes/in-progress.png" class="status-icon" alt="In progress" />
+                }
+            }
+        </div>
+        @if (Model.NoteUser.Id == Model.CurrentUserId)
+        {
+            <a class="col-md-1 col-4" href='@Url.Action("EditNote", "Notes", new { noteId = @Model.Id })'><i class="fa fa-pencil-square-o icon"></i></a>
+            @* @Html.ActionLink("Edit", "EditNote", "Notes", new { noteId = @Model.Id })*@
+
+            <div class="col-md-1 col-4">
+                <container>
+                    @*@Html.ActionLink("Delete", "DeleteNote", "Notes", new { noteId = @Model.Id, entityId = @Model.EntityId })*@
+                    <!-- Button <div class="row"igger modal -->
+                    <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" title="Delete"><i class="fa fa-trash icon"></i></a>
+                    <!-- Modal -->
+                    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmDeleteModalLabel">Delete this note?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <form asp-action="DeleteNote" method="post">
+                                        <input type="hidden" asp-for="@Model.Id" />
+                                        <input type="hidden" asp-for="@Model.EntityId" />
+                                        <input type="submit" value="Delete" class="btn btn-primary" />
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                    </container>
-                </td>
-            }
-        </tr>
+                    </div>
+                </container>
+            </div>
+        }
+    </div>
+</div>

@@ -14,7 +14,7 @@
         </li>
     }
 </ul>
-@{ 
+@{
     string searchPanelClass = "";
     string addPanelClass = "";
     string searchHeaderClass = "";
@@ -55,24 +55,10 @@
                 </div>
             </div>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th><input type="hidden" /></th>
-                    <th>Text</th>
-                    <th>Date</th>
-                    <th>Creator</th>
-                    <th>Is Completed</th>
-                    <th>Category</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var note in Model.Notes)
-                {
-                    <partial name="_NotesPartial" model="note" />
-                }
-            </tbody>
-        </table>
+        @foreach (var note in Model.Notes)
+        {
+            <partial name="_NotesPartial" model="note" />
+        }
     </div>
 </div>
 
@@ -81,7 +67,7 @@
     var nextDisabled = !Model.Notes.HasNextPage ? "disabled" : "";
 }
 
-<a href="@Model.PreviousPageLink"   class="btn @prevDisabled">
+<a href="@Model.PreviousPageLink" class="btn @prevDisabled">
     <strong>Previous</strong>
 </a>
 
@@ -90,6 +76,7 @@
 </a>
 
 @section Styles
-    {
+{
     <link rel="stylesheet" href="~/css/notes.css" />
+    <link href="~/lib/login-form/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 }

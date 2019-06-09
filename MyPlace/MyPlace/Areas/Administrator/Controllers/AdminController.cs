@@ -14,7 +14,7 @@ namespace MyPlace.Areas.Admin.Controllers
     using MyPlace.Infrastructure.Logger;
 
     [Area("Administrator")]
-    [Authorize(Roles = GlobalConstants.AdminRole)]
+    //[Authorize(Roles = GlobalConstants.AdminRole)]
     public class AdminController : Controller
     {
         private readonly SignInManager<User> _signIn;
