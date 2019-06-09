@@ -3,39 +3,37 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        @if (this.User.IsInRole(GlobalConstants.AdminRole))
+    <ul class="navbar-nav">
+        @if (SignInManager.IsSignedIn(User))
         {
-            <li class="nav-item">
-                <div class="dropdown">
-                    <button type="button" class="btn dropdown-toggle" id="dropdown-create-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <strong>Admin</strong>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" id="dropdown-menu-content">
-                        <a class="dropdown-item text-bold" asp-area="Administrator" asp-controller="Admin" asp-action="CreateEntity">Create new Entity</a>
-                        <a class="dropdown-item text-bold" asp-area="Administrator" asp-controller="Admin" asp-action="CreateUser">Create new User</a>
-                        <a class="dropdown-item text-bold" asp-area="Administrator" asp-controller="Admin" asp-action="ChangePassword">Change user password</a>
+            @if (this.User.IsInRole(GlobalConstants.AdminRole))
+            {
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <button type="button" class="btn dropdown-toggle" id="dropdown-create-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <strong>Admin</strong>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" id="dropdown-menu-content">
+                            <a href="" class="dropdown-item text-bold" data-toggle="modal" data-target="#CreateEntityModal">TEST</a>
+                            <a class="dropdown-item text-bold" asp-area="Administrator" asp-controller="Admin" asp-action="CreateEntity">Create new Entity</a>
+                            <a class="dropdown-item text-bold" asp-area="Administrator" asp-controller="Admin" asp-action="CreateUser">Create new User</a>
+                            <a class="dropdown-item text-bold" asp-area="Administrator" asp-controller="Admin" asp-action="ChangePassword">Change user password</a>
+                        </div>
                     </div>
-                </div>
+                </li>
+            }
+
+            <li class="nav-item">
+                <form class="form-inline" asp-area="Identity" asp-controller="Account" asp-action="Logout">
+                    <button type="submit" class="nav-link btn btn-link text-dark"><i class="fa fa-sign-out"></i> Logout</button>
+                </form>
             </li>
         }
-
-        @*<li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="" asp-action="All">Item 1</a>
-            </li>*@
-        <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-controller="Account" asp-action="Logout">
-                <button type="submit" class="nav-link btn btn-link text-dark"><i class="fa fa-sign-out"></i> Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in"></i> Login</a>
-        </li>
-    }
-</ul>
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in"></i> Login</a>
+            </li>
+        }
+    </ul>
 

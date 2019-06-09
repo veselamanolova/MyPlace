@@ -16,6 +16,7 @@ namespace MyPlace
     using MyPlace.DataModels;
     using MyPlace.Data.Repositories;
     using MyPlace.Services.Contracts;
+    using MyPlace.Infrastructure.Logger;
     using MyPlace.Infrastructure.Extensions;
     using AutoMapper;
 
@@ -68,6 +69,7 @@ namespace MyPlace
             // Add services
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IDatabaseLogger, DatabaseLogger>();
 
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<INotesRepository, NotesRepository>();

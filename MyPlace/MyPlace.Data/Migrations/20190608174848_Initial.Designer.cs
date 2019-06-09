@@ -10,8 +10,8 @@ using MyPlace.Data;
 namespace MyPlace.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190605143439_AddSelfRelationEntityToParentEstablishment")]
-    partial class AddSelfRelationEntityToParentEstablishment
+    [Migration("20190608174848_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -177,17 +177,11 @@ namespace MyPlace.Data.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<int?>("EstablishmentId");
-
                     b.Property<string>("ImageUrl");
-
-                    b.Property<bool>("IsCommentable");
 
                     b.Property<string>("Title");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EstablishmentId");
 
                     b.ToTable("Entities");
                 });
@@ -203,6 +197,23 @@ namespace MyPlace.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("EntityCategories");
+                });
+
+            modelBuilder.Entity("MyPlace.DataModels.EventLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("Log");
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EventLogs");
                 });
 
             modelBuilder.Entity("MyPlace.DataModels.ForbiddenWord", b =>
@@ -364,13 +375,6 @@ namespace MyPlace.Data.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyPlace.DataModels.Entity", b =>
-                {
-                    b.HasOne("MyPlace.DataModels.Entity", "Establishment")
-                        .WithMany()
-                        .HasForeignKey("EstablishmentId");
                 });
 
             modelBuilder.Entity("MyPlace.DataModels.EntityCategory", b =>

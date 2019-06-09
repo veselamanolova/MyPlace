@@ -77,6 +77,21 @@ namespace MyPlace.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EventLogs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Log = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventLogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ForbiddenWords",
                 columns: table => new
                 {
@@ -395,6 +410,9 @@ namespace MyPlace.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "EntityCategories");
+
+            migrationBuilder.DropTable(
+                name: "EventLogs");
 
             migrationBuilder.DropTable(
                 name: "ForbiddenWords");

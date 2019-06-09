@@ -23,6 +23,9 @@ namespace MyPlace.Data
         // For Profanity filter
         public DbSet<ForbiddenWord> ForbiddenWords { get; set; }
 
+        // Logs
+        public DbSet<EventLog> EventLogs { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
