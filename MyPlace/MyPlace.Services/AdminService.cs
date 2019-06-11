@@ -25,7 +25,7 @@ namespace MyPlace.Services
         }
 
 
-        public void Delete(int entityId, int commentId)
+        public async Task Delete(int entityId, int commentId)
         {
             var entity = _context.Entities.Where(e => e.Id.Equals(entityId))
                 .Include(c => c.Comments).FirstOrDefault();
@@ -33,7 +33,7 @@ namespace MyPlace.Services
             var comment = entity.Comments.Where(c => c.Id.Equals(commentId)).FirstOrDefault();
 
             entity.Comments.Remove(comment);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
 

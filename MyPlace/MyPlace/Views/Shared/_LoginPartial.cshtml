@@ -23,20 +23,17 @@
             </li>
         }
 
-        @*<li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="" asp-action="All">Item 1</a>
-            </li>*@
-        <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-controller="Account" asp-action="Logout">
-                <button type="submit" class="nav-link btn btn-link text-dark"><i class="fa fa-sign-out"></i> Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in"></i> Login</a>
-        </li>
-    }
-</ul>
+            <li class="nav-item">
+                <form class="form-inline" asp-area="Identity" asp-controller="Account" asp-action="Logout">
+                    <button type="submit" class="nav-link btn btn-link text-dark"><i class="fa fa-sign-out"></i> Logout</button>
+                </form>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in"></i> Login</a>
+            </li>
+        }
+    </ul>
 
