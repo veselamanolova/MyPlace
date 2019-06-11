@@ -1,6 +1,6 @@
 ﻿namespace MyPlace.Services.DTOs
 {
-    public class NoteUserDTO
+    public class MinUserDTO
     {
         public string Id { get; set; }
 

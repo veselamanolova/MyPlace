@@ -25,6 +25,12 @@ namespace MyPlace.DataModels
 
         public string ImageUrl { get; set; }
 
+        public int? EstablishmentId { get; set; }
+
+        public Entity Establishment { get; set; }
+
+        public ICollection<Entity> LogBooks { get; set; }
+
         public ICollection<EntityCategory> EntityCategories { get; set; }
 
         public ICollection<UserEntity> UserEntities { get; set; }

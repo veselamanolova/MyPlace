@@ -70,15 +70,14 @@ namespace MyPlace
             // Add services
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IEntityService, EntityService>(); 
             services.AddScoped<IDatabaseLogger, DatabaseLogger>();
 
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<INotesRepository, NotesRepository>();
             services.AddScoped<IUserEntitiesService, UserEntitiesService>();
             services.AddScoped<IEntityCategoriesService, EntityCategoriesService>();
-
-            //services.AddSingleton<IViewModelMapper<NoteDTO, NoteViewModel>, NoteViewModelMapper>();           
-            //services.AddSingleton<IViewModelMapper<List<NoteDTO>, NotesViewModel>, NotesViewModelMapper>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             // Important! -> Use Distributed cache
             // Configuring Distributed Cache

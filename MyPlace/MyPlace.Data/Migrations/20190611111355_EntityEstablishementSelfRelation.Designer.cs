@@ -10,8 +10,8 @@ using MyPlace.Data;
 namespace MyPlace.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190608174848_Initial")]
-    partial class Initial
+    [Migration("20190611111355_EntityEstablishementSelfRelation")]
+    partial class EntityEstablishementSelfRelation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -177,11 +177,15 @@ namespace MyPlace.Data.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int?>("EstablishmentId");
+
                     b.Property<string>("ImageUrl");
 
                     b.Property<string>("Title");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EstablishmentId");
 
                     b.ToTable("Entities");
                 });
@@ -375,6 +379,14 @@ namespace MyPlace.Data.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyPlace.DataModels.Entity", b =>
+                {
+                    b.HasOne("MyPlace.DataModels.Entity", "Establishment")
+                        .WithMany("LogBooks")
+                        .HasForeignKey("EstablishmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("MyPlace.DataModels.EntityCategory", b =>

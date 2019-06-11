@@ -103,7 +103,7 @@ namespace MyPlace.Services
                 Date = note.Date,
                 IsCompleted = note.IsCompleted,
                 HasStatus = note.HasStatus,
-                NoteUser = new NoteUserDTO
+                NoteUser = new MinUserDTO
                 {
                     Id = note.User.Id,
                     Name = note.User.UserName

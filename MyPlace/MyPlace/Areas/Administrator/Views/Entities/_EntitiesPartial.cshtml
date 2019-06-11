@@ -1,0 +1,18 @@
+﻿@model MyPlace.Areas.Administrator.Models.EntityViewModel
+
+@{
+    var entityId = "entityId" + @Model.Id;
+}
+
+<div class="container">
+    <div class="row mt-2 mb-2 p-2 bg-light" id="@entityId">
+        <input type="hidden" asp-for="@Model.Id" />
+        <img class="col-md-3 col-12" src="@Model.ImageUrl" />
+        <div class="col-md-3 col-12 font-weight-bold">@Model.Title</div>
+        <div class="col-md-1 col-12 font-weight-bold">@Model.Description</div>
+        <div class="col-md-4 col-12">@Model.Address</div>
+        <a class="col-md-1 col-12" href='@Url.Action("AdministerEntity", "Entities", new { Id = @Model.Id })'><i class="fa fa-pencil-square-o icon"></i></a>
+    </div>
+</div>
+
+

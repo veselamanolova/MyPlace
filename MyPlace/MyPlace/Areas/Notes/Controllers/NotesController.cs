@@ -106,6 +106,7 @@ namespace MyPlace.Areas.Notes.Controllers
 
             NotesViewModel vm = new NotesViewModel()
             {
+
                 UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
                 SelectedEntityId = selectedEntityId,
                 // Notes = //_mapper.Map<List<NoteDTO>, List<NoteViewModel>>(notes),

@@ -10,5 +10,6 @@ namespace MyPlace.DataModels
         public User User { get; set; }
 
         public Entity Entity { get; set; }
+       
     }
 }

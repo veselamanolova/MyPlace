@@ -5,13 +5,12 @@ namespace MyPlace.Areas.Admin.Controllers
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Authorization;
-    using MyPlace.Common;
     using MyPlace.DataModels;
     using MyPlace.Models.Account;
     using MyPlace.Services.Contracts;
     using MyPlace.Areas.Administrator.Models;
     using MyPlace.Infrastructure.Logger;
+    using MyPlace.Common;
 
     [Area("Administrator")]
     [Authorize(Roles = GlobalConstants.AdminRole)]
