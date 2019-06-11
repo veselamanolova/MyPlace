@@ -11,5 +11,6 @@ namespace MyPlace.Areas.Administrator.Models
         public LogBookViewModel LogBook { get; set; }
         public List<CategoryDTO> AllCategories { get; set; }
         public List<MinUserDTO> AllUsers { get; set; }
+        public List<MinUserDTO> EntityUsers { get; set; }
     }
 }

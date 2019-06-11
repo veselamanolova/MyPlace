@@ -13,7 +13,7 @@
     </div>
     <div class="col-md-12">
         <div class="form-group">
-            <i class="fa fa-tag"></i> Assigned Tags:
+            <i class="fa fa-tag"></i> <h5>Assigned Tags:</h5>
             @foreach (var category in Model.LogBook.Categories)
             {
                 <input type="hidden" asp-for="@category.CategoryId" />
@@ -21,7 +21,27 @@
             }
         </div>
     </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <i class="fa fa-tag"></i> <h5>Logbook Managers:</h5>
+            @foreach (var user in Model.EntityUsers)
+            {
+                <input type="hidden" asp-for="@user.Id" />
+                <div class="col-md-3 col-3 font-weight-bold">@user.Name</div>
+            }
+        </div>
+    </div>
 
+    <div class="col-md-12">
+        <div class="form-group">
+            <i class="fa fa-tag"></i> <h5>All Managers:</h5>
+            @foreach (var user in Model.AllUsers)
+            {
+                <input type="hidden" asp-for="@user.Id" />
+                <div class="col-md-3 col-3 font-weight-bold">@user.Name</div>
+            }
+        </div>
+    </div>
 }
-}
+
 

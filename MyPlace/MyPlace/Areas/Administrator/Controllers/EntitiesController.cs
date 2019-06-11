@@ -63,13 +63,16 @@
             var logbook = await _entityService.GetLogBookByIdAsync(id); 
             var logbookvm = _mapper.Map<LogBookViewModel>(logbook);
 
-            var users = await _userEntityService.GetAllUsersAsync();
+            var logBookUsers = await _userEntityService.GetAllEntityUsersAsync(id); 
+            var allManagers = await _userEntityService.GetAllUsersInRole("Manager");
 
             AdministerLogBookViewModel vm = new AdministerLogBookViewModel()
             {
                 LogBook = logbookvm,
                 AllCategories = allCategories,
-                AllUsers = users
+                AllUsers = allManagers,
+                EntityUsers = logBookUsers
+
             };         
 
             return View(vm);
