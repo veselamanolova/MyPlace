@@ -20,8 +20,7 @@ namespace MyPlace.Services
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        }
-               
+        }               
 
         public async Task<List<UserEntityDTO>> GetAllUserEntitiesAsync(string userId) =>
              await _context.UsersEntities
@@ -34,6 +33,15 @@ namespace MyPlace.Services
                     Title = ue.Entity.Title
                 })
                 .ToListAsync();
+
+        public async Task<List<MinUserDTO>> GetAllUsersAsync() =>
+           await _context.Users
+              .Select(ue => new MinUserDTO
+              {                  
+                  Id = ue.Id,
+                  Name = ue.UserName
+              })
+              .ToListAsync();
     }
 }
 

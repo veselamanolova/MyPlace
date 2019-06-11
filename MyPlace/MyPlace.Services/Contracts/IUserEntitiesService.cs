@@ -10,6 +10,6 @@ namespace MyPlace.Services.Contracts
     {
         Task<List<UserEntityDTO>> GetAllUserEntitiesAsync(string userId);
 
-        //Task<IQueryable<UserEntityDTO>> GetAllUserEntitiesAsync(string userId);
+        Task<List<MinUserDTO>> GetAllUsersAsync();
     }
 }

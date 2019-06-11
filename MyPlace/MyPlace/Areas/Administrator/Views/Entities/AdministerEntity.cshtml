@@ -1,0 +1,25 @@
+﻿@model MyPlace.Areas.Administrator.Models.AdministerEntityViewModel
+
+<partial name="_EntitiesPartial.cshtml" model="@Model.Entity" />
+
+<a href="#">Add Logbook</a>
+<div>Logbookss</div>
+@{   
+    var entityId = "entityId";
+
+    foreach (var logbook in Model.LogBooks)
+    {   
+        <div class="container">
+            <div class="row mt-2 mb-2 p-2 bg-light" id="@entityId + @logbook.Id">
+                <input type="hidden" asp-for="@logbook.Id" />
+                <img class="col-md-3 col-12" src="@logbook.ImageUrl" />
+                <div class="col-md-3 col-12 font-weight-bold">@logbook.Title</div>
+                <div class="col-md-1 col-12 font-weight-bold">@logbook.Description</div>
+                <div class="col-md-4 col-12">@logbook.Address</div>                
+                <a class="col-md-1 col-12" href='@Url.Action("LogBook", "Entities", new { id = @logbook.Id })'>Details<i class="fa fa-pencil-square-o icon"></i></a>
+                @*<a class="col-md-1 col-12" href='@Url.Action("AdministerEntity", "Entities", new { Id = @logbook.Id })'><i class="fa fa-pencil-square-o icon"></i></a>*@
+            </div>
+        </div>
+    }
+}
+

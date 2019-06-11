@@ -19,7 +19,7 @@ namespace MyPlace.Services.DTOs
         
         public bool HasStatus { get; set; }
 
-        public NoteUserDTO NoteUser { get; set; }
+        public MinUserDTO NoteUser { get; set; }
 
         public CategoryDTO Category { get; set; }
 
