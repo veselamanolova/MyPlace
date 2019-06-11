@@ -19,6 +19,7 @@ namespace MyPlace
     using MyPlace.Infrastructure.Logger;
     using MyPlace.Infrastructure.Extensions;
     using AutoMapper;
+    using MyPlace.Infrastructure;
 
     public class Startup
     {
