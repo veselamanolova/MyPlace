@@ -8,14 +8,17 @@ namespace MyPlace.Services
     using Microsoft.EntityFrameworkCore;
     using MyPlace.Services.Contracts;
     using MyPlace.DataModels;
+    using AutoMapper;
 
     public class AdminService : IAdminService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public AdminService(ApplicationDbContext context)
+        public AdminService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task CreateEntityAsync(string title, string address, string description, string ImageUrl)
@@ -39,5 +42,11 @@ namespace MyPlace.Services
 
         public async Task<IEnumerable<string>> RegisteredUsers() =>
             await _context.Users.Select(name => name.UserName).ToListAsync();
+
+
+        public async Task<IEnumerable<TSource>> GetActivity<TSource>() =>
+            await Task.Run(() => _mapper.ProjectTo<TSource>(_context.EventLogs).ToListAsync());
     }
 }
+
+

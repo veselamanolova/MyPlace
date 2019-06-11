@@ -1,16 +1,19 @@
-﻿namespace MyPlace.Areas.Administrator.Controllers
+﻿
+namespace MyPlace.Areas.Administrator.Controllers
 {
     using AutoMapper;
     using System.Linq;
-    using System.Threading.Tasks;   
-    using Microsoft.AspNetCore.Mvc;
-    using MyPlace.Services.Contracts;
-    using MyPlace.Areas.Administrator.Models;
+    using System.Threading.Tasks;
     using System.Collections.Generic;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
+    using MyPlace.Areas.Administrator.Models;
     using MyPlace.Areas.Notes.Models;
-    using MyPlace.DataModels;
+    using MyPlace.Services.Contracts;
+    using MyPlace.Common;
 
     [Area("Administrator")]
+    [Authorize(Roles = GlobalConstants.AdminRole)]
     public class EntitiesController : Controller
     {
         private readonly IMapper _mapper;
@@ -78,7 +81,7 @@
                 AllCategories = allCategories,
                 AllUsers = allManagers,
                 EntityUsers = logBookUsers
-            };        
+            };         
 
             return View(vm);
         }
@@ -115,3 +118,4 @@
         }
     }
 }
+

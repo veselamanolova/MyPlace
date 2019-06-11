@@ -8,15 +8,20 @@ namespace MyPlace.Areas.Identity.Controllers
     using MyPlace.Filters;
     using MyPlace.DataModels;
     using MyPlace.Models.Account;
+    using MyPlace.Infrastructure.Logger;
 
     [Area("Identity")]
     [TypeFilter(typeof(AddHeaderActionFilter))]
     public class AccountController : Controller
     {
+        private readonly IDatabaseLogger _logger;
         private readonly SignInManager<User> _signIn;
 
-        public AccountController(SignInManager<User> signIn) =>
+        public AccountController(SignInManager<User> signIn, IDatabaseLogger logger)
+        {
             _signIn = signIn;
+            _logger = logger;
+        }
 
         [HttpGet]
         public IActionResult Login() => View();
@@ -35,6 +40,7 @@ namespace MyPlace.Areas.Identity.Controllers
                 if (result.Succeeded)
                     return RedirectToAction("Index", "Catalog");
             }
+            await _logger.WARN().Log($"Fail attempt to login for user: {model.UserName.ToUpper()}");
             return View(model);
         }
 
@@ -42,6 +48,8 @@ namespace MyPlace.Areas.Identity.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signIn.SignOutAsync();
+            await _logger.DEBUG().Log($"User: {this.User.Identity.Name.ToUpper()}, logout");
+
             return RedirectToAction("Index", "Catalog");
 
             // With Tag helper

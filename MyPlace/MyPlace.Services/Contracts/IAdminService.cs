@@ -1,6 +1,7 @@
 ﻿
 namespace MyPlace.Services.Contracts
 {
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
@@ -11,5 +12,7 @@ namespace MyPlace.Services.Contracts
         Task<IEnumerable<string>> RegisteredUsers();
 
         Task CreateEntityAsync(string title, string address, string description, string ImageUrl);
+
+        Task<IEnumerable<TSource>> GetActivity<TSource>();
     }
 }

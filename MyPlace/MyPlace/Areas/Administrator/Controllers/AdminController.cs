@@ -5,6 +5,7 @@ namespace MyPlace.Areas.Admin.Controllers
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Authorization;
     using MyPlace.DataModels;
     using MyPlace.Models.Account;
     using MyPlace.Services.Contracts;
@@ -13,7 +14,7 @@ namespace MyPlace.Areas.Admin.Controllers
     using MyPlace.Common;
 
     [Area("Administrator")]
-    //[Authorize(Roles = GlobalConstants.AdminRole)]
+    [Authorize(Roles = GlobalConstants.AdminRole)]
     public class AdminController : Controller
     {
         private readonly SignInManager<User> _signIn;
@@ -27,8 +28,14 @@ namespace MyPlace.Areas.Admin.Controllers
             _logger = logger;
         }
 
+
         public IActionResult Index() => View();
 
+
+        [HttpGet]
+        public IActionResult Activity() =>
+            View(new ActivityIndexModel { ActivityList = _adminService.GetActivity<ActivityListingModel>().Result });
+        
 
         [HttpGet]
         public IActionResult CreateEntity() => View();
@@ -41,9 +48,7 @@ namespace MyPlace.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await _adminService.CreateEntityAsync(model.Title, model.Address, model.Description, model.ImageUrl);
-                await _logger
-                    .Type(GlobalConstants.INFO)
-                    .Log($"Administrator {this.User.Identity.Name.ToUpper()} created a new Entity.");
+                await _logger.INFO().Log($"Administrator {this.User.Identity.Name.ToUpper()} created a new Entity.");
             }
             return View();
         }
@@ -66,9 +71,7 @@ namespace MyPlace.Areas.Admin.Controllers
                 if (irUser.Succeeded)
                 {
                     await _signIn.UserManager.AddToRoleAsync(user, model.Role);
-                    await _logger
-                    .Type(GlobalConstants.INFO)
-                    .Log($"Administrator {this.User.Identity.Name} created a new account with role {model.Role}.");
+                    await _logger.INFO().Log($"Administrator {this.User.Identity.Name.ToUpper()} created a new account with role {model.Role}.");
 
                     return RedirectToAction("Login", "Account", new { area = "Identity" });
                 }
@@ -80,9 +83,8 @@ namespace MyPlace.Areas.Admin.Controllers
 
         public async Task<IActionResult> ChangePassword()
         {
-            await _logger
-                    .Type(GlobalConstants.INFO)
-                    .Log($"Administrator {this.User.Identity.Name} change password for user    .");
+            await _logger.INFO().Log($"Administrator {this.User.Identity.Name.ToUpper()} change password for user    .");
+
             return View();
         }
 
@@ -90,9 +92,7 @@ namespace MyPlace.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int entityId, int commentId)
         {
             await _adminService.Delete(entityId, commentId);
-            await _logger
-                    .Type(GlobalConstants.INFO)
-                    .Log($"Administrator {this.User.Identity.Name} delete comment.");
+            await _logger.INFO().Log($"Administrator {this.User.Identity.Name.ToUpper()} delete comment.");
 
             return RedirectToAction("Establishment", "Catalog", new { area = "", id = entityId });
         }
