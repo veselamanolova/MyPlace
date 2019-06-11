@@ -1,7 +1,18 @@
 ﻿
-    <ul class="navbar-nav mr-auto right-side">
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<ul class="navbar-nav mr-auto right-side">
+    <li class="nav-item">
+        <a class="nav-link nav-link-white" asp-area="" asp-controller="Catalog" asp-action="Index"><i class="fa fa-home"></i> <strong>Home</strong></a>
+    </li>
+
+    @if (SignInManager.IsSignedIn(User) && this.User.IsInRole(GlobalConstants.AdminRole))
+    {
         <li class="nav-item">
-            <a class="nav-link nav-link-white" asp-area="" asp-controller="Catalog" asp-action="Index"><i class="fa fa-home"></i> Home</a>
+            <a class="nav-link nav-link-white" asp-area="Administrator" asp-controller="Admin" asp-action="Activity"><strong>Activity</strong></a>
         </li>
-    </ul>
+    }
+</ul>
 
