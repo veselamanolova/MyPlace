@@ -89,9 +89,7 @@ namespace MyPlace.Services
                .Select(note => ConvertToNoteDTO(note))
                .ToList()
             }; 
-        }       
-
-
+        } 
 
         private static NoteDTO ConvertToNoteDTO(Note note)
         {            

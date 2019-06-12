@@ -59,14 +59,21 @@ namespace MyPlace.Services
             await _context.Entities
             .Where(logbook => logbook.Id == Id)
             .Include(logbook => logbook.EntityCategories)
-                .ThenInclude(ec => ec.Category)               
+                .ThenInclude(ec => ec.Category)             
             .FirstOrDefaultAsync();
 
             return ConvertToDTO(result);
         }
 
-       
-    }
+        public async Task CreateLogBookAsync(string title, int establishementId )
+        {
+            await _context.Entities.AddAsync(new Entity()
+            {
+                Title = title, 
+                EstablishmentId = establishementId
+            });
+            await _context.SaveChangesAsync();
+        }
 
-    
+    }    
 }

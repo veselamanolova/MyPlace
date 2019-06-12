@@ -65,6 +65,10 @@ namespace MyPlace.Areas.Administrator.Controllers
             var vm = new AdministerEntityViewModel()
             {
                 Entity = _mapper.Map<EntityViewModel>(entity),
+                NewLogBook = new LogBookViewModel()
+                {
+                    EstablishmentId=id
+                },
                 LogBooks = listLogbooks, 
                 EntityModerators = entityModerators,
                 UnassignedModerators = unassignedModerators
@@ -162,15 +166,28 @@ namespace MyPlace.Areas.Administrator.Controllers
             }
         }
 
+        [HttpPost("AddLogBookToEntity")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddLogBookToEntity(LogBookViewModel model)
+        {
+            try
+            {
+                await _entityService.
+                    CreateLogBookAsync(model.Title, model.EstablishmentId);           
+                return RedirectToAction(nameof(AdministerEntity), new { id = model.EstablishmentId });
+            }
+            catch (ArgumentException ex)
+            {
+                this.ModelState.AddModelError("Error", ex.Message);
+                return View(nameof(AdministerEntity), model);
+            }
+        }
+
 
         [HttpPost("AddCategoryToLogBook")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCategoryToLogBook(AdministerLogBookViewModel model)
-        {
-            //if (!this.ModelState.IsValid)
-            //{
-            //    return View(nameof(LogBook), model);
-            //}
+        {          
             try
             {
                 foreach (var category in model.AllUnassignedCategories)
@@ -189,7 +206,6 @@ namespace MyPlace.Areas.Administrator.Controllers
                 return View(nameof(LogBook), model);
             }
         }
-
     }
 }
 

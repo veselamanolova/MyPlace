@@ -7,6 +7,8 @@
     {
         public EntityViewModel Entity { get; set; }
 
+        public LogBookViewModel NewLogBook { get; set; }
+
         public ICollection<LogBookViewModel> LogBooks { get; set; }
 
         public List<SelectableUserViewModel> UnassignedModerators { get; set; }

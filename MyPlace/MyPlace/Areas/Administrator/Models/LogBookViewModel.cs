@@ -12,18 +12,16 @@
         [Required]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Entity name must be between 3 and 50 characters.")]
         public string Title { get; set; }
-
-        [Required]
-        public string Address { get; set; }
-
-        [Required]
-        public string Description { get; set; }
-       
-        public string ImageUrl { get; set; }
-
-        [Required]
-        public int? EstablishmentId { get; set; }
         
-        public List<CategoryViewModel> Categories { get; set; }
+        //public string Address { get; set; }
+        
+        //public string Description { get; set; }
+       
+        //public string ImageUrl { get; set; }
+
+        [Required]
+        public int EstablishmentId { get; set; }
+        
+       // public List<CategoryViewModel> Categories { get; set; }
     }
 }

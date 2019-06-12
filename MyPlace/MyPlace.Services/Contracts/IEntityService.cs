@@ -12,5 +12,7 @@
         Task<EntityDTO> GetEntityByIdAsync(int Id);
 
         Task<EntityDTO> GetLogBookByIdAsync(int Id);
+        
+        Task CreateLogBookAsync(string title, int establishementId);
     }
 }
