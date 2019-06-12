@@ -4,19 +4,19 @@
 <table class="table">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">#</th>
+            <th scope="col">ID</th>
             <th scope="col">Type</th>
             <th scope="col">Log</th>
             <th scope="col">Created</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var log in Model.ActivityList)
+        @foreach (var log in Model.ActivityList.OrderByDescending(x => x.Id))
         {
             @if (log.Type.Equals("DEBUG"))
             {
                 <tr class="table-Dark">
-                    <th scope="row">Row</th>
+                    <th scope="row">@log.Id</th>
                     <td>@log.Type</td>
                     <td>@log.Log</td>
                     <td>@log.CreatedOn</td>
@@ -25,7 +25,7 @@
             else if (log.Type.Equals("INFORMATION"))
             {
                 <tr class="table-info">
-                    <th scope="row">Row</th>
+                    <th scope="row">@log.Id</th>
                     <td>@log.Type</td>
                     <td>@log.Log</td>
                     <td>@log.CreatedOn</td>
@@ -34,7 +34,7 @@
             else if (log.Type.Equals("WARNING"))
             {
                 <tr class="table-warning">
-                    <th scope="row">Row</th>
+                    <th scope="row">@log.Id</th>
                     <td>@log.Type</td>
                     <td>@log.Log</td>
                     <td>@log.CreatedOn</td>
@@ -43,7 +43,7 @@
             else if (log.Type.Equals("ERROR"))
             {
                 <tr class="table-danger">
-                    <th scope="row">Row</th>
+                    <th scope="row">@log.Id</th>
                     <td>@log.Type</td>
                     <td>@log.Log</td>
                     <td>@log.CreatedOn</td>

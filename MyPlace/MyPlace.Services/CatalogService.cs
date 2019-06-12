@@ -37,20 +37,10 @@ namespace MyPlace.Services
 
         public Task CreateReplyAsync(int Id, string user, string text)
         {
-            Entity selectedEntity;
-            try
-            {
-                selectedEntity = _context.Entities
+            var selectedEntity = _context.Entities
                 .Where(entity => entity.Id == Id)
                     .Include(comments => comments.Comments)
                 .FirstOrDefault();
-            }
-            catch(Exception ex)
-            {
-
-            }
-
-            selectedEntity = null;
 
             if (String.IsNullOrEmpty(user)) user = "anonymous";
 
