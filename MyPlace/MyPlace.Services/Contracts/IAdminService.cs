@@ -7,7 +7,9 @@ namespace MyPlace.Services.Contracts
 
     public interface IAdminService
     {
-        Task Delete(int entityId, int commentId);
+        Task DeleteAsync(int entityId, int commentId);
+
+        Task EditCommentAsync(int entityId, int commentId, string newComment);
 
         Task<IEnumerable<string>> RegisteredUsers();
 
