@@ -32,7 +32,7 @@ namespace MyPlace.Hubs
                 return;
             }
             await _catalogService.CreateReplyAsync(Id, user, comment);
-            await Clients.All.SendAsync("AddComment", comment);
+            await Clients.All.SendAsync("AddComment", comment, Id);
         }
     }
 }

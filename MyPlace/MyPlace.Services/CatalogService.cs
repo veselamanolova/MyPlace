@@ -37,22 +37,32 @@ namespace MyPlace.Services
 
         public Task CreateReplyAsync(int Id, string user, string text)
         {
-            var selectedEntity = _context.Entities
-            .Where(entity => entity.Id.Equals(Id))
-                .Include(comments => comments.Comments)
-            .FirstOrDefault();
+            Entity selectedEntity;
+            try
+            {
+                selectedEntity = _context.Entities
+                .Where(entity => entity.Id == Id)
+                    .Include(comments => comments.Comments)
+                .FirstOrDefault();
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+            selectedEntity = null;
 
             if (String.IsNullOrEmpty(user)) user = "anonymous";
 
             selectedEntity.Comments.Add(new Comment(Id, user, text, DateTime.Now, selectedEntity));
             return _context.SaveChangesAsync();
+            }
+
+            public async Task<IEnumerable<string>> AutocompleteGetAll() =>
+                await _context.Entities.Select(entity => entity.Title).ToListAsync();
+
+            public async Task<IEnumerable<string>> GetForbiddenWords() =>
+                await _context.ForbiddenWords.Select(word => word.Word).ToListAsync();
         }
-
-        public async Task<IEnumerable<string>> AutocompleteGetAll() => 
-            await _context.Entities.Select(entity => entity.Title).ToListAsync();
-
-        public async Task<IEnumerable<string>> GetForbiddenWords() =>
-            await _context.ForbiddenWords.Select(word => word.Word).ToListAsync();
     }
-}
 
