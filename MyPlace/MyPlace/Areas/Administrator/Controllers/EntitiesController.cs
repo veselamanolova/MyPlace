@@ -35,24 +35,39 @@ namespace MyPlace.Areas.Administrator.Controllers
         {
             var entities = await _entityService.GetAllEntitiesAsync();
             List<EntityViewModel> result = _mapper.Map<List<EntityViewModel>>(entities);
-            EntitiesViewModel vm = new EntitiesViewModel();
-            vm.Entities = result; 
-
+            EntitiesViewModel vm = new EntitiesViewModel()
+            {
+                Entities = result
+            };          
             return View(vm); 
         }
 
         [HttpGet("AdministerEntity")]
-        public async Task<IActionResult> AdministerEntity(int Id)
+        public async Task<IActionResult> AdministerEntity(int id)
         {
-            var entity = await _entityService.GetEntityByIdAsync(Id);         
+            var entity = await _entityService.GetEntityByIdAsync(id);         
 
             var logbooks = entity.LogBooks.ToList();
             var listLogbooks = _mapper.Map<List<LogBookViewModel>>(logbooks);
 
+            var usersNeeededForUserToEntityAssignment = await _userEntityService
+                     .GetUsersNeededForUsersToEntityAsignmentAsync(id, "Moderator");
+            var entityModerators = usersNeeededForUserToEntityAssignment.EntityUsers;
+            var unassignedModerators = usersNeeededForUserToEntityAssignment
+                .AllNotEntityUsers.Select(x => new SelectableUserViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    isSelected = false
+                }).ToList();
+
+
             var vm = new AdministerEntityViewModel()
             {
                 Entity = _mapper.Map<EntityViewModel>(entity),
-                LogBooks = listLogbooks
+                LogBooks = listLogbooks, 
+                EntityModerators = entityModerators,
+                UnassignedModerators = unassignedModerators
             }; 
 
             return View(vm);
@@ -94,8 +109,8 @@ namespace MyPlace.Areas.Administrator.Controllers
                 LogBook = logbookvm,
                 AllUnassignedCategories = allNotAssignedCategories,
                 LogBookCategories = logBookCategories,
-                AllUnassignedUsers = allNotLogBookUsers,
-                LogBookUsers = logBookUsers
+                AllUnassignedManagers = allNotLogBookUsers,
+                LogBookManagers = logBookUsers
             };         
 
             return View(vm);
@@ -104,14 +119,10 @@ namespace MyPlace.Areas.Administrator.Controllers
         [HttpPost("AddManagerToLogBook")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddManagerToLogBook(AdministerLogBookViewModel model)
-        {
-            //if (!this.ModelState.IsValid)
-            //{
-            //    return View(nameof(LogBook), model);
-            //}
+        {            
             try
             {
-                foreach (var user in model.AllUnassignedUsers)
+                foreach (var user in model.AllUnassignedManagers)
                 {
                     if (user.isSelected)
                     {
@@ -128,7 +139,30 @@ namespace MyPlace.Areas.Administrator.Controllers
             }            
         }
 
-       
+        [HttpPost("AddModeratorToEntity")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddModeratorToEntity(AdministerEntityViewModel model)
+        {
+            try
+            {
+                foreach (var user in model.UnassignedModerators)
+                {
+                    if (user.isSelected)
+                    {
+                        await _userEntityService.AssignUsersToEnityAsync(model.Entity.Id, user.Id);
+                    }
+                }
+
+                return RedirectToAction(nameof(AdministerEntity), new { id = model.Entity.Id });
+            }
+            catch (ArgumentException ex)
+            {
+                this.ModelState.AddModelError("Error", ex.Message);
+                return View(nameof(AdministerEntity), model);
+            }
+        }
+
+
         [HttpPost("AddCategoryToLogBook")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCategoryToLogBook(AdministerLogBookViewModel model)

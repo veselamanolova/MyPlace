@@ -11,7 +11,7 @@ namespace MyPlace.Areas.Administrator.Models
         public LogBookViewModel LogBook { get; set; }
         public List<SelectableCategoryViewModel> AllUnassignedCategories { get; set; }
         public List<CategoryDTO> LogBookCategories { get; set; }
-        public List<SelectableUserViewModel> AllUnassignedUsers { get; set; }
-        public List<MinUserDTO> LogBookUsers { get; set; }
+        public List<SelectableUserViewModel> AllUnassignedManagers { get; set; }
+        public List<MinUserDTO> LogBookManagers { get; set; }
     }
 }

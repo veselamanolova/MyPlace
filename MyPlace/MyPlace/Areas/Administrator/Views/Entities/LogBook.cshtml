@@ -52,7 +52,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <i class="fa fa-tag"></i> <h5>Logbook Managers:</h5>
-                    @foreach (var user in Model.LogBookUsers)
+                    @foreach (var user in Model.LogBookManagers)
                     {
                         <input type="hidden" asp-for="@user.Id" />
                         <div class="col-md-3 col-3 font-weight-bold">@user.Name</div>
@@ -69,15 +69,15 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <h5>All Managers:</h5>
-                                @for (int i = 0; i < Model.AllUnassignedUsers.Count; i++)
+                                @for (int i = 0; i < Model.AllUnassignedManagers.Count; i++)
                                 {
-                                    string id = "radiobtn" + Model.AllUnassignedUsers[i].Name;
+                                    string id = "radiobtn" + Model.AllUnassignedManagers[i].Name;
 
                                     <div class="custom-control">
-                                        <input type="checkbox" asp-for="@Model.AllUnassignedUsers[i].isSelected">
-                                        <label asp-for="@Model.AllUnassignedUsers[i].isSelected">@Model.AllUnassignedUsers[i].Name</label>
-                                        <input type="hidden" asp-for="@Model.AllUnassignedUsers[i].Name" />
-                                        <input type="hidden" asp-for="@Model.AllUnassignedUsers[i].Id" />
+                                        <input type="checkbox" asp-for="@Model.AllUnassignedManagers[i].isSelected">
+                                        <label asp-for="@Model.AllUnassignedManagers[i].isSelected">@Model.AllUnassignedManagers[i].Name</label>
+                                        <input type="hidden" asp-for="@Model.AllUnassignedManagers[i].Name" />
+                                        <input type="hidden" asp-for="@Model.AllUnassignedManagers[i].Id" />
                                     </div>
                                 }
                             </div>
