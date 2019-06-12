@@ -9,8 +9,9 @@ namespace MyPlace.Areas.Administrator.Models
     public class AdministerLogBookViewModel
     {
         public LogBookViewModel LogBook { get; set; }
-        public List<CategoryDTO> AllCategories { get; set; }
-        public List<SelectableUserViewModel> AllUsers { get; set; }
-        public List<MinUserDTO> EntityUsers { get; set; }
+        public List<SelectableCategoryViewModel> AllUnassignedCategories { get; set; }
+        public List<CategoryDTO> LogBookCategories { get; set; }
+        public List<SelectableUserViewModel> AllUnassignedUsers { get; set; }
+        public List<MinUserDTO> LogBookUsers { get; set; }
     }
 }

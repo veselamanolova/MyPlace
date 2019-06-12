@@ -61,14 +61,25 @@ namespace MyPlace.Areas.Administrator.Controllers
         [HttpGet("LogBook")]
         public async Task<IActionResult> LogBook(int id)
         {
-            var allCategories = await _categoryService.GetAllCategoriesAsync();
-            var categoriesvm = _mapper.Map<List<CategoryViewModel>>(allCategories);
+            var catalogsNeeededForUserToEntityAssignment = await _categoryService
+                .GetAllEntityAndNotEntityCategories(id);
+
+            var allNotAssignedCategories = catalogsNeeededForUserToEntityAssignment
+                .AllNotEntityCategories.Select(x => new SelectableCategoryViewModel()
+                {
+                    CategoryId = x.CategoryId,
+                    Name = x.Name,
+                    isSelected = false
+                }).ToList(); 
+
+            var logBookCategories = catalogsNeeededForUserToEntityAssignment
+                .EntityCategories; 
 
             var logbook = await _entityService.GetLogBookByIdAsync(id); 
             var logbookvm = _mapper.Map<LogBookViewModel>(logbook);
-            
+
             var usersNeeededForUserToEntityAssignment = await _userEntityService
-                .GetUsersNeededForUsersToEntityAsygnmentAsync(id, "Manager");
+                .GetUsersNeededForUsersToEntityAsignmentAsync(id, "Manager");               
             var logBookUsers = usersNeeededForUserToEntityAssignment.EntityUsers;
             var allNotLogBookUsers = usersNeeededForUserToEntityAssignment
                 .AllNotEntityUsers.Select(x => new SelectableUserViewModel()
@@ -81,16 +92,14 @@ namespace MyPlace.Areas.Administrator.Controllers
             AdministerLogBookViewModel vm = new AdministerLogBookViewModel()
             {
                 LogBook = logbookvm,
-                AllCategories = allCategories,
-                AllUsers = allNotLogBookUsers,
-                EntityUsers = logBookUsers
+                AllUnassignedCategories = allNotAssignedCategories,
+                LogBookCategories = logBookCategories,
+                AllUnassignedUsers = allNotLogBookUsers,
+                LogBookUsers = logBookUsers
             };         
 
             return View(vm);
         }
-
-
-        
 
         [HttpPost("AddManagerToLogBook")]
         [ValidateAntiForgeryToken]
@@ -102,7 +111,7 @@ namespace MyPlace.Areas.Administrator.Controllers
             //}
             try
             {
-                foreach (var user in model.AllUsers)
+                foreach (var user in model.AllUnassignedUsers)
                 {
                     if (user.isSelected)
                     {
@@ -116,9 +125,37 @@ namespace MyPlace.Areas.Administrator.Controllers
             {
                 this.ModelState.AddModelError("Error", ex.Message);
                 return View(nameof(LogBook), model);
-            }
-            
+            }            
         }
+
+       
+        [HttpPost("AddCategoryToLogBook")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCategoryToLogBook(AdministerLogBookViewModel model)
+        {
+            //if (!this.ModelState.IsValid)
+            //{
+            //    return View(nameof(LogBook), model);
+            //}
+            try
+            {
+                foreach (var category in model.AllUnassignedCategories)
+                {
+                    if (category.isSelected)
+                    {
+                        await _userEntityService.AssignCategoryToLogbookAsync(model.LogBook.Id, category.CategoryId);
+                    }
+                }
+
+                return RedirectToAction(nameof(LogBook), new { id = model.LogBook.Id });
+            }
+            catch (ArgumentException ex)
+            {
+                this.ModelState.AddModelError("Error", ex.Message);
+                return View(nameof(LogBook), model);
+            }
+        }
+
     }
 }
 

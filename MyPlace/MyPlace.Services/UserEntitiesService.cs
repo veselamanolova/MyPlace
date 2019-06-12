@@ -59,7 +59,7 @@ namespace MyPlace.Services
                 Name = u.UserName
             })
             .ToList();
-        }
+        }      
 
         public async Task<List<MinUserDTO>> GetAllEntityUsersAsync(int entityId)
         {
@@ -74,7 +74,7 @@ namespace MyPlace.Services
               .ToListAsync();
         }
 
-        public async Task<CompositeEntityUsersDTO> GetUsersNeededForUsersToEntityAsygnmentAsync(int entityId, string roleName)
+        public async Task<CompositeEntityUsersDTO> GetUsersNeededForUsersToEntityAsignmentAsync(int entityId, string roleName)
         {
             var logBookUsers = await GetAllEntityUsersAsync(entityId);
             var allNotLogBookUsers = (await GetAllUsersInRole(roleName))
@@ -86,8 +86,6 @@ namespace MyPlace.Services
             };
         }
 
-
-
         public async Task AssignUsersToEnityAsync(int entityId, string userId)
         {
             await _context.UsersEntities.AddAsync(new UserEntity()
@@ -98,8 +96,15 @@ namespace MyPlace.Services
             await _context.SaveChangesAsync();
         }
 
-
-
+        public  async Task AssignCategoryToLogbookAsync(int entityId, int categoryId)
+        {
+            await _context.EntityCategories.AddAsync(new EntityCategory()
+            {
+                CategoryId = categoryId,
+                EntityId = entityId
+            });
+            await _context.SaveChangesAsync();
+        }
     }
     
 }

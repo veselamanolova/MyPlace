@@ -16,10 +16,10 @@ namespace MyPlace.Services.Contracts
 
         Task<List<MinUserDTO>> GetAllEntityUsersAsync(int entityId);
 
-        Task<CompositeEntityUsersDTO> GetUsersNeededForUsersToEntityAsygnmentAsync(int entityId, string roleName);
+        Task<CompositeEntityUsersDTO> GetUsersNeededForUsersToEntityAsignmentAsync(int entityId, string roleName);
 
-        Task AssignUsersToEnityAsync(int entityId, string userId); 
+        Task AssignUsersToEnityAsync(int entityId, string userId);
 
-
+        Task AssignCategoryToLogbookAsync(int id, int categoryId);
     }
 }

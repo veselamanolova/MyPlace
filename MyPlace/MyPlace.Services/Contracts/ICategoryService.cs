@@ -8,6 +8,10 @@ namespace MyPlace.Services.Contracts
     public interface ICategoryService
     {
         Task<List<CategoryDTO>> GetAllCategoriesAsync();
+
+        Task<List<CategoryDTO>> GetAllLogBooksCategoriesAsync(int id);
+
+        Task<CompositeEntityCategoriesDTO> GetAllEntityAndNotEntityCategories(int id);
     }
 }
 
