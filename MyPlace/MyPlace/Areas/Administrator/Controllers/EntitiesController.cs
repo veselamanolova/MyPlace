@@ -11,6 +11,7 @@ namespace MyPlace.Areas.Administrator.Controllers
     using MyPlace.Areas.Notes.Models;
     using MyPlace.Services.Contracts;
     using MyPlace.Common;
+    using System;
 
     [Area("Administrator")]
     [Authorize(Roles = GlobalConstants.AdminRole)]
@@ -65,21 +66,23 @@ namespace MyPlace.Areas.Administrator.Controllers
 
             var logbook = await _entityService.GetLogBookByIdAsync(id); 
             var logbookvm = _mapper.Map<LogBookViewModel>(logbook);
-
-            var logBookUsers = await _userEntityService.GetAllEntityUsersAsync(id);
-            var allManagers = (await _userEntityService.GetAllUsersInRole("Manager"))
-                .Select(x => new SelectableUserViewModel()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    isSelected = false
-                }).ToList(); 
+            
+            var usersNeeededForUserToEntityAssignment = await _userEntityService
+                .GetUsersNeededForUsersToEntityAsygnmentAsync(id, "Manager");
+            var logBookUsers = usersNeeededForUserToEntityAssignment.EntityUsers;
+            var allNotLogBookUsers = usersNeeededForUserToEntityAssignment
+                .AllNotEntityUsers.Select(x => new SelectableUserViewModel()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                isSelected = false
+            }).ToList();
 
             AdministerLogBookViewModel vm = new AdministerLogBookViewModel()
             {
                 LogBook = logbookvm,
                 AllCategories = allCategories,
-                AllUsers = allManagers,
+                AllUsers = allNotLogBookUsers,
                 EntityUsers = logBookUsers
             };         
 
@@ -93,28 +96,28 @@ namespace MyPlace.Areas.Administrator.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddManagerToLogBook(AdministerLogBookViewModel model)
         {
-            if (!this.ModelState.IsValid)
+            //if (!this.ModelState.IsValid)
+            //{
+            //    return View(nameof(LogBook), model);
+            //}
+            try
             {
+                foreach (var user in model.AllUsers)
+                {
+                    if (user.isSelected)
+                    {
+                        await _userEntityService.AssignUsersToEnityAsync(model.LogBook.Id, user.Id);
+                    }
+                }
+               
+                return RedirectToAction(nameof(LogBook), new { id = model.LogBook.Id });
+            }
+            catch (ArgumentException ex)
+            {
+                this.ModelState.AddModelError("Error", ex.Message);
                 return View(nameof(LogBook), model);
             }
-
-
-            else
-            {
-
-
-                return RedirectToAction(nameof(LogBook), new { id = model.LogBook.Id});
-            }
-            //try
-            //{
-            //    await _notesService.AddAsync(model.Note.EntityId, model.Note.NoteUser.Id, model.Note.Text, model.SelectedCategoryId);
-            //    return RedirectToAction(nameof(Notes), new { entityId = model.Note.EntityId });
-            //}
-            //catch (ArgumentException ex)
-            //{
-            //    this.ModelState.AddModelError("Error", ex.Message);
-            //    return View(nameof(Notes), model);
-            //}
+            
         }
     }
 }

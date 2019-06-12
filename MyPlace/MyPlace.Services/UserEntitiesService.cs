@@ -47,7 +47,7 @@ namespace MyPlace.Services
               })
               .ToListAsync();
 
-
+        
         //Manager
         //Administrator
         public async Task<List<MinUserDTO>> GetAllUsersInRole(string roleName)
@@ -55,11 +55,10 @@ namespace MyPlace.Services
             var users = await _userManager.GetUsersInRoleAsync(roleName);
             return users.Select(u => new MinUserDTO
             {
-
                 Id = u.Id,
                 Name = u.UserName
-
-            }).ToList();
+            })
+            .ToList();
         }
 
         public async Task<List<MinUserDTO>> GetAllEntityUsersAsync(int entityId)
@@ -69,13 +68,38 @@ namespace MyPlace.Services
                .Include(ue => ue.User)
                .Select(ue => new MinUserDTO
                {
-                  
                    Id = ue.UserId,
                    Name = ue.User.UserName
-
                })
               .ToListAsync();
         }
+
+        public async Task<CompositeEntityUsersDTO> GetUsersNeededForUsersToEntityAsygnmentAsync(int entityId, string roleName)
+        {
+            var logBookUsers = await GetAllEntityUsersAsync(entityId);
+            var allNotLogBookUsers = (await GetAllUsersInRole(roleName))
+                .Where(x => !logBookUsers.Any(y => x.Id == y.Id)).ToList();
+           return new CompositeEntityUsersDTO()
+            {
+                EntityUsers= logBookUsers,
+                AllNotEntityUsers = allNotLogBookUsers
+            };
+        }
+
+
+
+        public async Task AssignUsersToEnityAsync(int entityId, string userId)
+        {
+            await _context.UsersEntities.AddAsync(new UserEntity()
+            {
+                UserId = userId,
+                EntityId= entityId
+            });
+            await _context.SaveChangesAsync();
+        }
+
+
+
     }
     
 }

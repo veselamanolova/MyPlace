@@ -15,6 +15,11 @@ namespace MyPlace.Services.Contracts
         Task<List<MinUserDTO>> GetAllUsersInRole(string roleName);
 
         Task<List<MinUserDTO>> GetAllEntityUsersAsync(int entityId);
-       
+
+        Task<CompositeEntityUsersDTO> GetUsersNeededForUsersToEntityAsygnmentAsync(int entityId, string roleName);
+
+        Task AssignUsersToEnityAsync(int entityId, string userId); 
+
+
     }
 }

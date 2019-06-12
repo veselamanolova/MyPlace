@@ -1,6 +1,6 @@
 ﻿@model MyPlace.Areas.Administrator.Models.AdministerLogBookViewModel
 
-<div>Logbooks</div>
+<div>Logbook details</div>
 @{
     <div class="container">
         <div class="row mt-2 mb-2 p-2 bg-light">
@@ -21,6 +21,37 @@
             }
         </div>
     </div>
+    @*<div>
+        <form asp-action="AddCategoryToLogBook" method="post">           
+            <div class="form-group">
+                <input type="hidden" asp-for="@Model.LogBook.Id" />
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <h5>All Tags:</h5>
+                        @for (int i = 0; i < Model.AllUsers.Count; i++)
+                        {
+                            string id = "radiobtn" + Model.AllUsers[i].Name;
+
+                            <div class="custom-control">
+                                <input type="checkbox" asp-for="@Model.AllUsers[i].isSelected">
+                                <label asp-for="@Model.AllUsers[i].isSelected">@Model.AllUsers[i].Name</label>
+                                <input type="hidden" asp-for="@Model.AllUsers[i].Name" />
+                                <input type="hidden" asp-for="@Model.AllUsers[i].Id" />
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="submit" value="Add Tag to Logbook" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>*@
+
     <div class="col-md-12">
         <div class="form-group">
             <i class="fa fa-tag"></i> <h5>Logbook Managers:</h5>
@@ -31,63 +62,26 @@
             }
         </div>
     </div>
-
-    <div class="col-md-12">
-        <div class="form-group">
-            <i class="fa fa-tag"></i> <h5>All Managers:</h5>
-            @foreach (var user in Model.AllUsers)
-            {
-                <input type="hidden" asp-for="@user.Id" />
-                <div class="col-md-3 col-3 font-weight-bold">@user.Name</div>
-            }
-        </div>
-    </div>
-
     <div>
         <form asp-action="AddManagerToLogBook" method="post">
             @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
             <div class="form-group">
-                @*<input type="hidden" asp-for="@Model.LogBook.Id" />*@
+                <input type="hidden" asp-for="@Model.LogBook.Id" />
             </div>
             <div class="row">
-                @*<div class="col-md-12">
-                    <div class="form-group">
-                        <textarea rows="2" asp-for="@Model.Note.Text" class="form-control"></textarea>
-                        <span asp-validation-for="@Model.Note.Text" class="text-danger"></span>
-                    </div>
-                </div>*@
                 <div class="col-md-12">
                     <div class="form-group">
-                        <i class="fa fa-tag"></i> Tag:
+                        <h5>All Managers:</h5>
                         @for (int i = 0; i < Model.AllUsers.Count; i++)
                         {
-
                             string id = "radiobtn" + Model.AllUsers[i].Name;
 
-                            @*<div class="custom-control custom-radio custom-control-inline">
-
-                                <input type="checkbox" id="@id" class="custom-control-input"
-                                       asp-for="@Model.AllUsers[i].isSelected" value="@Model.AllUsers[i].Id">
-                                <label for="@id" class="custom-control-label">@Model.AllUsers[i].Name</label>
-                                <input type="hidden" asp-for="@Model.AllUsers[i].Name" />
-                                <input type="hidden" asp-for="@Model.AllUsers[i].Id" />
-                            </div>*@
-
-                            <div class="custom-control custom-radio custom-control-inline">
-
+                            <div class="custom-control">
                                 <input type="checkbox" asp-for="@Model.AllUsers[i].isSelected">
-                                <label asp-for="@Model.AllUsers[i].isSelected" class="custom-control-label">@Model.AllUsers[i].Name</label>
+                                <label asp-for="@Model.AllUsers[i].isSelected">@Model.AllUsers[i].Name</label>
                                 <input type="hidden" asp-for="@Model.AllUsers[i].Name" />
                                 <input type="hidden" asp-for="@Model.AllUsers[i].Id" />
                             </div>
-
-
-                            @*<li>
-                                <input type="checkbox" asp-for="@Model.Filters[i].Selected" />
-                                <label asp-for="@Model.Filters[i].Selected">@Model.Filters[i].Name</label>
-                                <input type="hidden" asp-for="@Model.Filters[i].Id" />
-                                <input type="hidden" asp-for="@Model.Filters[i].Name" />
-                            </li>*@
                         }
                     </div>
                 </div>
