@@ -21,5 +21,7 @@
         public string PreviousPageLink { get; set; }
 
         public string NextPageLink { get; set; }
+
+        public string ErrorMessage { get; set; }
     }
 }

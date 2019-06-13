@@ -39,27 +39,13 @@ namespace MyPlace.Areas.Notes.Controllers
             var userName = HttpContext.User.Identity.Name;
 
             var entities = await _userEntitiesService.GetAllUserEntitiesAsync(userId);
-
             var selectedEntityId = entityId ?? entities[0].EntityId;
-
-
-            List<CategoryViewModel> entityCategories = await GetEntityCategoriesAsync(selectedEntityId);         
-            
+            var entityCategories = await GetEntityCategoriesAsync(selectedEntityId);
           
             int pageSize = 3;
             int pageIndex = pageNumber ?? 1; 
             int? skip = (pageIndex-1) * (pageSize); 
-            int? take = pageSize; 
-            
-
-            var notesSearchResult = await _notesService.SearchAsync(selectedEntityId, searchedStringInText,
-                categoryId, ParseNullableDate(exactDate), ParseNullableDate(fromDate), 
-                ParseNullableDate(toDate), creator, sortOption, sortIsAscending,
-                skip, pageSize);
-
-            var notes = notesSearchResult.Notes;
-            var notesCount = notesSearchResult.NotesCount; 
-
+            int? take = pageSize;
 
             AddNoteViewModel addNoteVm = new AddNoteViewModel()
             {
@@ -74,6 +60,61 @@ namespace MyPlace.Areas.Notes.Controllers
                 },
                 EntityCategories = entityCategories,
             };
+
+            NotesSearchResultDTO notesSearchResult = null;
+            string errorMessage = null;
+            try
+            {
+                notesSearchResult = await _notesService.SearchAsync(selectedEntityId, searchedStringInText,
+                    categoryId, ParseNullableDate(exactDate), ParseNullableDate(fromDate),
+                    ParseNullableDate(toDate), creator, sortOption, sortIsAscending,
+                    skip, pageSize);
+            }
+            catch (ApplicationException ex)
+            {
+                // TODO: log
+
+                errorMessage = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                // TODO: log
+
+                errorMessage = "Error loading notes. Please try again.";
+            }
+
+            if(!string.IsNullOrEmpty(errorMessage))
+            {
+                var errorVM = new NotesViewModel()
+                {
+                    ErrorMessage = errorMessage,
+                    UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
+                    SelectedEntityId = selectedEntityId,
+                    // Notes = //_mapper.Map<List<NoteDTO>, List<NoteViewModel>>(notes),
+                    Notes = new PaginatedList<NoteViewModel>(new List<NoteViewModel>(), 0, 1, pageSize),
+                    AddNote = addNoteVm,
+                    SearchNotes = new SearchNotesViewModel
+                    {
+                        EntityId = selectedEntityId,
+                        EntityCategories = entityCategories,
+                        Creator = creator,
+                        SearchedStringInText = searchedStringInText,
+                        SearchCategoryId = categoryId,
+                        ExactDate = ParseNullableDate(exactDate),
+                        FromDate = ParseNullableDate(fromDate),
+                        ToDate = ParseNullableDate(toDate),
+                        SortOption = sortOption,
+                        SortIsAscending = sortIsAscending
+                    },
+                    PreviousPageLink = null,
+                    NextPageLink = null
+                };
+                return View(errorVM);
+            }
+
+            var notes = notesSearchResult.Notes;
+            var notesCount = notesSearchResult.NotesCount; 
+
 
             var previousPageLink = Url.Action(nameof(Notes), "Notes", new
             {
