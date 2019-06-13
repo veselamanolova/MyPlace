@@ -1,17 +1,16 @@
 ﻿
 namespace MyPlace.Areas.Administrator.Controllers
 {
+    using System;
     using AutoMapper;
     using System.Linq;
+    using MyPlace.Common;
     using System.Threading.Tasks;
-    using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
+    using MyPlace.Services.Contracts;
+    using System.Collections.Generic;
     using Microsoft.AspNetCore.Authorization;
     using MyPlace.Areas.Administrator.Models;
-    using MyPlace.Areas.Notes.Models;
-    using MyPlace.Services.Contracts;
-    using MyPlace.Common;
-    using System;
 
     [Area("Administrator")]
     [Authorize(Roles = GlobalConstants.AdminRole)]
