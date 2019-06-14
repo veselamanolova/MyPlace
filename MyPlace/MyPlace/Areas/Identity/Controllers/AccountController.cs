@@ -10,9 +10,6 @@ namespace MyPlace.Areas.Identity.Controllers
     using MyPlace.Models.Account;
     using MyPlace.Infrastructure.Logger;
     using MyPlace.Common;
-    using MyPlace.Common;
-    using Microsoft.AspNetCore.Http;
-    using System.Security.Claims;
 
     [Area("Identity")]
     [TypeFilter(typeof(AddHeaderActionFilter))]
@@ -42,8 +39,6 @@ namespace MyPlace.Areas.Identity.Controllers
                 .FirstOrDefault(usr => usr.UserName.Equals(model.UserName));
                 
                 var result = await _signIn.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: true);
-
-                var userRoles = await _userManager.GetRolesAsync(user);
 
                 if (result.Succeeded)
                 {
