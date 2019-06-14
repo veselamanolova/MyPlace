@@ -1,21 +1,17 @@
 ﻿@model MyPlace.Areas.Administrator.Models.AdministerLogBookViewModel
 
-<div>Logbook details</div>
 @{
     <div class="container">
         <div class="row mt-2 mb-2 p-2 bg-light">
             <input type="hidden" asp-for="@Model.LogBook.Id" />
-            @*<img class="col-md-3 col-12" src="@Model.LogBook.ImageUrl" />*@
-            <div class="col-md-3 col-12 font-weight-bold">@Model.LogBook.Title</div>
-            @*<div class="col-md-1 col-12 font-weight-bold">@Model.LogBook.Description</div>
-                <div class="col-md-4 col-12">@Model.LogBook.Address</div>*@
+            <div class="col-md-3 col-12 font-weight-bold"><h5>Logbook: @Model.LogBook.Title</h5></div>
         </div>
     </div>
     <div class="container">
         <div class="row mt-2 mb-2 p-2 bg-light">
             <div class="col-md-6">
                 <div class="form-group">
-                    <i class="fa fa-tag"></i> <h5>Assigned Tags:</h5>
+                    <i class="fa fa-tag"></i><strong>Assigned tags:</strong>
                     @foreach (var category in Model.LogBookCategories)
                     {
                         <input type="hidden" asp-for="@category.CategoryId" />
@@ -27,7 +23,7 @@
                 <form asp-action="AddCategoryToLogBook" method="post">
                     <input type="hidden" asp-for="@Model.LogBook.Id" />
                     <div class="form-group">
-                        <h5>All Tags:</h5>
+                        <strong>Unassigned tags:</strong>
                         @for (int i = 0; i < Model.AllUnassignedCategories.Count; i++)
                         {
                             string id = "radiobtn" + Model.AllUnassignedCategories[i].Name;
@@ -51,7 +47,7 @@
         <div class="row mt-2 mb-2 p-2 bg-light">
             <div class="col-md-6">
                 <div class="form-group">
-                    <i class="fa fa-tag"></i> <h5>Logbook Managers:</h5>
+                    <i class="fa fa-tag"></i> <strong>Logbook Managers:</strong>
                     @foreach (var user in Model.LogBookManagers)
                     {
                         <input type="hidden" asp-for="@user.Id" />
@@ -61,31 +57,27 @@
             </div>
             <div class="col-md-6">
                 <form asp-action="AddManagerToLogBook" method="post">
-                    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
-                    <div class="form-group">
-                        <input type="hidden" asp-for="@Model.LogBook.Id" />
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <h5>All Managers:</h5>
-                                @for (int i = 0; i < Model.AllUnassignedManagers.Count; i++)
-                                {
-                                    string id = "radiobtn" + Model.AllUnassignedManagers[i].Name;
+                    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@  
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="hidden" asp-for="@Model.LogBook.Id" />
+                            <strong>All Managers:</strong>
+                            @for (int i = 0; i < Model.AllUnassignedManagers.Count; i++)
+                            {
+                                string id = "radiobtn" + Model.AllUnassignedManagers[i].Name;
 
-                                    <div class="custom-control">
-                                        <input type="checkbox" asp-for="@Model.AllUnassignedManagers[i].isSelected">
-                                        <label asp-for="@Model.AllUnassignedManagers[i].isSelected">@Model.AllUnassignedManagers[i].Name</label>
-                                        <input type="hidden" asp-for="@Model.AllUnassignedManagers[i].Name" />
-                                        <input type="hidden" asp-for="@Model.AllUnassignedManagers[i].Id" />
-                                    </div>
-                                }
-                            </div>
+                                <div class="custom-control">
+                                    <input type="checkbox" asp-for="@Model.AllUnassignedManagers[i].isSelected">
+                                    <label asp-for="@Model.AllUnassignedManagers[i].isSelected">@Model.AllUnassignedManagers[i].Name</label>
+                                    <input type="hidden" asp-for="@Model.AllUnassignedManagers[i].Name" />
+                                    <input type="hidden" asp-for="@Model.AllUnassignedManagers[i].Id" />
+                                </div>
+                            }
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <input type="submit" value="Add Manager" class="btn btn-primary" />
-                            </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="submit" value="Add Manager" class="btn btn-primary" />
                         </div>
                     </div>
                 </form>

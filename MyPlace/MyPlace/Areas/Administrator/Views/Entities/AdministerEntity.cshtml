@@ -4,7 +4,7 @@
 @{
     string searchPanelClass = "";
     string addLogBookClass = "";
-    string searchHeaderClass = "";
+    string moderatorsClass = "";
     string addHeaderClass = "";
     //if (Model.SearchNotes.IsSearchActive)
     //{
@@ -14,7 +14,7 @@
     //else
     //{
     //    addLogBookClass  += "show";
-    //    searchHeaderClass += "collapsed";
+    //    moderatorsClass += "collapsed";
     //}
 }
 
@@ -34,11 +34,11 @@
 
             <div>
                 <div class="card-header" id="headingSearch">
-                    <h5 class="mb-0 collapsible-header @searchHeaderClass" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+                    <h5 class="mb-0 collapsible-header @moderatorsClass" data-toggle="collapse" data-target="#collapseModerators" aria-expanded="false" aria-controls="collapseModerators">
                         <button class="btn btn-link">Moderators</button>
                     </h5>
                 </div>
-                <div id="collapseSearch" class="collapse collapsible-panel @searchPanelClass" aria-labelledby="headingSearch" data-parent="#accordion">
+                <div id="collapseModerators" class="collapse collapsible-panel @searchPanelClass" aria-labelledby="headingSearch" data-parent="#accordion">
                     @*<partial name="_EntitiesPartial.cshtml" model="@Model.Entity" />*@
 
                     <div class="container">
@@ -105,10 +105,7 @@
         <div class="container">
             <div class="row mt-2 mb-2 p-2 bg-light" id="@entityId + @logbook.Id">
                 <input type="hidden" asp-for="@logbook.Id" />
-                @*<img class="col-md-3 col-12" src="@logbook.ImageUrl" />*@
                 <div class="col-md-3 col-12 font-weight-bold">@logbook.Title</div>
-                @*<div class="col-md-1 col-12 font-weight-bold">@logbook.Description</div>
-                    <div class="col-md-4 col-12">@logbook.Address</div>*@
                 <a class="col-md-1 col-12" href='@Url.Action("LogBook", "Entities", new { id = @logbook.Id })'>Details<i class="fa fa-pencil-square-o icon"></i></a>
                 @*<a class="col-md-1 col-12" href='@Url.Action("AdministerEntity", "Entities", new { Id = @logbook.Id })'><i class="fa fa-pencil-square-o icon"></i></a>*@
             </div>

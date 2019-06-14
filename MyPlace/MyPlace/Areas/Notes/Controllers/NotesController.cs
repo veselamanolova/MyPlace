@@ -255,7 +255,7 @@ namespace MyPlace.Areas.Notes.Controllers
         {            
             if (!this.ModelState.IsValid)
             {
-                return View(nameof(Notes), new { entityId = model.Note.EntityId }); 
+                return RedirectToAction(nameof(Notes)); 
             }
 
             try
