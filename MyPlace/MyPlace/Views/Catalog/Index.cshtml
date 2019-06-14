@@ -25,6 +25,11 @@
 <div>
     @foreach (var item in Model)
     {
+        @if (item.EstablishmentId != null)
+        {
+            continue;
+        }
+
         <div class="section-border">
             <div class="row">
                 <div class="col-md-4">
@@ -37,7 +42,6 @@
                         </figcaption>
 
                         <a href="/Catalog/Establishment/@item.Id"></a>
-
                     </figure>
                 </div>
                 <div class="col-md-7 left-align-p">

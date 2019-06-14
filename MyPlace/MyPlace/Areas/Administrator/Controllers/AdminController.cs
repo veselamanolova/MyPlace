@@ -12,6 +12,8 @@ namespace MyPlace.Areas.Admin.Controllers
     using MyPlace.Areas.Administrator.Models;
     using MyPlace.Infrastructure.Logger;
     using MyPlace.Common;
+    using MyPlace.Data;
+    using Microsoft.EntityFrameworkCore;
 
     [Area("Administrator")]
     [Authorize(Roles = GlobalConstants.AdminRole)]
@@ -35,7 +37,7 @@ namespace MyPlace.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Activity() =>
             View(new ActivityIndexModel { ActivityList = _adminService.GetActivity<ActivityListingModel>().Result });
-        
+
 
         [HttpGet]
         public IActionResult CreateEntity() => View();
@@ -44,10 +46,9 @@ namespace MyPlace.Areas.Admin.Controllers
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [Authorize(Roles = GlobalConstants.AdminRole)]
-        [Authorize(Roles = GlobalConstants.ModeratorRole)]
-        public async Task<IActionResult> Edit(int entityId, int commentId, string newComment)
+        public async Task<IActionResult> Edit(EditViewModel model)
         {
-            await _adminService.EditCommentAsync(entityId, commentId, newComment);
+            //await _adminService.EditCommentAsync(entityId, commentId, newComment);
             await _logger.INFO().Log($"{this.User.Identity.AuthenticationType} {this.User.Identity.Name.ToUpper()} created a new Entity.");
             return View();
         }

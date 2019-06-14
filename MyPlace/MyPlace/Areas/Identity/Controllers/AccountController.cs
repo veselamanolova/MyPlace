@@ -9,6 +9,7 @@ namespace MyPlace.Areas.Identity.Controllers
     using MyPlace.DataModels;
     using MyPlace.Models.Account;
     using MyPlace.Infrastructure.Logger;
+    using MyPlace.Common;
 
     [Area("Identity")]
     [TypeFilter(typeof(AddHeaderActionFilter))]
@@ -16,11 +17,13 @@ namespace MyPlace.Areas.Identity.Controllers
     {
         private readonly IDatabaseLogger _logger;
         private readonly SignInManager<User> _signIn;
+        private readonly UserManager<User> _userManager;
 
-        public AccountController(SignInManager<User> signIn, IDatabaseLogger logger)
+        public AccountController(SignInManager<User> signIn, IDatabaseLogger logger, UserManager<User> userManager)
         {
             _signIn = signIn;
             _logger = logger;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -36,6 +39,8 @@ namespace MyPlace.Areas.Identity.Controllers
                 .FirstOrDefault(usr => usr.UserName.Equals(model.UserName));
 
                 var result = await _signIn.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: true);
+
+                var userRoles = await _userManager.GetRolesAsync(user);
 
                 if (result.Succeeded)
                     return RedirectToAction("Index", "Catalog");
