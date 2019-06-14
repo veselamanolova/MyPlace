@@ -249,13 +249,12 @@ namespace MyPlace.Areas.Notes.Controllers
 
         // [Authorize(Roles = "Manager")]
         [HttpPost("AddNote")]       
-        [ValidateAntiForgeryToken]
-        
+        [ValidateAntiForgeryToken]        
         public async Task<IActionResult> AddNote(AddNoteViewModel model)        
         {            
             if (!this.ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Notes)); 
+                return View(nameof(AddNote), model);
             }
 
             try
@@ -264,10 +263,10 @@ namespace MyPlace.Areas.Notes.Controllers
                 return RedirectToAction(nameof(Notes), new { entityId = model.Note.EntityId });
             }
             catch (ArgumentException ex)
-            {
-                this.ModelState.AddModelError("Error", ex.Message);
-                return View(nameof(Notes), model);
-            }
+            {                
+                model.ErrorMessage = ex.Message;
+                return View(nameof(AddNote), model);
+            }            
         }
 
 
@@ -305,8 +304,8 @@ namespace MyPlace.Areas.Notes.Controllers
         public async Task<IActionResult> EditNote(EditNoteViewModel model)
         {
             if (!this.ModelState.IsValid)
-            {                
-                return View(nameof(Edit), new { entityId = model.Note.EntityId });
+            {
+               return View(nameof(Edit), model);                
             }
 
             try
@@ -316,10 +315,11 @@ namespace MyPlace.Areas.Notes.Controllers
                     model.Note.HasStatus);
                 return RedirectToAction(nameof(Notes), new { entityId = model.Note.EntityId });
             }
-            catch (ArgumentException ex)
+            catch (ApplicationException ex)
             {
-                this.ModelState.AddModelError("Error", ex.Message);
-                return View(nameof(Edit), new { entityId = model.Note.EntityId });
+                model.ErrorMessage = ex.Message;
+               // this.ModelState.AddModelError("Error", ex.Message);
+                return View(nameof(Edit), model);                
             }
         }
 
@@ -343,7 +343,6 @@ namespace MyPlace.Areas.Notes.Controllers
                     creator = model.Creator,
                     sortOption = model.SortOption,
                     sortIsAscending = model.SortIsAscending
-
                 });
             }
             catch (ArgumentException ex)

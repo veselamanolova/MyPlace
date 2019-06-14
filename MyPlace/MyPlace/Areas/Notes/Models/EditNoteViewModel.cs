@@ -13,6 +13,8 @@ namespace MyPlace.Areas.Notes.Models
 
         public int SelectedCategoryId { get; set; }
 
-        public bool SelectedStatusId;         
+        public bool SelectedStatusId;
+
+        public string ErrorMessage { get; set; }
     }
 }

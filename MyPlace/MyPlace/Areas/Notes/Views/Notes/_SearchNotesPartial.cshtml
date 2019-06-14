@@ -5,13 +5,12 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
             <div class="form-group">
-                <input type="hidden" asp-for="@Model.EntityId" class="form-control" />
-                @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
+                <input type="hidden" asp-for="@Model.EntityId" class="form-control" />              
             </div>
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <input asp-for="@Model.SearchedStringInText" class="form-control" placeholder="Search in text" />
-                    @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
+                    <span asp-validation-for="@Model.SearchedStringInText" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-4 col-sm-12">
@@ -26,7 +25,7 @@
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <input asp-for="@Model.Creator " class="form-control" placeholder="Creator" />
-                    @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
+                    <span asp-validation-for="@Model.Creator" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-4 col-sm-12">

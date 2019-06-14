@@ -1,0 +1,13 @@
+﻿@model MyPlace.Areas.Notes.Models.AddNoteViewModel
+
+@{
+    ViewData["Title"] = "AddNote";
+}
+
+<h1>AddNote</h1>
+
+<partial name="_AddNotePartial" model="Model" />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
