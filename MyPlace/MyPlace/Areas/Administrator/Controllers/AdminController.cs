@@ -43,6 +43,18 @@ namespace MyPlace.Areas.Admin.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
+        [Authorize(Roles = GlobalConstants.AdminRole)]
+        [Authorize(Roles = GlobalConstants.ModeratorRole)]
+        public async Task<IActionResult> Edit(int entityId, int commentId, string newComment)
+        {
+            await _adminService.EditCommentAsync(entityId, commentId, newComment);
+            await _logger.INFO().Log($"{this.User.Identity.AuthenticationType} {this.User.Identity.Name.ToUpper()} created a new Entity.");
+            return View();
+        }
+
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> CreateEntity(CreateEntityBindingModel model)
         {
             if (ModelState.IsValid)
@@ -91,7 +103,7 @@ namespace MyPlace.Areas.Admin.Controllers
 
         public async Task<IActionResult> Delete(int entityId, int commentId)
         {
-            await _adminService.Delete(entityId, commentId);
+            await _adminService.DeleteAsync(entityId, commentId);
             await _logger.INFO().Log($"Administrator {this.User.Identity.Name.ToUpper()} delete comment.");
 
             return RedirectToAction("Establishment", "Catalog", new { area = "", id = entityId });

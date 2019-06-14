@@ -28,7 +28,7 @@ namespace MyPlace.Services
         }
 
 
-        public async Task Delete(int entityId, int commentId)
+        public async Task DeleteAsync(int entityId, int commentId)
         {
             var entity = _context.Entities.Where(e => e.Id.Equals(entityId))
                 .Include(c => c.Comments).FirstOrDefault();
@@ -36,6 +36,16 @@ namespace MyPlace.Services
             var comment = entity.Comments.Where(c => c.Id.Equals(commentId)).FirstOrDefault();
 
             entity.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task EditCommentAsync(int entityId, int commentId, string newComment)
+        {
+            var entity = _context.Entities.Where(e => e.Id == entityId)
+                .Include(c => c.Comments).FirstOrDefault();
+
+            entity.Comments.Where(c => c.Id == commentId).Select(x => x.Content = newComment);
             await _context.SaveChangesAsync();
         }
 

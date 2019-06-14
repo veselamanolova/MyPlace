@@ -5,6 +5,8 @@ namespace MyPlace.Areas.Administrator.Models
 
     public class ActivityListingModel
     {
+        public int Id { get; set; }
+
         public string Log { get; set; }
 
         public string Type { get; set; }

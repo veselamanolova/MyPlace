@@ -3,7 +3,6 @@ namespace MyPlace.Infrastructure
 {
     using System;
     using System.Threading.Tasks;
-    using MyPlace.Common;
     using MyPlace.Data;
     using MyPlace.DataModels;
     using MyPlace.Infrastructure.Logger;
@@ -22,30 +21,6 @@ namespace MyPlace.Infrastructure
             _eventLog.CreatedOn = DateTime.Now;
             _context.EventLogs.Add(_eventLog);
             await _context.SaveChangesAsync();
-        }
-
-        public DatabaseLogger DEBUG()
-        {
-            _eventLog.Type = GlobalConstants.DEBUG;
-            return this;
-        }
-
-        public DatabaseLogger INFO()
-        {
-            _eventLog.Type = GlobalConstants.INFO;
-            return this;
-        }
-
-        public DatabaseLogger WARN()
-        {
-            _eventLog.Type = GlobalConstants.WARN;
-            return this;
-        }
-
-        public DatabaseLogger ERROR()
-        {
-            _eventLog.Type = GlobalConstants.ERROR;
-            return this;
         }
     }
 }

@@ -10,8 +10,8 @@ using MyPlace.Data;
 namespace MyPlace.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190611111355_EntityEstablishementSelfRelation")]
-    partial class EntityEstablishementSelfRelation
+    [Migration("20190612072046_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
