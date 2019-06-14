@@ -183,7 +183,12 @@ namespace MyPlace
                 routes.MapRoute(
                     name: "areas",
                     template: "{area:exists}/{controller=Manager}/{action=Index}/{id?}"
-            );
+            );       
+
+            routes.MapRoute(
+                   name: "Notes",
+                   template: "Notes/{controller=Notes}/{action=Notes}/{id?}"
+           );
 
                 routes.MapRoute(
                     name: "default",

@@ -14,5 +14,12 @@
             <a class="nav-link nav-link-white" asp-area="Administrator" asp-controller="Admin" asp-action="Activity"><strong>Activity</strong></a>
         </li>
     }
+    @if (SignInManager.IsSignedIn(User) && this.User.IsInRole(GlobalConstants.ManagerRole))
+    {
+        <li class="nav-item">
+            <a class="nav-link nav-link-white" asp-area="Notes" asp-controller="Notes" asp-action="Notes">Notes</a>
+        </li>
+    }
+    
 </ul>
 

@@ -1,25 +1,120 @@
 ﻿@model MyPlace.Areas.Administrator.Models.AdministerEntityViewModel
 
-<partial name="_EntitiesPartial.cshtml" model="@Model.Entity" />
 
-<a href="#">Add Logbook</a>
+@{
+    string searchPanelClass = "";
+    string addLogBookClass = "";
+    string moderatorsClass = "";
+    string addHeaderClass = "";
+    //if (Model.SearchNotes.IsSearchActive)
+    //{
+    //    searchPanelClass += "show";
+    //    addHeaderClass += "collapsed";
+    //}
+    //else
+    //{
+    //    addLogBookClass  += "show";
+    //    moderatorsClass += "collapsed";
+    //}
+}
+
+<div class="tab-content clearfix">
+    <div class="tab-pane active">
+        <div id="accordion">
+            <div>
+                <div class="card-header" id="headingAddNote">
+                    <h5 class="mb-0 collapsible-header @addHeaderClass" data-toggle="collapse" data-target="#collapseAddNote" aria-expanded="true" aria-controls="collapseAddNote">
+                        <button class="btn btn-link">Add Entity</button>
+                    </h5>
+                </div>
+                <div id="collapseAddNote" class="collapse collapsible-panel @addLogBookClass " aria-labelledby="headingAddNote" data-parent="#accordion">
+                    <partial name="_AddLogBookPartial.cshtml" model="@Model.NewLogBook" />
+                </div>
+            </div>
+
+            <div>
+                <div class="card-header" id="headingSearch">
+                    <h5 class="mb-0 collapsible-header @moderatorsClass" data-toggle="collapse" data-target="#collapseModerators" aria-expanded="false" aria-controls="collapseModerators">
+                        <button class="btn btn-link">Moderators</button>
+                    </h5>
+                </div>
+                <div id="collapseModerators" class="collapse collapsible-panel @searchPanelClass" aria-labelledby="headingSearch" data-parent="#accordion">
+                    @*<partial name="_EntitiesPartial.cshtml" model="@Model.Entity" />*@
+
+                    <div class="container">
+                        <div class="row mt-2 mb-2 p-2 bg-light">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <i class="fa fa-tag"></i> <h5>Moderators:</h5>
+                                    @foreach (var user in Model.EntityModerators)
+                                    {
+                                        <input type="hidden" asp-for="@user.Id" />
+                                        <div class="col-md-3 col-3 font-weight-bold">@user.Name</div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <form asp-action="AddModeratorToEntity" method="post">
+                                    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+                                    <div class="form-group">
+                                        <input type="hidden" asp-for="@Model.Entity.Id" />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <h5>Unassigned Moderators:</h5>
+                                                @for (int i = 0; i < Model.UnassignedModerators.Count; i++)
+                                                {
+                                                    string id = "radiobtn" + Model.UnassignedModerators[i].Name;
+
+                                                    <div class="custom-control">
+                                                        <input type="checkbox" asp-for="@Model.UnassignedModerators[i].isSelected">
+                                                        <label asp-for="@Model.UnassignedModerators[i].isSelected">@Model.UnassignedModerators[i].Name</label>
+                                                        <input type="hidden" asp-for="@Model.UnassignedModerators[i].Name" />
+                                                        <input type="hidden" asp-for="@Model.UnassignedModerators[i].Id" />
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <input type="submit" value="Add Moderator" class="btn btn-primary" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* end *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div>Logbooks</div>
-@{   
+@{
     var entityId = "entityId";
 
     foreach (var logbook in Model.LogBooks)
-    {   
+    {
         <div class="container">
             <div class="row mt-2 mb-2 p-2 bg-light" id="@entityId + @logbook.Id">
                 <input type="hidden" asp-for="@logbook.Id" />
-                <img class="col-md-3 col-12" src="@logbook.ImageUrl" />
                 <div class="col-md-3 col-12 font-weight-bold">@logbook.Title</div>
-                <div class="col-md-1 col-12 font-weight-bold">@logbook.Description</div>
-                <div class="col-md-4 col-12">@logbook.Address</div>                
                 <a class="col-md-1 col-12" href='@Url.Action("LogBook", "Entities", new { id = @logbook.Id })'>Details<i class="fa fa-pencil-square-o icon"></i></a>
                 @*<a class="col-md-1 col-12" href='@Url.Action("AdministerEntity", "Entities", new { Id = @logbook.Id })'><i class="fa fa-pencil-square-o icon"></i></a>*@
             </div>
         </div>
     }
+}
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 

@@ -77,7 +77,7 @@ namespace MyPlace.Services
             {
                 if (fromDate > toDate)
                 {
-                    throw new ArgumentException("From date should be greater than to date."); 
+                    throw new ApplicationException("From date should be greater than to date."); 
                 }
             }
 
@@ -89,9 +89,7 @@ namespace MyPlace.Services
                .Select(note => ConvertToNoteDTO(note))
                .ToList()
             }; 
-        }       
-
-
+        } 
 
         private static NoteDTO ConvertToNoteDTO(Note note)
         {            

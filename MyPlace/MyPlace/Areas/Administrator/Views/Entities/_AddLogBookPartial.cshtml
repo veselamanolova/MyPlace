@@ -1,0 +1,37 @@
+﻿@model MyPlace.Areas.Administrator.Models.LogBookViewModel
+
+@{
+    var entityId = "entityId" + @Model.Id;
+}
+
+<div class="container">
+    <div class="row mt-2 mb-2 p-2 bg-light">
+        <h5>Add Logbook:</h5>
+        <div class="col-md-12">
+            <form asp-action="AddLogBookToEntity" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="@Model.EstablishmentId" />
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="@Model.Title">@Model.Title</label>
+                            <input asp-for="@Model.Title" class="form-control" placeholder="" />
+                            <span asp-validation-for="@Model.Title" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="submit" value="Add Logbook" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+

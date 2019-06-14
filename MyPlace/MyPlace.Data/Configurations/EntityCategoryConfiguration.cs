@@ -3,7 +3,7 @@ namespace MyPlace.Data.Configurations
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-    using MyPlace.DataModels;
+    using MyPlace.DataModels;    
 
     class EntityCategoryConfiguration : IEntityTypeConfiguration<EntityCategory>
     {
@@ -20,7 +20,8 @@ namespace MyPlace.Data.Configurations
             builder
                 .HasOne(ec => ec.Category)
                 .WithMany(c => c.EntityCategories)
-                .HasForeignKey(ec => ec.CategoryId);
+                .HasForeignKey(ec => ec.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -1,16 +1,16 @@
 ﻿
 namespace MyPlace.Areas.Administrator.Controllers
 {
+    using System;
     using AutoMapper;
     using System.Linq;
+    using MyPlace.Common;
     using System.Threading.Tasks;
-    using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
+    using MyPlace.Services.Contracts;
+    using System.Collections.Generic;
     using Microsoft.AspNetCore.Authorization;
     using MyPlace.Areas.Administrator.Models;
-    using MyPlace.Areas.Notes.Models;
-    using MyPlace.Services.Contracts;
-    using MyPlace.Common;
 
     [Area("Administrator")]
     [Authorize(Roles = GlobalConstants.AdminRole)]
@@ -34,24 +34,43 @@ namespace MyPlace.Areas.Administrator.Controllers
         {
             var entities = await _entityService.GetAllEntitiesAsync();
             List<EntityViewModel> result = _mapper.Map<List<EntityViewModel>>(entities);
-            EntitiesViewModel vm = new EntitiesViewModel();
-            vm.Entities = result; 
-
+            EntitiesViewModel vm = new EntitiesViewModel()
+            {
+                Entities = result
+            };          
             return View(vm); 
         }
 
         [HttpGet("AdministerEntity")]
-        public async Task<IActionResult> AdministerEntity(int Id)
+        public async Task<IActionResult> AdministerEntity(int id)
         {
-            var entity = await _entityService.GetEntityByIdAsync(Id);         
+            var entity = await _entityService.GetEntityByIdAsync(id);         
 
             var logbooks = entity.LogBooks.ToList();
             var listLogbooks = _mapper.Map<List<LogBookViewModel>>(logbooks);
 
+            var usersNeeededForUserToEntityAssignment = await _userEntityService
+                     .GetUsersNeededForUsersToEntityAsignmentAsync(id, "Moderator");
+            var entityModerators = usersNeeededForUserToEntityAssignment.EntityUsers;
+            var unassignedModerators = usersNeeededForUserToEntityAssignment
+                .AllNotEntityUsers.Select(x => new SelectableUserViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    isSelected = false
+                }).ToList();
+
+
             var vm = new AdministerEntityViewModel()
             {
                 Entity = _mapper.Map<EntityViewModel>(entity),
-                LogBooks = listLogbooks
+                NewLogBook = new LogBookViewModel()
+                {
+                    EstablishmentId=id
+                },
+                LogBooks = listLogbooks, 
+                EntityModerators = entityModerators,
+                UnassignedModerators = unassignedModerators
             }; 
 
             return View(vm);
@@ -60,24 +79,131 @@ namespace MyPlace.Areas.Administrator.Controllers
         [HttpGet("LogBook")]
         public async Task<IActionResult> LogBook(int id)
         {
-            var allCategories = await _categoryService.GetAllCategoriesAsync();
-            var categoriesvm = _mapper.Map<List<CategoryViewModel>>(allCategories);
+            var catalogsNeeededForUserToEntityAssignment = await _categoryService
+                .GetAllEntityAndNotEntityCategories(id);
+
+            var allNotAssignedCategories = catalogsNeeededForUserToEntityAssignment
+                .AllNotEntityCategories.Select(x => new SelectableCategoryViewModel()
+                {
+                    CategoryId = x.CategoryId,
+                    Name = x.Name,
+                    isSelected = false
+                }).ToList(); 
+
+            var logBookCategories = catalogsNeeededForUserToEntityAssignment
+                .EntityCategories; 
 
             var logbook = await _entityService.GetLogBookByIdAsync(id); 
             var logbookvm = _mapper.Map<LogBookViewModel>(logbook);
 
-            var logBookUsers = await _userEntityService.GetAllEntityUsersAsync(id); 
-            var allManagers = await _userEntityService.GetAllUsersInRole("Manager");
+            var usersNeeededForUserToEntityAssignment = await _userEntityService
+                .GetUsersNeededForUsersToEntityAsignmentAsync(id, "Manager");               
+            var logBookUsers = usersNeeededForUserToEntityAssignment.EntityUsers;
+            var allNotLogBookUsers = usersNeeededForUserToEntityAssignment
+                .AllNotEntityUsers.Select(x => new SelectableUserViewModel()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                isSelected = false
+            }).ToList();
 
             AdministerLogBookViewModel vm = new AdministerLogBookViewModel()
             {
                 LogBook = logbookvm,
-                AllCategories = allCategories,
-                AllUsers = allManagers,
-                EntityUsers = logBookUsers
+                AllUnassignedCategories = allNotAssignedCategories,
+                LogBookCategories = logBookCategories,
+                AllUnassignedManagers = allNotLogBookUsers,
+                LogBookManagers = logBookUsers
             };         
 
             return View(vm);
+        }
+
+        [HttpPost("AddManagerToLogBook")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddManagerToLogBook(AdministerLogBookViewModel model)
+        {            
+            try
+            {
+                foreach (var user in model.AllUnassignedManagers)
+                {
+                    if (user.isSelected)
+                    {
+                        await _userEntityService.AssignUsersToEnityAsync(model.LogBook.Id, user.Id);
+                    }
+                }
+               
+                return RedirectToAction(nameof(LogBook), new { id = model.LogBook.Id });
+            }
+            catch (ArgumentException ex)
+            {
+                this.ModelState.AddModelError("Error", ex.Message);
+                return View(nameof(LogBook), model);
+            }            
+        }
+
+        [HttpPost("AddModeratorToEntity")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddModeratorToEntity(AdministerEntityViewModel model)
+        {
+            try
+            {
+                foreach (var user in model.UnassignedModerators)
+                {
+                    if (user.isSelected)
+                    {
+                        await _userEntityService.AssignUsersToEnityAsync(model.Entity.Id, user.Id);
+                    }
+                }
+
+                return RedirectToAction(nameof(AdministerEntity), new { id = model.Entity.Id });
+            }
+            catch (ArgumentException ex)
+            {
+                this.ModelState.AddModelError("Error", ex.Message);
+                return View(nameof(AdministerEntity), model);
+            }
+        }
+
+        [HttpPost("AddLogBookToEntity")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddLogBookToEntity(LogBookViewModel model)
+        {
+            try
+            {
+                await _entityService.
+                    CreateLogBookAsync(model.Title, model.EstablishmentId);           
+                return RedirectToAction(nameof(AdministerEntity), new { id = model.EstablishmentId });
+            }
+            catch (ArgumentException ex)
+            {
+                this.ModelState.AddModelError("Error", ex.Message);
+                return View(nameof(AdministerEntity), model);
+            }
+        }
+
+
+        [HttpPost("AddCategoryToLogBook")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCategoryToLogBook(AdministerLogBookViewModel model)
+        {          
+            try
+            {
+                foreach (var category in model.AllUnassignedCategories)
+                {
+                    if (category.isSelected)
+                    {
+                        await _userEntityService.AssignCategoryToLogbookAsync(model.LogBook.Id, category.CategoryId);
+                    }
+                }
+
+                return RedirectToAction(nameof(LogBook), new { id = model.LogBook.Id });
+            }
+            catch (ArgumentException ex)
+            {
+                this.ModelState.AddModelError("Error", ex.Message);
+                return View(nameof(LogBook), model);
+            }
         }
     }
 }

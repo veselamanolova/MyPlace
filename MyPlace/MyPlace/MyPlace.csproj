@@ -39,7 +39,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Notes\Controllers\" />
-    <Folder Include="wwwroot\images\notes\" />
   </ItemGroup>
 
 </Project>

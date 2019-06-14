@@ -10,6 +10,9 @@ namespace MyPlace.Areas.Identity.Controllers
     using MyPlace.Models.Account;
     using MyPlace.Infrastructure.Logger;
     using MyPlace.Common;
+    using MyPlace.Common;
+    using Microsoft.AspNetCore.Http;
+    using System.Security.Claims;
 
     [Area("Identity")]
     [TypeFilter(typeof(AddHeaderActionFilter))]
@@ -33,17 +36,23 @@ namespace MyPlace.Areas.Identity.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Login([FromForm]LoginBindingModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var user = _signIn.UserManager.Users
                 .FirstOrDefault(usr => usr.UserName.Equals(model.UserName));
-
+                
                 var result = await _signIn.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: true);
 
                 var userRoles = await _userManager.GetRolesAsync(user);
 
                 if (result.Succeeded)
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles.Contains(GlobalConstants.ManagerRole))
+                        return RedirectToAction("Notes", "Notes", new { area = "Notes" });
+
                     return RedirectToAction("Index", "Catalog");
+                }
             }
             await _logger.WARN().Log($"Fail attempt to login for user: {model.UserName.ToUpper()}");
             return View(model);
