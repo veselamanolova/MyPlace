@@ -12,7 +12,9 @@
 
         public NoteUserViewModel NoteUser { get; set; }
 
-        [Required(ErrorMessage = "note text is required")]
+        
+        [Required(ErrorMessage = "Note text is required. It can contain words, numbers and punctuation."),
+            RegularExpression("^[a-zA-Z0-9,.!?;: ]*$")]        
         public string Text { get; set; }
 
         public CategoryViewModel Category { get; set; }

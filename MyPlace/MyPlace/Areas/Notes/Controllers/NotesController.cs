@@ -11,8 +11,12 @@ namespace MyPlace.Areas.Notes.Controllers
     using MyPlace.Services.DTOs;
     using System.Globalization;
     using AutoMapper;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
+    using Microsoft.AspNetCore.Authorization;
+    using MyPlace.Common;
 
-    [Area("Notes")]
+    [Area("Notes")]    
+    [Authorize(Roles = GlobalConstants.ManagerRole)]
     public class NotesController : Controller
     {
         private readonly IMapper _mapper;
@@ -41,10 +45,10 @@ namespace MyPlace.Areas.Notes.Controllers
             var entities = await _userEntitiesService.GetAllUserEntitiesAsync(userId);
             var selectedEntityId = entityId ?? entities[0].EntityId;
             var entityCategories = await GetEntityCategoriesAsync(selectedEntityId);
-          
+
             int pageSize = 3;
-            int pageIndex = pageNumber ?? 1; 
-            int? skip = (pageIndex-1) * (pageSize); 
+            int pageIndex = pageNumber ?? 1;
+            int? skip = (pageIndex - 1) * (pageSize);
             int? take = pageSize;
 
             AddNoteViewModel addNoteVm = new AddNoteViewModel()
@@ -82,38 +86,20 @@ namespace MyPlace.Areas.Notes.Controllers
 
                 errorMessage = "Error loading notes. Please try again.";
             }
+            NotesViewModel vm = CreateNotesViewModel(searchedStringInText, categoryId, 
+                exactDate, fromDate, toDate, 
+                creator, sortOption, sortIsAscending, 
+                entities, selectedEntityId, entityCategories, 
+                pageSize, addNoteVm, null, null);
 
-            if(!string.IsNullOrEmpty(errorMessage))
+            if (!string.IsNullOrEmpty(errorMessage))
             {
-                var errorVM = new NotesViewModel()
-                {
-                    ErrorMessage = errorMessage,
-                    UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
-                    SelectedEntityId = selectedEntityId,
-                    // Notes = //_mapper.Map<List<NoteDTO>, List<NoteViewModel>>(notes),
-                    Notes = new PaginatedList<NoteViewModel>(new List<NoteViewModel>(), 0, 1, pageSize),
-                    AddNote = addNoteVm,
-                    SearchNotes = new SearchNotesViewModel
-                    {
-                        EntityId = selectedEntityId,
-                        EntityCategories = entityCategories,
-                        Creator = creator,
-                        SearchedStringInText = searchedStringInText,
-                        SearchCategoryId = categoryId,
-                        ExactDate = ParseNullableDate(exactDate),
-                        FromDate = ParseNullableDate(fromDate),
-                        ToDate = ParseNullableDate(toDate),
-                        SortOption = sortOption,
-                        SortIsAscending = sortIsAscending
-                    },
-                    PreviousPageLink = null,
-                    NextPageLink = null
-                };
-                return View(errorVM);
+                vm.ErrorMessage = errorMessage;
+                return View(vm);
             }
 
             var notes = notesSearchResult.Notes;
-            var notesCount = notesSearchResult.NotesCount; 
+            var notesCount = notesSearchResult.NotesCount;
 
 
             var previousPageLink = Url.Action(nameof(Notes), "Notes", new
@@ -145,15 +131,52 @@ namespace MyPlace.Areas.Notes.Controllers
                 pageNumber = (pageNumber ?? 1) + 1
             });
 
-            NotesViewModel vm = new NotesViewModel()
-            {
+            //NotesViewModel vm = new NotesViewModel()
+            //{
 
+            //    UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
+            //    SelectedEntityId = selectedEntityId,
+            //    // Notes = //_mapper.Map<List<NoteDTO>, List<NoteViewModel>>(notes),
+            //    Notes = new PaginatedList<NoteViewModel>(
+            //        notes.Select(x => ConvertNoteDtoToNoteViewModel(x, userId)).ToList(),
+            //        notesCount, pageIndex, pageSize),
+            //    AddNote = addNoteVm,
+            //    SearchNotes = new SearchNotesViewModel
+            //    {
+            //        EntityId = selectedEntityId,
+            //        EntityCategories = entityCategories,
+            //        Creator = creator,
+            //        SearchedStringInText = searchedStringInText,
+            //        SearchCategoryId = categoryId,
+            //        ExactDate = ParseNullableDate(exactDate),
+            //        FromDate = ParseNullableDate(fromDate),
+            //        ToDate = ParseNullableDate(toDate),
+            //        SortOption = sortOption,
+            //        SortIsAscending = sortIsAscending
+            //    },
+            //    PreviousPageLink = previousPageLink,
+            //    NextPageLink = nextPageLink
+            //};
+            vm.Notes = new PaginatedList<NoteViewModel>(
+                    notes.Select(x => ConvertNoteDtoToNoteViewModel(x, userId)).ToList(),
+                    notesCount, pageIndex, pageSize);
+            vm.PreviousPageLink = previousPageLink;
+            vm.NextPageLink = nextPageLink;
+
+            return View(vm);
+        }
+
+        private NotesViewModel CreateNotesViewModel(string searchedStringInText, int? categoryId,
+            string exactDate, string fromDate, string toDate, 
+            string creator, string sortOption, bool sortIsAscending, 
+            List<UserEntityDTO> entities, int selectedEntityId, List<CategoryViewModel> entityCategories, 
+            int pageSize, AddNoteViewModel addNoteVm, string previousPageLink, string nextPageLink)
+        {
+            return new NotesViewModel()
+            {
                 UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
                 SelectedEntityId = selectedEntityId,
-                // Notes = //_mapper.Map<List<NoteDTO>, List<NoteViewModel>>(notes),
-                Notes = new PaginatedList<NoteViewModel>(
-                    notes.Select(x => ConvertNoteDtoToNoteViewModel(x, userId)).ToList(),
-                    notesCount, pageIndex, pageSize),
+                Notes = new PaginatedList<NoteViewModel>(new List<NoteViewModel>(), 0, 1, pageSize),
                 AddNote = addNoteVm,
                 SearchNotes = new SearchNotesViewModel
                 {
@@ -162,19 +185,16 @@ namespace MyPlace.Areas.Notes.Controllers
                     Creator = creator,
                     SearchedStringInText = searchedStringInText,
                     SearchCategoryId = categoryId,
-                    ExactDate = ParseNullableDate(exactDate), 
+                    ExactDate = ParseNullableDate(exactDate),
                     FromDate = ParseNullableDate(fromDate),
-                    ToDate = ParseNullableDate(toDate),                    
-                    SortOption = sortOption, 
+                    ToDate = ParseNullableDate(toDate),
+                    SortOption = sortOption,
                     SortIsAscending = sortIsAscending
                 },
                 PreviousPageLink = previousPageLink,
                 NextPageLink = nextPageLink
             };
-            return View(vm);            
         }
-
-
 
         private async Task<List<CategoryViewModel>> GetEntityCategoriesAsync(int entityId)
         {
@@ -230,15 +250,16 @@ namespace MyPlace.Areas.Notes.Controllers
         // [Authorize(Roles = "Manager")]
         [HttpPost("AddNote")]       
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddNote(AddNoteViewModel model)
-        {
+        
+        public async Task<IActionResult> AddNote(AddNoteViewModel model)        
+        {            
             if (!this.ModelState.IsValid)
-            {
+            {               
                 return View(nameof(Notes), model);
             }
 
             try
-            {
+            {               
                 await _notesService.AddAsync(model.Note.EntityId, model.Note.NoteUser.Id, model.Note.Text, model.SelectedCategoryId);
                 return RedirectToAction(nameof(Notes), new { entityId = model.Note.EntityId });
             }
