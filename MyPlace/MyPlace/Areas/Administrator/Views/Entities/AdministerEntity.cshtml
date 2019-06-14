@@ -3,7 +3,7 @@
 
 @{
     string searchPanelClass = "";
-    string addLogBookClass  = "";
+    string addLogBookClass = "";
     string searchHeaderClass = "";
     string addHeaderClass = "";
     //if (Model.SearchNotes.IsSearchActive)
@@ -90,7 +90,7 @@
                     @* end *@
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 </div>
 
@@ -114,5 +114,10 @@
             </div>
         </div>
     }
+}
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 

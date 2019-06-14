@@ -3,9 +3,9 @@
 
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
 {
-<div class="alert alert-danger" role="alert">
-    @Model.ErrorMessage
-</div>
+    <div class="alert alert-danger" role="alert">
+        @Model.ErrorMessage
+    </div>
 }
 
 
@@ -84,7 +84,11 @@
 </a>
 
 @section Styles
-{
+    {
     <link rel="stylesheet" href="~/css/notes.css" />
     <link href="~/lib/login-form/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

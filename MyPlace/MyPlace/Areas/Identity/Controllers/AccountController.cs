@@ -9,6 +9,9 @@ namespace MyPlace.Areas.Identity.Controllers
     using MyPlace.DataModels;
     using MyPlace.Models.Account;
     using MyPlace.Infrastructure.Logger;
+    using MyPlace.Common;
+    using Microsoft.AspNetCore.Http;
+    using System.Security.Claims;
 
     [Area("Identity")]
     [TypeFilter(typeof(AddHeaderActionFilter))]
@@ -16,11 +19,13 @@ namespace MyPlace.Areas.Identity.Controllers
     {
         private readonly IDatabaseLogger _logger;
         private readonly SignInManager<User> _signIn;
+        private readonly UserManager<User> _userManager;
 
-        public AccountController(SignInManager<User> signIn, IDatabaseLogger logger)
+        public AccountController(SignInManager<User> signIn, IDatabaseLogger logger, UserManager<User> userManager)
         {
             _signIn = signIn;
             _logger = logger;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -30,15 +35,21 @@ namespace MyPlace.Areas.Identity.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Login([FromForm]LoginBindingModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var user = _signIn.UserManager.Users
                 .FirstOrDefault(usr => usr.UserName.Equals(model.UserName));
-
+                
                 var result = await _signIn.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: true);
 
                 if (result.Succeeded)
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles.Contains(GlobalConstants.ManagerRole))
+                        return RedirectToAction("Notes", "Notes", new { area = "Notes" });
+
                     return RedirectToAction("Index", "Catalog");
+                }
             }
             await _logger.WARN().Log($"Fail attempt to login for user: {model.UserName.ToUpper()}");
             return View(model);

@@ -254,8 +254,8 @@ namespace MyPlace.Areas.Notes.Controllers
         public async Task<IActionResult> AddNote(AddNoteViewModel model)        
         {            
             if (!this.ModelState.IsValid)
-            {               
-                return View(nameof(Notes), model);
+            {
+                return View(nameof(Notes), new { entityId = model.Note.EntityId }); 
             }
 
             try

@@ -54,20 +54,24 @@
 </div>
 
 @*@{
-    var prevDisabled = !Model.Notes.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.Notes.HasNextPage ? "disabled" : "";
-}
+        var prevDisabled = !Model.Notes.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.Notes.HasNextPage ? "disabled" : "";
+    }
 
-<a href="@Model.PreviousPageLink" class="btn @prevDisabled">
-    <strong>Previous</strong>
-</a>
+    <a href="@Model.PreviousPageLink" class="btn @prevDisabled">
+        <strong>Previous</strong>
+    </a>
 
-<a href="@Model.NextPageLink" class="btn @nextDisabled">
-    <strong>Next</strong>
-</a>*@
+    <a href="@Model.NextPageLink" class="btn @nextDisabled">
+        <strong>Next</strong>
+    </a>*@
 
 @section Styles
     {
     <link rel="stylesheet" href="~/css/notes.css" />
     <link href="~/lib/login-form/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
