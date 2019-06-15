@@ -58,18 +58,18 @@ namespace MyPlace.Services
 
         public async Task DeleteCategoryAsync(int id)
         {
-            //_context.EntityCategories.RemoveRange(_context.
-            //    EntityCategories.Where(ec => ec.CategoryId == id));
+            _context.EntityCategories.RemoveRange(_context.
+                EntityCategories.Where(ec => ec.CategoryId == id));
 
             _context.Remove(_context.
-                 Categories.Find(id)); 
+                 Categories.Find(id));
 
-        //var affectedNotes = _context.Notes.Where(n => n.CategoryId == id);
-        //foreach (var note in affectedNotes)
-        //{
-        //    note.CategoryId = null; 
-        //    _context.Update(note);
-        //}
+            var affectedNotes = _context.Notes.Where(n => n.CategoryId == id);
+            foreach (var note in affectedNotes)
+            {
+                note.CategoryId = null;
+                _context.Update(note);
+            }
             await _context.SaveChangesAsync();
         }
 

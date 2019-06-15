@@ -11,7 +11,7 @@ namespace MyPlace.Areas.Notes.Models
 
         public List<CategoryViewModel> EntityCategories { get; set; }
 
-        public int SelectedCategoryId { get; set; }
+        public int? SelectedCategoryId { get; set; }
 
         public bool SelectedStatusId;
 

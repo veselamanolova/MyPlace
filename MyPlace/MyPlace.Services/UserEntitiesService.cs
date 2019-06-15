@@ -104,8 +104,7 @@ namespace MyPlace.Services
                 EntityId = entityId
             });
             await _context.SaveChangesAsync();
-        }
-    }
-    
+        }       
+    }    
 }
 

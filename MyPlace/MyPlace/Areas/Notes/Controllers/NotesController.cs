@@ -225,11 +225,13 @@ namespace MyPlace.Areas.Notes.Controllers
                 },
                 Text = x.Text,
                 Date = x.Date,
-                Category = new CategoryViewModel
+                Category = x.Category != null ? 
+                new CategoryViewModel
                 {
                     CategoryId = x.Category.CategoryId,
                     Name = x.Category.Name
-                },
+                }:
+                null,
                 CurrentUserId = userId,
                 IsCompleted = x.IsCompleted,
                 HasStatus = x.HasStatus
@@ -282,7 +284,7 @@ namespace MyPlace.Areas.Notes.Controllers
             {
                 Note = ConvertNoteDtoToNoteViewModel(note, userId),
                 EntityCategories = await GetEntityCategoriesAsync(note.EntityId),
-                SelectedCategoryId = note.Category.CategoryId
+                SelectedCategoryId = note.Category?.CategoryId
             };
 
             return View(nameof(Edit), model);

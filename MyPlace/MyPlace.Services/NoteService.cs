@@ -36,7 +36,7 @@ namespace MyPlace.Services
             return await _repository.AddAsync(newNote);
         }
 
-        public async Task EditAsync(int noteId, string text, int categoryId, bool isCompleted, bool hasStatus)
+        public async Task EditAsync(int noteId, string text, int? categoryId, bool isCompleted, bool hasStatus)
         {
             var editableNote = await _repository.GetByIdAsync(noteId);
             editableNote.Text = text;
@@ -106,11 +106,13 @@ namespace MyPlace.Services
                     Id = note.User.Id,
                     Name = note.User.UserName
                 },
-                Category = new CategoryDTO
-                {
-                    CategoryId = note.Category.Id,
-                    Name = note.Category.Name
-                }
+                Category = note.Category != null 
+                    ? new CategoryDTO
+                    {
+                        CategoryId = note.Category.Id,
+                        Name = note.Category.Name
+                    }
+                    :null
             };
         }        
     }

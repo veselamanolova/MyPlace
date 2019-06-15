@@ -27,16 +27,16 @@ namespace MyPlace.Services
         //        .Include(entityCategory => entityCategory.Category)));
 
         public async Task<List<EntityCategoryDTO>> GetAllEntityCategoriesAsync(int entityId) =>
-            await _context.EntityCategories
-                .Where(ec => ec.EntityId == entityId)
-                .Include(ec => ec.Category)
-                .Select(ec => new EntityCategoryDTO
-                {
-                    CategoryId = ec.CategoryId,
-                    EntityId = ec.EntityId,
-                    Name = ec.Category.Name
-                })
-                .ToListAsync();
+        await _context.EntityCategories
+          .Where(ec => ec.EntityId == entityId)
+          .Include(ec => ec.Category)
+          .Select(ec => new EntityCategoryDTO
+          {
+              CategoryId = ec.CategoryId,
+              EntityId = ec.EntityId,
+              Name = ec.Category.Name
+          })
+          .ToListAsync();
     }
 }
 
