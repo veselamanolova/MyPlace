@@ -9,13 +9,9 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Administrator\Data\**" />
-    <Compile Remove="Areas\Manager\Models\**" />
     <Content Remove="Areas\Administrator\Data\**" />
-    <Content Remove="Areas\Manager\Models\**" />
     <EmbeddedResource Remove="Areas\Administrator\Data\**" />
-    <EmbeddedResource Remove="Areas\Manager\Models\**" />
     <None Remove="Areas\Administrator\Data\**" />
-    <None Remove="Areas\Manager\Models\**" />
   </ItemGroup>
 
 
