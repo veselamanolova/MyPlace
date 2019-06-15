@@ -22,6 +22,12 @@ namespace MyPlace.Infrastructure
             _context.EventLogs.Add(_eventLog);
             await _context.SaveChangesAsync();
         }
+
+        public Task Log2(Action<EventLog> action)
+        {
+            action(_eventLog);
+            return Task.CompletedTask;
+        }
     }
 }
 

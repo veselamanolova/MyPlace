@@ -1,8 +1,5 @@
 ﻿namespace MyPlace.Areas.Administrator.Models
 {
-    using MyPlace.Areas.Notes.Models;
-    using MyPlace.Services.DTOs;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class LogBookViewModel

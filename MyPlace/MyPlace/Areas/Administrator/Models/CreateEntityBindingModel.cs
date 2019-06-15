@@ -1,6 +1,7 @@
 ﻿
 namespace MyPlace.Areas.Administrator.Models
 {
+    using Microsoft.AspNetCore.Http;
     using MyPlace.Infrastructure.Attributes;
     using System.ComponentModel.DataAnnotations;
 
@@ -17,7 +18,6 @@ namespace MyPlace.Areas.Administrator.Models
         [Required]
         public string Description { get; set; }
 
-        [Required]
-        public string ImageUrl { get; set; }
+        public IFormFile ImageUrl { get; set; }
     }
 }

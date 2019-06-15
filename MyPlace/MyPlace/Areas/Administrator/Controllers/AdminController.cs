@@ -4,16 +4,17 @@ namespace MyPlace.Areas.Admin.Controllers
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Authorization;
+    using MyPlace.Common;
     using MyPlace.DataModels;
     using MyPlace.Models.Account;
     using MyPlace.Services.Contracts;
     using MyPlace.Areas.Administrator.Models;
     using MyPlace.Infrastructure.Logger;
-    using MyPlace.Common;
-    using MyPlace.Data;
-    using Microsoft.EntityFrameworkCore;
+    using System.IO;
 
     [Area("Administrator")]
     [Authorize(Roles = GlobalConstants.AdminRole)]
@@ -22,12 +23,14 @@ namespace MyPlace.Areas.Admin.Controllers
         private readonly SignInManager<User> _signIn;
         private readonly IAdminService _adminService;
         private readonly IDatabaseLogger _logger;
+        private readonly IHostingEnvironment _enviroment;
 
-        public AdminController(SignInManager<User> signIn, IAdminService adminService, IDatabaseLogger logger)
+        public AdminController(SignInManager<User> signIn, IAdminService adminService, IDatabaseLogger logger, IHostingEnvironment env)
         {
             _signIn = signIn;
             _adminService = adminService;
             _logger = logger;
+            _enviroment = env;
         }
 
 
@@ -50,6 +53,7 @@ namespace MyPlace.Areas.Admin.Controllers
         {
             //await _adminService.EditCommentAsync(entityId, commentId, newComment);
             await _logger.INFO().Log($"{this.User.Identity.AuthenticationType} {this.User.Identity.Name.ToUpper()} created a new Entity.");
+            //await _logger.Log2((eventLog) => eventLog.Type = GlobalConstants.DEBUG);
             return View();
         }
 
@@ -60,7 +64,13 @@ namespace MyPlace.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _adminService.CreateEntityAsync(model.Title, model.Address, model.Description, model.ImageUrl);
+                var file = _enviroment.WebRootPath + "/images/" + model.Title;
+                using ( var fileStream = new FileStream(file, FileMode.Create))
+                {
+                    await model.ImageUrl.CopyToAsync(fileStream);
+                }
+
+                //await _adminService.CreateEntityAsync(model.Title, model.Address, model.Description, ImageUrl);
                 await _logger.INFO().Log($"Administrator {this.User.Identity.Name.ToUpper()} created a new Entity.");
             }
             return View();
