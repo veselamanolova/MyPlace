@@ -1,0 +1,33 @@
+﻿#page-border {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.tab-pane {   
+    border-radius: 0px 0px 5px 5px;
+}
+
+.card-header {
+    padding: 0;
+}
+
+.collapsible-panel {
+    padding: 1rem;
+}
+
+.collapsible-header {
+    cursor: pointer;
+}
+
+.collapsible-header button {
+    font-weight: bold;
+}
+
+.collapsible-header.collapsed button {
+    font-weight: normal;
+}
+
+.status-icon {
+   height: 1.4rem;
+}

@@ -3,8 +3,11 @@
     ViewData["Title"] = "Entities";
 }
 
-<h1>Entities</h1>
-
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-md-3 col-12 font-weight-bold"><h3>Entities</h3></div>
+    </div>
+</div>
 @{
     string searchPanelClass = "";
     string addPanelClass = "";
@@ -21,30 +24,33 @@
     //    searchHeaderClass += "collapsed";
     //}
 }
-<div class="tab-content clearfix">
-    <div class="tab-pane active">
-        <div id="accordion">
-            <div>
-                <div class="card-header" id="headingAddNote">
-                    <h5 class="mb-0 collapsible-header @addHeaderClass" data-toggle="collapse" data-target="#collapseAddNote" aria-expanded="true" aria-controls="collapseAddNote">
-                        <button class="btn btn-link">Add Entity</button>
-                    </h5>
+<div id="page-border">
+    <div class="tab-content clearfix">
+        <div class="tab-pane active">
+            <div id="accordion">
+                <div>
+                    <div class="card-header" id="headingAddNote">
+                        <h5 class="mb-0 collapsible-header @addHeaderClass" data-toggle="collapse" data-target="#collapseAddNote" aria-expanded="true" aria-controls="collapseAddNote">
+                            <button class="btn btn-link">Add Entity</button>
+                        </h5>
+                    </div>
+                    <div id="collapseAddNote" class="collapse collapsible-panel @addPanelClass" aria-labelledby="headingAddNote" data-parent="#accordion">
+                        @*<partial name="_AddNotePartial" model="Model.AddNote" />*@
+                    </div>
                 </div>
-                <div id="collapseAddNote" class="collapse collapsible-panel @addPanelClass" aria-labelledby="headingAddNote" data-parent="#accordion">
-                    @*<partial name="_AddNotePartial" model="Model.AddNote" />*@
+
+                <div>
+                    <div class="card-header" id="headingSearch">
+                        <h5 class="mb-0 collapsible-header @searchHeaderClass" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+                            <button class="btn btn-link">Search</button>
+                        </h5>
+                    </div>
+                    <div id="collapseSearch" class="collapse collapsible-panel @searchPanelClass" aria-labelledby="headingSearch" data-parent="#accordion">
+                        @*<partial name="_SearchNotesPartial" model="Model.SearchNotes" />*@
+                    </div>
                 </div>
             </div>
 
-            <div>
-                <div class="card-header" id="headingSearch">
-                    <h5 class="mb-0 collapsible-header @searchHeaderClass" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
-                        <button class="btn btn-link">Search</button>
-                    </h5>
-                </div>
-                <div id="collapseSearch" class="collapse collapsible-panel @searchPanelClass" aria-labelledby="headingSearch" data-parent="#accordion">
-                    @*<partial name="_SearchNotesPartial" model="Model.SearchNotes" />*@
-                </div>
-            </div>
         </div>
         @foreach (var entity in Model.Entities)
         {
@@ -53,22 +59,9 @@
     </div>
 </div>
 
-@*@{
-        var prevDisabled = !Model.Notes.HasPreviousPage ? "disabled" : "";
-        var nextDisabled = !Model.Notes.HasNextPage ? "disabled" : "";
-    }
-
-    <a href="@Model.PreviousPageLink" class="btn @prevDisabled">
-        <strong>Previous</strong>
-    </a>
-
-    <a href="@Model.NextPageLink" class="btn @nextDisabled">
-        <strong>Next</strong>
-    </a>*@
-
 @section Styles
-{
-    <link rel="stylesheet" href="~/css/notes.css" />
+    {
+    <link href="~/css/entities.css" rel="stylesheet" />    
     <link href="~/lib/login-form/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 }
 
