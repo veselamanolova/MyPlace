@@ -133,7 +133,8 @@ namespace MyPlace.Data.Repositories
         }      
 
 
-        private IQueryable<Note> GenerateSearchQuery(int entityId, string searchedString, int? categoryId, DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator)
+        private IQueryable<Note> GenerateSearchQuery(int entityId, string searchedString, 
+            int? categoryId, DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator)
         {
             var query = _context.Notes.Where(note => note.EntityId == entityId)
                 .Include(note => note.User)
@@ -143,8 +144,13 @@ namespace MyPlace.Data.Repositories
             if (!string.IsNullOrWhiteSpace(searchedString))
                 query = query.Where(note => note.Text.Contains(searchedString));
 
+            //if category is null - no search by category
+            //if category is -1 
             if (categoryId != null && categoryId > 0)
                 query = query.Where(note => note.CategoryId == categoryId);
+            //search whithout category
+            if (categoryId == -1)
+                query = query.Where(note => note.CategoryId == null);
 
             if (!string.IsNullOrWhiteSpace(creator))
                 query = query.Where(note => note.User.UserName.Contains(creator));
