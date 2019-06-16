@@ -41,7 +41,7 @@ namespace MyPlace.Areas.Admin.Controllers
         public IActionResult Activity() =>
             View(new ActivityIndexModel { ActivityList = _adminService.GetActivity<ActivityListingModel>().Result });
 
-
+        
         [HttpGet]
         public IActionResult CreateEntity() => View();
 
@@ -52,8 +52,9 @@ namespace MyPlace.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(EditViewModel model)
         {
             //await _adminService.EditCommentAsync(entityId, commentId, newComment);
-            await _logger.INFO().Log($"{this.User.Identity.AuthenticationType} {this.User.Identity.Name.ToUpper()} created a new Entity.");
-            //await _logger.Log2((eventLog) => eventLog.Type = GlobalConstants.DEBUG);
+            await _logger
+                .Type(type => type.Type = GlobalConstants.INFO)
+                .Log($"{this.User.Identity.AuthenticationType} {this.User.Identity.Name.ToUpper()} created a new Entity.");
             return View();
         }
 
@@ -69,9 +70,11 @@ namespace MyPlace.Areas.Admin.Controllers
                 {
                     await model.ImageUrl.CopyToAsync(fileStream);
                 }
+                await _adminService.CreateEntityAsync(model.Title, model.Address, model.Description, model.ImageUrl.ToString());
 
-                //await _adminService.CreateEntityAsync(model.Title, model.Address, model.Description, ImageUrl);
-                await _logger.INFO().Log($"Administrator {this.User.Identity.Name.ToUpper()} created a new Entity.");
+                await _logger
+                    .Type(type => type.Type = GlobalConstants.INFO)
+                    .Log($"Administrator {this.User.Identity.Name.ToUpper()} created a new Entity.");
             }
             return View();
         }
@@ -94,7 +97,9 @@ namespace MyPlace.Areas.Admin.Controllers
                 if (irUser.Succeeded)
                 {
                     await _signIn.UserManager.AddToRoleAsync(user, model.Role);
-                    await _logger.INFO().Log($"Administrator {this.User.Identity.Name.ToUpper()} created a new account with role {model.Role}.");
+                    await _logger
+                        .Type(type => type.Type = GlobalConstants.INFO)
+                        .Log($"Administrator {this.User.Identity.Name.ToUpper()} created a new account with role {model.Role}.");
 
                     return RedirectToAction("Login", "Account", new { area = "Identity" });
                 }
@@ -106,7 +111,9 @@ namespace MyPlace.Areas.Admin.Controllers
 
         public async Task<IActionResult> ChangePassword()
         {
-            await _logger.INFO().Log($"Administrator {this.User.Identity.Name.ToUpper()} change password for user    .");
+            await _logger
+                .Type(type => type.Type = GlobalConstants.INFO)
+                .Log($"Administrator {this.User.Identity.Name.ToUpper()} change password for user    .");
 
             return View();
         }
@@ -115,7 +122,10 @@ namespace MyPlace.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int entityId, int commentId)
         {
             await _adminService.DeleteAsync(entityId, commentId);
-            await _logger.INFO().Log($"Administrator {this.User.Identity.Name.ToUpper()} delete comment.");
+
+            await _logger
+                .Type(type => type.Type = GlobalConstants.INFO)
+                .Log($"Administrator {this.User.Identity.Name.ToUpper()} delete comment.");
 
             return RedirectToAction("Establishment", "Catalog", new { area = "", id = entityId });
         }

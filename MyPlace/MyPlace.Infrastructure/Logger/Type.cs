@@ -1,13 +1,14 @@
 ﻿
 namespace MyPlace.Infrastructure
 {
-    using MyPlace.Common;
+    using System;
+    using MyPlace.DataModels;
 
     public partial class DatabaseLogger
     {
-        public DatabaseLogger DEBUG()
+        public DatabaseLogger Type(Action<EventLog> action)
         {
-            _eventLog.Type = GlobalConstants.INFO;
+            action(_eventLog);
             return this;
         }
     }

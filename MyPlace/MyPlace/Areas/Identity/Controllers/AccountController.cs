@@ -49,7 +49,9 @@ namespace MyPlace.Areas.Identity.Controllers
                     return RedirectToAction("Index", "Catalog");
                 }
             }
-            await _logger.WARN().Log($"Fail attempt to login for user: {model.UserName.ToUpper()}");
+            await _logger.Type(type => type.Type = GlobalConstants.WARN)
+                .Log($"Fail attempt to login for user: {model.UserName.ToUpper()}");
+
             return View(model);
         }
 
@@ -57,7 +59,8 @@ namespace MyPlace.Areas.Identity.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signIn.SignOutAsync();
-            await _logger.DEBUG().Log($"User: {this.User.Identity.Name.ToUpper()}, logout");
+            await _logger.Type(type => type.Type = GlobalConstants.DEBUG)
+                .Log($"User: {this.User.Identity.Name.ToUpper()}, logout");
 
             return RedirectToAction("Index", "Catalog");
 
