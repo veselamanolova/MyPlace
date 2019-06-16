@@ -6,8 +6,8 @@ namespace MyPlace.DataModels
 
     public class User : IdentityUser
     {
-        public List<UserEntity> UserEntities { get; set; }
+        public ICollection<UserEntity> UserEntities { get; set; }
 
-        public List<Note> Notes { get; set; }
+        public ICollection<Note> Notes { get; set; }
     }
 }

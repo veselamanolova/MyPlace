@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyPlace.Common", "MyPlace.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyPlace.Infrastructure", "MyPlace.Infrastructure\MyPlace.Infrastructure.csproj", "{88C91908-554C-40E5-B1C0-1C76AB461C60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPlace.Services.Tests", "MyPlace.Services.Tests\MyPlace.Services.Tests.csproj", "{D63D245B-F412-4680-B812-B5B3ECAB0760}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{88C91908-554C-40E5-B1C0-1C76AB461C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88C91908-554C-40E5-B1C0-1C76AB461C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88C91908-554C-40E5-B1C0-1C76AB461C60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D63D245B-F412-4680-B812-B5B3ECAB0760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D63D245B-F412-4680-B812-B5B3ECAB0760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D63D245B-F412-4680-B812-B5B3ECAB0760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D63D245B-F412-4680-B812-B5B3ECAB0760}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -13,6 +13,10 @@ namespace MyPlace.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
 
+        public ApplicationDbContext(DbContextOptions dbContextOptions)
+        {
+        }
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Entity> Entities { get; set; }
