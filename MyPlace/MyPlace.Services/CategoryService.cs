@@ -14,8 +14,7 @@ namespace MyPlace.Services
     using MyPlace.DataModels;
 
     public class CategoryService: ICategoryService
-    {
-        private readonly IMapper _mapper;
+    {        
         private readonly ApplicationDbContext _context;
      
         public CategoryService(ApplicationDbContext context)

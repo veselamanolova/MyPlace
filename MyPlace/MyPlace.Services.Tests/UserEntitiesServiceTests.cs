@@ -118,13 +118,46 @@
                 var result = await sut.GetAllUserEntitiesAsync("xxxx"); 
 
                 Assert.IsNotNull(result);                
-                //Assert.AreEqual(2, usersList.Count);
-                //Assert.AreEqual("xxxx", usersList[0].Id);
-                //Assert.AreEqual("User1", usersList[0].Name);
-                //Assert.AreEqual("yyyy", usersList[1].Id);
-                //Assert.AreEqual("User2", usersList[1].Name);
+                Assert.AreEqual(2, result.Count);
+                Assert.AreEqual("xxxx", result[0].UserId);
+                Assert.AreEqual("xxxx", result[1].UserId);
+                Assert.AreEqual(1, result[0].EntityId);
+                Assert.AreEqual(2, result[1].EntityId);
+                Assert.AreEqual("Entity1", result[0].Title);
+                Assert.AreEqual("Entity2", result[1].Title);
             }
         }
+
+        [TestMethod]
+        public async Task GetAllUserEntitiesAsyncShould_ReturnEmptyListIfUserDoesNotHaveEntities()
+        {
+            using (var arrangeContext =
+                new ApplicationDbContext(TestUtils.GetOptions(nameof(GetAllUserEntitiesAsyncShould_ReturnEmptyListIfUserDoesNotHaveEntities))))
+            {
+                arrangeContext.Users.Add(new User()
+                {
+                    Id = "xxxx",
+                    UserName = "User1"
+                });              
+
+                arrangeContext.SaveChanges();
+            }
+
+            using (var actAndAssertContext = new ApplicationDbContext(TestUtils.GetOptions(nameof(GetAllUserEntitiesAsyncShould_ReturnEmptyListIfUserDoesNotHaveEntities))))
+            {
+                var mockUserStore = new Mock<IUserStore<User>>();
+                var userManager = new UserManager<User>(mockUserStore.Object, null, null, null, null, null, null, null, null);
+
+                var sut = new UserEntitiesService(actAndAssertContext, userManager);
+                var result = await sut.GetAllUserEntitiesAsync("xxxx");
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(0, result.Count);              
+            }
+        }
+
+
+
     }
 }
 

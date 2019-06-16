@@ -20,16 +20,7 @@ namespace MyPlace.Services
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public NoteService(ApplicationDbContext actAndAssertContext)
-        {
-        }
-
-        //public NoteService(ApplicationDbContext context)
-        //{           
-        //    _context = context ?? throw new ArgumentNullException(nameof(context));
-        //}
+        }    
 
 
         public async Task<Note> AddAsync(int entityId, string userId, string text, int? categoryId)
