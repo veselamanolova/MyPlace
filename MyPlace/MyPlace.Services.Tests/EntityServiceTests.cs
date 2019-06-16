@@ -1,14 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MyPlace.Data;
-using MyPlace.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MyPlace.Services.Tests
+﻿namespace MyPlace.Services.Tests
 {
+    using MyPlace.Data;
+    using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
     public class EntityServiceTests
     {
