@@ -9,6 +9,8 @@ namespace MyPlace.Models.Catalog
 
         public string Description { get; set; }
 
+        public string Address { get; set; }
+
         public string ImageUrl { get; set; }
 
         public int? EstablishmentId { get; set; }

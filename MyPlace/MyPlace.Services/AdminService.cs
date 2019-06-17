@@ -56,6 +56,12 @@ namespace MyPlace.Services
 
         public async Task<IEnumerable<TSource>> GetActivity<TSource>() =>
             await Task.Run(() => _mapper.ProjectTo<TSource>(_context.EventLogs).ToListAsync());
+
+
+        public void Test()
+        {
+            // Join MtM
+        }
     }
 }
 
