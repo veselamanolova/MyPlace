@@ -76,14 +76,10 @@ namespace MyPlace.Areas.Notes.Controllers
             }
             catch (ApplicationException ex)
             {
-                // TODO: log
-
                 errorMessage = ex.Message;
             }
             catch (Exception ex)
             {
-                // TODO: log
-
                 errorMessage = "Error loading notes. Please try again.";
             }
             NotesViewModel vm = CreateNotesViewModel(searchedStringInText, categoryId, 
@@ -130,33 +126,7 @@ namespace MyPlace.Areas.Notes.Controllers
                 sortIsAscending,
                 pageNumber = (pageNumber ?? 1) + 1
             });
-
-            //NotesViewModel vm = new NotesViewModel()
-            //{
-
-            //    UserEntites = _mapper.Map<List<UserEntityDTO>, List<UserEntityViewModel>>(entities),
-            //    SelectedEntityId = selectedEntityId,
-            //    // Notes = //_mapper.Map<List<NoteDTO>, List<NoteViewModel>>(notes),
-            //    Notes = new PaginatedList<NoteViewModel>(
-            //        notes.Select(x => ConvertNoteDtoToNoteViewModel(x, userId)).ToList(),
-            //        notesCount, pageIndex, pageSize),
-            //    AddNote = addNoteVm,
-            //    SearchNotes = new SearchNotesViewModel
-            //    {
-            //        EntityId = selectedEntityId,
-            //        EntityCategories = entityCategories,
-            //        Creator = creator,
-            //        SearchedStringInText = searchedStringInText,
-            //        SearchCategoryId = categoryId,
-            //        ExactDate = ParseNullableDate(exactDate),
-            //        FromDate = ParseNullableDate(fromDate),
-            //        ToDate = ParseNullableDate(toDate),
-            //        SortOption = sortOption,
-            //        SortIsAscending = sortIsAscending
-            //    },
-            //    PreviousPageLink = previousPageLink,
-            //    NextPageLink = nextPageLink
-            //};
+            
             vm.Notes = new PaginatedList<NoteViewModel>(
                     notes.Select(x => ConvertNoteDtoToNoteViewModel(x, userId)).ToList(),
                     notesCount, pageIndex, pageSize);
@@ -250,7 +220,6 @@ namespace MyPlace.Areas.Notes.Controllers
             return dateTimeResult;
         }
 
-        // [Authorize(Roles = "Manager")]
         [HttpPost("AddNote")]       
         [ValidateAntiForgeryToken]        
         public async Task<IActionResult> AddNote(AddNoteViewModel model)        
@@ -325,8 +294,7 @@ namespace MyPlace.Areas.Notes.Controllers
             }
             catch (ApplicationException ex)
             {
-                model.ErrorMessage = ex.Message;
-               // this.ModelState.AddModelError("Error", ex.Message);
+                model.ErrorMessage = ex.Message;               
                 return View(nameof(Edit), model);                
             }
         }

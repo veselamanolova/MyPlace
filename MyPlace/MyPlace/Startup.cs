@@ -179,12 +179,7 @@ namespace MyPlace
                     name: "areas",
                     template: "{area:exists}/{controller=Moderator}/{action=Index}/{id?}"
             );                
-
-            routes.MapRoute(
-                   name: "Notes",
-                   template: "Notes/{controller=Notes}/{action=Notes}/{id?}"
-           );
-
+                
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Catalog}/{action=Index}/{id?}");

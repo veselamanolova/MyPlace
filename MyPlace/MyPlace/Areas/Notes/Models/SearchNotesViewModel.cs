@@ -10,11 +10,11 @@
         public int EntityId { get; set;  }
 
        
-        [RegularExpression("^[a-zA-Z0-9]{0,}$",
+        [RegularExpression("^[a-zA-Zа-яА-Я0-9]{0,}$",
         ErrorMessage = "Only characters and numbers are allowed.")]
         public string Creator { get; set; }
 
-        [RegularExpression("^[a-zA-Z0-9,.!?;: ]{0,}$",
+        [RegularExpression("^[a-zA-Zа-яА-Я0-9,.!?;: ]{0,}$",
         ErrorMessage = "Only characters,numbers and punctuation are allowed.")]
         public string SearchedStringInText { get; set; }
 

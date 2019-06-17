@@ -14,7 +14,7 @@
 
         
         [Required(ErrorMessage = "Note text is required. It can contain words, numbers and punctuation.")]
-        [RegularExpression("^[a-zA-Z0-9,.!?;: ]{3,}$",
+        [RegularExpression("^[a-zA-Zа-яА-Я0-9,.!?;: ]{3,}$",
         ErrorMessage = "Note text should contain at least 3 characters. It can contain words, numbers and punctuation.")]
 
         public string Text { get; set; }

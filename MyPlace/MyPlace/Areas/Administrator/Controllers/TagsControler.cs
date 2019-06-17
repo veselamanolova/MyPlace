@@ -53,7 +53,7 @@ namespace MyPlace.Areas.Administrator.Controllers
             try
             {
                 await _categoryService.AddCategoryAsync(model.Name);
-                return RedirectToAction(nameof(Tags));//, new { id = model.LogBook.Id });
+                return RedirectToAction(nameof(Tags));
             }
             catch (ArgumentException ex)
             {
@@ -88,7 +88,7 @@ namespace MyPlace.Areas.Administrator.Controllers
             try
             {
                 await _categoryService.EditCategoryAsync(model.CategoryId, model.Name);
-                return RedirectToAction(nameof(Tags));//, new { id = model.LogBook.Id });
+                return RedirectToAction(nameof(Tags));
             }
             catch (ArgumentException ex)
             {
