@@ -29,10 +29,10 @@ There is an **auto- filter** which which does not allow comments insulting words
 <h3>Managers</h3>
 
 Managers have private page Notes accessible after **successful login**.
-Notes page provides:
+**Notes page provides:**
 
 1. **Easy navigation** between all manager&#39;s **logbooks**.
-2. **List** f all logbook manager&#39;s with soonest notes **on the top**.
+2. **List** of all logbook manager&#39;s with soonest notes **on the top**.
 3. Rapidly **adding notes with minimum clicks** and optionally giving entity specific tags.
 4. **Advance search** by note text, tag, creator, exact date, from date, to date
 5. Paging and sorting.
@@ -51,7 +51,8 @@ They are able to:
 
 <h3>Moderators</h3>
 
-The moderators have permissions for specific business entities. In this entities they can censor posts that does not comply with common sense rules (rude, swearing, etc.)
+The moderators have permissions for specific business entities. 
+In this entities they can **censor posts** that does not comply with common sense rules (rude, swearing, etc.)
 
 Тechnologies, frameworks and development techniques
 
