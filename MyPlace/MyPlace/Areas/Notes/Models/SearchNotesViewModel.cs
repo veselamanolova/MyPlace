@@ -11,8 +11,8 @@
        
         [RegularExpression("^[a-zA-Z0-9]{0,}$",
         ErrorMessage = "Only characters and numbers are allowed.")]
+        public string Creator { get; set; }
 
-        public string Creator { get; set; }       
         [RegularExpression("^[a-zA-Z0-9,.!?;: ]{0,}$",
         ErrorMessage = "Only characters,numbers and punctuation are allowed.")]
         public string SearchedStringInText { get; set; }
@@ -38,7 +38,12 @@
             get
             {
                 return !string.IsNullOrEmpty(Creator)
-                    || !string.IsNullOrEmpty(SearchedStringInText); 
+                    || !string.IsNullOrEmpty(SearchedStringInText)
+                    || SearchCategoryId.HasValue && SearchCategoryId != 0
+                    || ExactDate.HasValue
+                    || FromDate.HasValue
+                    || ToDate.HasValue
+                    || (!string.IsNullOrEmpty(SortOption) && SortOption != "Default"); 
             }
         }
     }
