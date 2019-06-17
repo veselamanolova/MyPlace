@@ -5,17 +5,7 @@
     string searchPanelClass = "";
     string addLogBookClass = "";
     string moderatorsClass = "";
-    string addHeaderClass = "";
-    //if (Model.SearchNotes.IsSearchActive)
-    //{
-    //    searchPanelClass += "show";
-    //    addHeaderClass += "collapsed";
-    //}
-    //else
-    //{
-    //    addLogBookClass  += "show";
-    //    moderatorsClass += "collapsed";
-    //}
+    string addHeaderClass = "";    
 }
 
 <div class="container">
@@ -31,7 +21,7 @@
                 <div>
                     <div class="card-header" id="headingAddNote">
                         <h5 class="mb-0 collapsible-header @addHeaderClass" data-toggle="collapse" data-target="#collapseAddNote" aria-expanded="true" aria-controls="collapseAddNote">
-                            <button class="btn btn-link">Add Entity</button>
+                            <button class="btn btn-link">Add Logbook</button>
                         </h5>
                     </div>
                     <div id="collapseAddNote" class="collapse collapsible-panel @addLogBookClass " aria-labelledby="headingAddNote" data-parent="#accordion">
