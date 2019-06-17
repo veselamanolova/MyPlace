@@ -66,12 +66,11 @@ namespace MyPlace.Services
         {
             var result =
             await _context.Entities
-            .Where(logbook => logbook.Id == Id)
-            .Include(logbook => logbook.EntityCategories)
+            .Where((logbook => logbook.Id == Id && logbook.EstablishmentId !=null))
+            .Include(logbook => logbook.EntityCategories)            
                 .ThenInclude(ec => ec.Category)             
-            .FirstOrDefaultAsync();
-
-            return ConvertToDTO(result);
+                .FirstOrDefaultAsync();
+            return result != null ? ConvertToDTO(result) : null;
         }
 
         public async Task CreateLogBookAsync(string title, int establishementId )
