@@ -6,10 +6,11 @@ namespace MyPlace.Services.Contracts
     using MyPlace.DataModels;
     using MyPlace.Services.DTOs;
     using System;
+    using MyPlace.Common;
 
     public interface INoteService
     {  
-        Task<Note> AddAsync(int entityId,  string userId, string text, int? categoryId);
+        Task<Note> AddAsync(int entityId,  string userId, string text, int? categoryId, bool hasStatus);
 
         Task EditAsync(int noteId, string text, int? categoryId, bool isCompleted, bool hasStatus);
 
@@ -18,8 +19,7 @@ namespace MyPlace.Services.Contracts
         Task<NoteDTO> GetByIdAsync(int noteId); 
 
         Task<NotesSearchResultDTO> SearchAsync(int entityId, string searchedString,
-            int? categoryId, DateTime? exactDate,
-            DateTime? fromDate, DateTime? toDate,
-            string creator, string sortOption, bool sortIsAscending, int? skip, int? take);
+            int? categoryId, DateTime? exactDate, DateTime? fromDate, DateTime? toDate,
+            string creator, NotesSearchByStatus searchByStatus, string sortOption, bool sortIsAscending, int? skip, int? take);
     }
 }

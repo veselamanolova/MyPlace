@@ -7,6 +7,7 @@ namespace MyPlace.Data.Repositories
     using System.Collections.Generic;
     using Microsoft.EntityFrameworkCore;
     using MyPlace.DataModels;
+    using MyPlace.Common;
 
     public class NotesRepository : INotesRepository
     {
@@ -55,20 +56,20 @@ namespace MyPlace.Data.Repositories
 
         public async Task<int> CountAsync(int entityId, string searchedString,
         int? categoryId, DateTime? exactDate,
-        DateTime? fromDate, DateTime? toDate, string creator)
+        DateTime? fromDate, DateTime? toDate, string creator, NotesSearchByStatus searchByStatus)
         {
-            IQueryable<Note> query = GenerateSearchQuery(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator);
+            IQueryable<Note> query = GenerateSearchQuery(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator, searchByStatus);
             return await query.CountAsync();
         }
 
 
         public async Task<List<Note>> SearchAsync(int entityId, string searchedString,
             int? categoryId, DateTime? exactDate,
-            DateTime? fromDate, DateTime? toDate, string creator, 
+            DateTime? fromDate, DateTime? toDate, string creator, NotesSearchByStatus searchByStatus,
             string sortOption, bool sortIsAscending, int? skip, int? take)
         {
             IQueryable<Note> query = GenerateSearchQuery(entityId, searchedString,
-                categoryId, exactDate, fromDate, toDate, creator);
+                categoryId, exactDate, fromDate, toDate, creator, searchByStatus);
             query = AddSortingToQuery(sortOption, sortIsAscending, query);
             query = AddPagingToQuery(skip, take, query);
             return await query.ToListAsync();
@@ -139,7 +140,7 @@ namespace MyPlace.Data.Repositories
 
 
         private IQueryable<Note> GenerateSearchQuery(int entityId, string searchedString, 
-            int? categoryId, DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator)
+            int? categoryId, DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator, NotesSearchByStatus searchByStatus)
         {
             var query = _context.Notes.Where(note => note.EntityId == entityId)
                 .Include(note => note.User)
@@ -160,10 +161,35 @@ namespace MyPlace.Data.Repositories
             if (!string.IsNullOrWhiteSpace(creator))
                 query = query.Where(note => note.User.UserName.Contains(creator));
 
+            query = FilterByStatus(searchByStatus, query);
+
             query = FilterByDates(exactDate, fromDate, toDate, query);
             return query;
         }
 
+        private static IQueryable<Note> FilterByStatus(NotesSearchByStatus searchByStatus, IQueryable<Note> query)
+        {
+            //if searchByStatus is "All" - no filtering
+            //if searchByStatus is "WithoutStatus" - HasStatus should be false
+            //if searchByStatus is "InProgress" or "Completed" - IsCompleted should be false or true respectively
+            switch (searchByStatus)
+            {
+                case NotesSearchByStatus.All:
+                    break;
+                case NotesSearchByStatus.WithoutStatus:
+                    query = query.Where(note => !note.HasStatus);
+                    break;
+                case NotesSearchByStatus.InProgress:
+                    query = query.Where(note => note.HasStatus && !note.IsCompleted);
+                    break;
+                case NotesSearchByStatus.Completed:
+                    query = query.Where(note => note.HasStatus && note.IsCompleted);
+                    break;
+                default:
+                    break;
+            }
+            return query;
+        }
 
         private static IQueryable<Note> FilterByDates(DateTime? exactDate, DateTime? fromDate, DateTime? toDate, IQueryable<Note> query)
         {

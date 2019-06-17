@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MyPlace.Common\MyPlace.Common.csproj" />
     <ProjectReference Include="..\MyPlace.DataModels\MyPlace.DataModels.csproj" />
   </ItemGroup>
 

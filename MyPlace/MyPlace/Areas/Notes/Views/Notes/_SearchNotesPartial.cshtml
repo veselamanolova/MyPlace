@@ -5,7 +5,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
             <div class="form-group">
-                <input type="hidden" asp-for="@Model.EntityId" class="form-control" />              
+                <input type="hidden" asp-for="@Model.EntityId" class="form-control" />
             </div>
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
@@ -46,7 +46,18 @@
                     <label>To date </label>
                     <input type="date" asp-for="@Model.ToDate" class="datepicker form-control" />
                 </div>
-            </div>             
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="form-group">
+                    <label>Status</label>
+                    <select asp-for="@Model.SearchByStatus" class="form-control">
+                        <option value="0">All</option>
+                        <option value="1">Without status</option>
+                        <option value="2">In progress</option>
+                        <option value="3">Completed</option>
+                    </select>
+                </div>
+            </div>
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label>Sort by</label>
@@ -68,13 +79,13 @@
                         <option value="false">Descending</option>
                     </select>
                 </div>
-            </div>           
+            </div>
             <div class="col-md-12 col-sm-12">
                 <div class="form-group">
                     <input type="submit" value="Search" class="btn btn-primary" />
                 </div>
             </div>
-         </div>    
+        </div>    
     </form>
 </div>
 

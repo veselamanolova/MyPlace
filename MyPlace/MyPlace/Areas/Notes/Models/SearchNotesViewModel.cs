@@ -1,5 +1,6 @@
 ﻿namespace MyPlace.Areas.Notes.Models
 {
+    using MyPlace.Common;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -19,7 +20,7 @@
 
         public int? SearchCategoryId { get; set; }
 
-        public List<CategoryViewModel> EntityCategories { get; set; }       
+        public List<CategoryViewModel> EntityCategories { get; set; }
 
         public bool IsCompleted { get; set; }
         
@@ -28,6 +29,8 @@
         public DateTime? FromDate { get; set; }
 
         public DateTime? ToDate { get; set; }
+
+        public NotesSearchByStatus SearchByStatus { get; set; }
 
         public string SortOption { get; set; }
 
@@ -43,6 +46,7 @@
                     || ExactDate.HasValue
                     || FromDate.HasValue
                     || ToDate.HasValue
+                    || SearchByStatus != NotesSearchByStatus.All
                     || (!string.IsNullOrEmpty(SortOption) && SortOption != "Default"); 
             }
         }

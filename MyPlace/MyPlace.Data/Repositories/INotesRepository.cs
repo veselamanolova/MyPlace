@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using MyPlace.Common;
     using MyPlace.DataModels;
 
     public interface INotesRepository
@@ -20,11 +21,11 @@
         Task<List<Note>> SearchAsync(int entityId, string searchedString, 
             int? categoryId, DateTime? exactDate,
             DateTime? startDate, DateTime? endDate,
-            string creator, string sortOption, bool sortIsAscending, 
+            string creator, NotesSearchByStatus searchByStatus, string sortOption, bool sortIsAscending, 
             int? skip, int? take);
 
         Task<int> CountAsync(int entityId, string searchedString,
           int? categoryId, DateTime? exactDate,
-          DateTime? fromDate, DateTime? toDate, string creator); 
+          DateTime? fromDate, DateTime? toDate, string creator, NotesSearchByStatus searchByStatus); 
     }
 }

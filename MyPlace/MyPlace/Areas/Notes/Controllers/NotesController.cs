@@ -35,8 +35,8 @@ namespace MyPlace.Areas.Notes.Controllers
 
         [HttpGet("Notes")] 
         public async Task<IActionResult> Notes(int? entityId, string searchedStringInText,
-            int? categoryId, string exactDate,
-            string fromDate, string toDate, string creator, string sortOption,bool sortIsAscending,  int? pageNumber)
+            int? categoryId, string exactDate, string fromDate, string toDate, string creator, 
+            NotesSearchByStatus searchByStatus, string sortOption, bool sortIsAscending, int? pageNumber)
         {
 
             string userId = GetLoggedUserId();
@@ -71,7 +71,7 @@ namespace MyPlace.Areas.Notes.Controllers
             {
                 notesSearchResult = await _notesService.SearchAsync(selectedEntityId, searchedStringInText,
                     categoryId, ParseNullableDate(exactDate), ParseNullableDate(fromDate),
-                    ParseNullableDate(toDate), creator, sortOption, sortIsAscending,
+                    ParseNullableDate(toDate), creator, searchByStatus, sortOption, sortIsAscending,
                     skip, pageSize);
             }
             catch (ApplicationException ex)
@@ -88,7 +88,7 @@ namespace MyPlace.Areas.Notes.Controllers
             }
             NotesViewModel vm = CreateNotesViewModel(searchedStringInText, categoryId, 
                 exactDate, fromDate, toDate, 
-                creator, sortOption, sortIsAscending, 
+                creator, searchByStatus, sortOption, sortIsAscending, 
                 entities, selectedEntityId, entityCategories, 
                 pageSize, addNoteVm, null, null);
 
@@ -168,7 +168,7 @@ namespace MyPlace.Areas.Notes.Controllers
 
         private NotesViewModel CreateNotesViewModel(string searchedStringInText, int? categoryId,
             string exactDate, string fromDate, string toDate, 
-            string creator, string sortOption, bool sortIsAscending, 
+            string creator, NotesSearchByStatus searchByStatus, string sortOption, bool sortIsAscending, 
             List<UserEntityDTO> entities, int selectedEntityId, List<CategoryViewModel> entityCategories, 
             int pageSize, AddNoteViewModel addNoteVm, string previousPageLink, string nextPageLink)
         {
@@ -183,6 +183,7 @@ namespace MyPlace.Areas.Notes.Controllers
                     EntityId = selectedEntityId,
                     EntityCategories = entityCategories,
                     Creator = creator,
+                    SearchByStatus = searchByStatus,
                     SearchedStringInText = searchedStringInText,
                     SearchCategoryId = categoryId,
                     ExactDate = ParseNullableDate(exactDate),
@@ -261,7 +262,7 @@ namespace MyPlace.Areas.Notes.Controllers
 
             try
             {               
-                await _notesService.AddAsync(model.Note.EntityId, model.Note.NoteUser.Id, model.Note.Text, model.SelectedCategoryId);
+                await _notesService.AddAsync(model.Note.EntityId, model.Note.NoteUser.Id, model.Note.Text, model.SelectedCategoryId, model.Note.HasStatus);
                 return RedirectToAction(nameof(Notes), new { entityId = model.Note.EntityId });
             }
             catch (ArgumentException ex)
@@ -348,6 +349,7 @@ namespace MyPlace.Areas.Notes.Controllers
                     fromDate = model.FromDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
                     toDate = model.ToDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
                     creator = model.Creator,
+                    searchByStatus = model.SearchByStatus,
                     sortOption = model.SortOption,
                     sortIsAscending = model.SortIsAscending
                 });

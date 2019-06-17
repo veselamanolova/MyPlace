@@ -10,6 +10,7 @@ namespace MyPlace.Services
     using MyPlace.Services.Contracts;
     using MyPlace.Services.DTOs;
     using MyPlace.Data.Repositories;
+    using MyPlace.Common;
 
     public class NoteService : INoteService
     {
@@ -23,7 +24,7 @@ namespace MyPlace.Services
         }    
 
 
-        public async Task<Note> AddAsync(int entityId, string userId, string text, int? categoryId)
+        public async Task<Note> AddAsync(int entityId, string userId, string text, int? categoryId, bool hasStatus)
         {
             var newNote = new Note()
             {
@@ -31,6 +32,7 @@ namespace MyPlace.Services
                 UserId = userId,
                 Text = text,
                 CategoryId = categoryId,
+                HasStatus = hasStatus,
                 Date = DateTime.Now,
                 IsCompleted = false
             };
@@ -75,7 +77,7 @@ namespace MyPlace.Services
 
 
         public async Task<NotesSearchResultDTO> SearchAsync(int entityId, string searchedString, int? categoryId,
-            DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator, string sortOption, bool sortIsAscending, int? skip, int? take)
+            DateTime? exactDate, DateTime? fromDate, DateTime? toDate, string creator, NotesSearchByStatus searchByStatus, string sortOption, bool sortIsAscending, int? skip, int? take)
         {
             
             if (fromDate != null && toDate != null)
@@ -88,8 +90,8 @@ namespace MyPlace.Services
 
             return new NotesSearchResultDTO
             {
-                NotesCount = await _repository.CountAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator),
-                Notes = (await _repository.SearchAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator, sortOption, sortIsAscending, skip, take))
+                NotesCount = await _repository.CountAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator, searchByStatus),
+                Notes = (await _repository.SearchAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator, searchByStatus, sortOption, sortIsAscending, skip, take))
                //.OrderByDescending(note => note.Date)
                .Select(note => ConvertToNoteDTO(note))
                .ToList()
