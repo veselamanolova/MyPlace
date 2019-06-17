@@ -11,7 +11,7 @@ namespace MyPlace.Services.Contracts
 
         Task<List<CategoryDTO>> GetAllLogBooksCategoriesAsync(int id);
 
-        Task<CompositeEntityCategoriesDTO> GetAllEntityAndNotEntityCategories(int id);
+        Task<CompositeEntityCategoriesDTO> GetAllLogBookAndNotLogBookCategories(int id);
 
         Task<CategoryDTO> FindCategoryByIdAsync(int id);
 

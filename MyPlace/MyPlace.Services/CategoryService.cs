@@ -1,6 +1,7 @@
 ﻿
 namespace MyPlace.Services
 {
+    using System; 
     using AutoMapper;
     using System.Linq;
     using MyPlace.Data;
@@ -13,15 +14,13 @@ namespace MyPlace.Services
     using MyPlace.DataModels;
 
     public class CategoryService: ICategoryService
-    {
-        private readonly IMapper _mapper;
+    {        
         private readonly ApplicationDbContext _context;
-
-        public CategoryService(ApplicationDbContext context, IMapper mapper)
+     
+        public CategoryService(ApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
-        }      
+        }
 
         public async Task<List<CategoryDTO>> GetAllCategoriesAsync() =>
            await _context.Categories               
@@ -41,11 +40,18 @@ namespace MyPlace.Services
         public async Task<CategoryDTO> FindCategoryByIdAsync(int id)
         {
             var result =  await _context.Categories.FindAsync(id);
-            return new CategoryDTO()
+            if (result == null)
             {
-                CategoryId = result.Id,
-                Name = result.Name
-            }; 
+                return null;
+            }
+            else
+            {
+                return new CategoryDTO()
+                {
+                    CategoryId = result.Id,
+                    Name = result.Name
+                };
+            }            
         }
 
         public async Task EditCategoryAsync(int id, string name)
@@ -58,18 +64,18 @@ namespace MyPlace.Services
 
         public async Task DeleteCategoryAsync(int id)
         {
-            //_context.EntityCategories.RemoveRange(_context.
-            //    EntityCategories.Where(ec => ec.CategoryId == id));
+            _context.EntityCategories.RemoveRange(_context.
+                EntityCategories.Where(ec => ec.CategoryId == id));
 
             _context.Remove(_context.
-                 Categories.Find(id)); 
+                 Categories.Find(id));
 
-        //var affectedNotes = _context.Notes.Where(n => n.CategoryId == id);
-        //foreach (var note in affectedNotes)
-        //{
-        //    note.CategoryId = null; 
-        //    _context.Update(note);
-        //}
+            var affectedNotes = _context.Notes.Where(n => n.CategoryId == id);
+            foreach (var note in affectedNotes)
+            {
+                note.CategoryId = null;
+                _context.Update(note);
+            }
             await _context.SaveChangesAsync();
         }
 
@@ -86,7 +92,7 @@ namespace MyPlace.Services
              .ToListAsync();
 
 
-        public async Task<CompositeEntityCategoriesDTO> GetAllEntityAndNotEntityCategories(int id)
+        public async Task<CompositeEntityCategoriesDTO> GetAllLogBookAndNotLogBookCategories(int id)
         {
             var logBookCategories = await GetAllLogBooksCategoriesAsync(id);
             var allNotLogBookCategories = (await GetAllCategoriesAsync())

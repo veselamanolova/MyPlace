@@ -5,13 +5,12 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
             <div class="form-group">
-                <input type="hidden" asp-for="@Model.EntityId" class="form-control" />
-                @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
+                <input type="hidden" asp-for="@Model.EntityId" class="form-control" />              
             </div>
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <input asp-for="@Model.SearchedStringInText" class="form-control" placeholder="Search in text" />
-                    @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
+                    <span asp-validation-for="@Model.SearchedStringInText" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-4 col-sm-12">
@@ -20,13 +19,14 @@
                             asp-items="@(new SelectList(Model.EntityCategories,"CategoryId","Name"))"
                             class="form-control">
                         <option value="0">All Tags</option>
+                        <option value="-1">Without Tags</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <input asp-for="@Model.Creator " class="form-control" placeholder="Creator" />
-                    @*<span asp-validation-for="@Model.Text" class="text-danger"></span>*@
+                    <span asp-validation-for="@Model.Creator" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-4 col-sm-12">
@@ -56,7 +56,7 @@
                         <option value="Date">Date</option>
                         <option value="Creator">Creator</option>
                         <option value="Satus">Satus</option>
-                        <option value="Category">Category</option>
+                        <option value="Category">Tag</option>
                     </select>
                 </div>
             </div>

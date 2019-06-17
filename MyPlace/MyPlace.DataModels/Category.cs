@@ -9,8 +9,8 @@ namespace MyPlace.DataModels
 
         public string Name { get; set; }
 
-        public List<EntityCategory> EntityCategories { get; set; }
+        public ICollection<EntityCategory> EntityCategories { get; set; }
 
-        public List<Note> Notes { get; set; }
+        public ICollection<Note> Notes { get; set; }
     }
 }

@@ -61,7 +61,7 @@ namespace MyPlace
             // Configuring default paths
             services.ConfigureApplicationCookie(options =>
             {
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(10); // Logout user After 10 Minutes inactivity
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Logout user After 30 Minutes inactivity
                 options.LoginPath = $"/Account/Login";
                 options.LogoutPath = $"/Account/Logout";
                 options.AccessDeniedPath = $"/Account/AccessDenied";
@@ -178,12 +178,7 @@ namespace MyPlace
                 routes.MapRoute(
                     name: "areas",
                     template: "{area:exists}/{controller=Moderator}/{action=Index}/{id?}"
-            );
-
-                routes.MapRoute(
-                    name: "areas",
-                    template: "{area:exists}/{controller=Manager}/{action=Index}/{id?}"
-            );       
+            );                
 
             routes.MapRoute(
                    name: "Notes",

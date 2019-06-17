@@ -11,7 +11,7 @@ namespace MyPlace.Services.Contracts
     {  
         Task<Note> AddAsync(int entityId,  string userId, string text, int? categoryId);
 
-        Task EditAsync(int noteId, string text, int categoryId, bool isCompleted, bool hasStatus);
+        Task EditAsync(int noteId, string text, int? categoryId, bool isCompleted, bool hasStatus);
 
         Task DeleteAsync(int noteId);
 

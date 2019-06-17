@@ -5,7 +5,6 @@ namespace MyPlace.Services
     using System.Linq;
     using System.Threading.Tasks;
     using System.Collections.Generic;
-    using Microsoft.EntityFrameworkCore;
     using MyPlace.Data;
     using MyPlace.DataModels;
     using MyPlace.Services.Contracts;
@@ -15,11 +14,14 @@ namespace MyPlace.Services
     public class NoteService : INoteService
     {
         private readonly INotesRepository _repository;
+        private readonly ApplicationDbContext _context;
 
-        public NoteService(INotesRepository repository)
+        public NoteService(INotesRepository repository, ApplicationDbContext context)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        }
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }    
+
 
         public async Task<Note> AddAsync(int entityId, string userId, string text, int? categoryId)
         {
@@ -33,10 +35,13 @@ namespace MyPlace.Services
                 IsCompleted = false
             };
 
-            return await _repository.AddAsync(newNote);
+            //return await _repository.AddAsync(newNote);
+            var result = await _context.Notes.AddAsync(newNote);
+            await _context.SaveChangesAsync();
+            return result.Entity;
         }
 
-        public async Task EditAsync(int noteId, string text, int categoryId, bool isCompleted, bool hasStatus)
+        public async Task EditAsync(int noteId, string text, int? categoryId, bool isCompleted, bool hasStatus)
         {
             var editableNote = await _repository.GetByIdAsync(noteId);
             editableNote.Text = text;
@@ -106,11 +111,13 @@ namespace MyPlace.Services
                     Id = note.User.Id,
                     Name = note.User.UserName
                 },
-                Category = new CategoryDTO
-                {
-                    CategoryId = note.Category.Id,
-                    Name = note.Category.Name
-                }
+                Category = note.Category != null 
+                    ? new CategoryDTO
+                    {
+                        CategoryId = note.Category.Id,
+                        Name = note.Category.Name
+                    }
+                    :null
             };
         }        
     }

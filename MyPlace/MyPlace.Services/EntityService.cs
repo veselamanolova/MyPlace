@@ -18,6 +18,11 @@ namespace MyPlace.Services
         public EntityService(ApplicationDbContext context) =>
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
+
+        /// <summary>
+        /// Returns all Entities which does not have a parent entity identified by EstablishmentId=null
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<Entity>> GetAllEntitiesAsync() =>
             await _context.Entities
             .Where(e => e.EstablishmentId == null)
@@ -52,17 +57,20 @@ namespace MyPlace.Services
                 })
             };
         }
-
+        /// <summary>
+        /// Finds a logbook by its Id with all categories available for this category
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public async Task<EntityDTO> GetLogBookByIdAsync(int Id)
         {
             var result =
             await _context.Entities
-            .Where(logbook => logbook.Id == Id)
-            .Include(logbook => logbook.EntityCategories)
+            .Where((logbook => logbook.Id == Id && logbook.EstablishmentId !=null))
+            .Include(logbook => logbook.EntityCategories)            
                 .ThenInclude(ec => ec.Category)             
-            .FirstOrDefaultAsync();
-
-            return ConvertToDTO(result);
+                .FirstOrDefaultAsync();
+            return result != null ? ConvertToDTO(result) : null;
         }
 
         public async Task CreateLogBookAsync(string title, int establishementId )

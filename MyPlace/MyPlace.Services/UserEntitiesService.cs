@@ -9,20 +9,17 @@ namespace MyPlace.Services
     using MyPlace.Data;
     using MyPlace.Services.DTOs;
     using MyPlace.Services.Contracts;
-    using AutoMapper;
     using Microsoft.AspNetCore.Identity;
     using MyPlace.DataModels;
 
     public class UserEntitiesService : IUserEntitiesService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
 
-        public UserEntitiesService(ApplicationDbContext context, IMapper mapper, UserManager<User> userManager)
+        public UserEntitiesService(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context)); 
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _userManager = userManager; 
         }               
 
@@ -104,8 +101,7 @@ namespace MyPlace.Services
                 EntityId = entityId
             });
             await _context.SaveChangesAsync();
-        }
-    }
-    
+        }       
+    }    
 }
 

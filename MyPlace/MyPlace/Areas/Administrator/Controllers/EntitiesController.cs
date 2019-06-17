@@ -80,7 +80,7 @@ namespace MyPlace.Areas.Administrator.Controllers
         public async Task<IActionResult> LogBook(int id)
         {
             var catalogsNeeededForUserToEntityAssignment = await _categoryService
-                .GetAllEntityAndNotEntityCategories(id);
+                .GetAllLogBookAndNotLogBookCategories(id);
 
             var allNotAssignedCategories = catalogsNeeededForUserToEntityAssignment
                 .AllNotEntityCategories.Select(x => new SelectableCategoryViewModel()
