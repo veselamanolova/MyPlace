@@ -54,7 +54,6 @@ They are able to:
 The moderators have permissions for specific business entities. 
 In this entities they can **censor posts** that does not comply with common sense rules (rude, swearing, etc.)
 
-Тechnologies, frameworks and development techniques
 
 <h3>Technologies, frameworks and development techniques:</h3>
 
