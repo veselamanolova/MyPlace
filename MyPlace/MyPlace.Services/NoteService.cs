@@ -14,15 +14,12 @@ namespace MyPlace.Services
 
     public class NoteService : INoteService
     {
-        private readonly INotesRepository _repository;
-        private readonly ApplicationDbContext _context;
+        private readonly INotesRepository _repository;        
 
-        public NoteService(INotesRepository repository, ApplicationDbContext context)
+        public NoteService(INotesRepository repository)
         {
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }    
-
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));           
+        } 
 
         public async Task<Note> AddAsync(int entityId, string userId, string text, int? categoryId, bool hasStatus)
         {
@@ -37,10 +34,7 @@ namespace MyPlace.Services
                 IsCompleted = false
             };
 
-            //return await _repository.AddAsync(newNote);
-            var result = await _context.Notes.AddAsync(newNote);
-            await _context.SaveChangesAsync();
-            return result.Entity;
+            return await _repository.AddAsync(newNote);
         }
 
         public async Task EditAsync(int noteId, string text, int? categoryId, bool isCompleted, bool hasStatus)
@@ -92,7 +86,6 @@ namespace MyPlace.Services
             {
                 NotesCount = await _repository.CountAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator, searchByStatus),
                 Notes = (await _repository.SearchAsync(entityId, searchedString, categoryId, exactDate, fromDate, toDate, creator, searchByStatus, sortOption, sortIsAscending, skip, take))
-               //.OrderByDescending(note => note.Date)
                .Select(note => ConvertToNoteDTO(note))
                .ToList()
             }; 

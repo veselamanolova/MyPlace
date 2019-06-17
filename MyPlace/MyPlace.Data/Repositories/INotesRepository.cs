@@ -8,7 +8,7 @@
 
     public interface INotesRepository
     {
-        //Task<Note> AddAsync(Note newNote);
+        Task<Note> AddAsync(Note newNote);
 
         Task EditAsync(Note note);
 

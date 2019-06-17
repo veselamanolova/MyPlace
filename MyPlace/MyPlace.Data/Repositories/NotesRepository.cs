@@ -15,14 +15,14 @@ namespace MyPlace.Data.Repositories
 
         public NotesRepository(ApplicationDbContext context) =>
             _context = context ?? throw new ArgumentNullException(nameof(context));
-        
 
-        //public async Task<Note> AddAsync(Note newNote)
-        //{
-        //    var result = await _context.Notes.AddAsync(newNote);
-        //    await _context.SaveChangesAsync();
-        //    return result.Entity;
-        //}
+
+        public async Task<Note> AddAsync(Note newNote)
+        {
+            var result = await _context.Notes.AddAsync(newNote);
+            await _context.SaveChangesAsync();
+            return result.Entity;
+        }
 
         public async Task EditAsync(Note note)
         {
