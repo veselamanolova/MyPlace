@@ -30,13 +30,11 @@
             continue;
         }
 
-        <div class="section-border">
+        <div class="container section-border">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-lg-4 col-md-4 col-sm-4">
                     <figure class="snip1573">
-                        <center>
-                            <img src="@item.ImageUrl" alt="" height="200" width="315" />
-                        </center>
+                        <img src="@item.ImageUrl" alt="" height="200" width="315" style="position:center" />
                         <figcaption>
                             <h3>@item.Title</h3>
                         </figcaption>
@@ -44,7 +42,8 @@
                         <a href="/Catalog/Establishment/@item.Id"></a>
                     </figure>
                 </div>
-                <div class="col-md-7 left-align-p">
+
+                <div class="col-lg-8 col-md-8 col-sm-8 LittleLeft">
 
                     <br>
                     <h3>@item.Title</h3>
@@ -62,6 +61,7 @@
         </div>
     }
 </div>
+
 
 @section scripts {
     <script src="~/lib/kendo-ui-core/js/jquery.min.js"></script>
@@ -85,6 +85,9 @@
         });
 
     </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5CeVduQvorvnuug0kg1lqjsoHEoSRFSM"></script>
+
 }
 
 @{
@@ -106,7 +109,7 @@
 </a>
 
 
-    @*<div class="wrapper">
+@*<div class="wrapper">
         <input type="checkbox" id="st1" value="1" />
         <label for="st1"></label>
         <input type="checkbox" id="st2" value="2" />

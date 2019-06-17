@@ -25,6 +25,10 @@ namespace MyPlace.DataModels
 
         public string ImageUrl { get; set; }
 
+        public string LocationLongitude { get; set; }
+
+        public string LocationLatitude { get; set; }
+
         public int? EstablishmentId { get; set; }
 
         public Entity Establishment { get; set; }

@@ -14,6 +14,10 @@ namespace MyPlace.Models.Catalog
 
         public string Description { get; set; }
 
+        public string LocationLongitude { get; set; }
+
+        public string LocationLatitude { get; set; }
+
         public string ImageUrl { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
