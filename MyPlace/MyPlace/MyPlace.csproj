@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Notes\Controllers\" />
+    <Folder Include="wwwroot\lib\data-tables\" />
   </ItemGroup>
 
 </Project>

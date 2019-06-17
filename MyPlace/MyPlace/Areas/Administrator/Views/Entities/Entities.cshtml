@@ -3,68 +3,56 @@
     ViewData["Title"] = "Entities";
 }
 
-<div class="container">
-    <div class="row mt-2">
-        <div class="col-md-3 col-12 font-weight-bold"><h3>Entities</h3></div>
-    </div>
-</div>
-@{
-    string searchPanelClass = "";
-    string addPanelClass = "";
-    string searchHeaderClass = "";
-    string addHeaderClass = "";
-    //if (Model.SearchNotes.IsSearchActive)
-    //{
-    //    searchPanelClass += "show";
-    //    addHeaderClass += "collapsed";
-    //}
-    //else
-    //{
-    //    addPanelClass += "show";
-    //    searchHeaderClass += "collapsed";
-    //}
-}
+<h3>Entities</h3>
 <div id="page-border">
-    <div class="tab-content clearfix">
-        <div class="tab-pane active">
-            <div id="accordion">
-                <div>
-                    <div class="card-header" id="headingAddNote">
-                        <h5 class="mb-0 collapsible-header @addHeaderClass" data-toggle="collapse" data-target="#collapseAddNote" aria-expanded="true" aria-controls="collapseAddNote">
-                            <button class="btn btn-link">Add Entity</button>
-                        </h5>
-                    </div>
-                    <div id="collapseAddNote" class="collapse collapsible-panel @addPanelClass" aria-labelledby="headingAddNote" data-parent="#accordion">
-                        @*<partial name="_AddNotePartial" model="Model.AddNote" />*@
-                    </div>
-                </div>
-
-                <div>
-                    <div class="card-header" id="headingSearch">
-                        <h5 class="mb-0 collapsible-header @searchHeaderClass" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
-                            <button class="btn btn-link">Search</button>
-                        </h5>
-                    </div>
-                    <div id="collapseSearch" class="collapse collapsible-panel @searchPanelClass" aria-labelledby="headingSearch" data-parent="#accordion">
-                        @*<partial name="_SearchNotesPartial" model="Model.SearchNotes" />*@
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        @foreach (var entity in Model.Entities)
-        {
-            <partial name="_EntitiesPartial.cshtml" model="entity" />
-        }
-    </div>
+    <table class="table table-striped table-bordered" id="entities-table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Address</th>
+                <th>Administer entity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entity in Model.Entities)
+            {
+                <tr>
+                    <td><img src="@entity.ImageUrl" class="entity-img" /></td>
+                    <td class="font-weight-bold">@entity.Title</td>
+                    <td>@entity.Description</td>
+                    <td>@entity.Address</td>
+                    <td><a href='@Url.Action("AdministerEntity", "Entities", new { Id = @entity.Id })'><i class="fa fa-pencil-square-o icon"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
 @section Styles
     {
-    <link href="~/css/entities.css" rel="stylesheet" />    
+    <link href="~/css/entities.css" rel="stylesheet" />
     <link href="~/lib/login-form/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/lib/data-tables/jquery.dataTables.min.css" rel="stylesheet" />
 }
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@section Scripts
+    {
+    <script src="~/lib/data-tables/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#entities-table').DataTable({
+                "lengthMenu": [[5, 10, 25, 100, -1], [5, 10, 25, 100, "All"]],
+                "columns": [
+                    { "orderable": false },
+                    null,
+                    null,
+                    null,
+                    { "orderable": false }
+                ]
+            });
+        });
+    </script>
 }

@@ -45,6 +45,8 @@ namespace MyPlace.Areas.Identity.Controllers
                     var roles = await _userManager.GetRolesAsync(user);
                     if (roles.Contains(GlobalConstants.ManagerRole))
                         return RedirectToAction("Notes", "Notes", new { area = "Notes" });
+                    if (roles.Contains(GlobalConstants.AdminRole))
+                        return RedirectToAction("Entities", "Entities", new { area = "Administrator" });
 
                     return RedirectToAction("Index", "Catalog");
                 }

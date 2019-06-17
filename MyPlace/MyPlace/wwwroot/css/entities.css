@@ -31,3 +31,7 @@
 .status-icon {
    height: 1.4rem;
 }
+
+.entity-img {
+    max-width: 15vw;
+}
