@@ -14,13 +14,13 @@ namespace MyPlace
     using MyPlace.Data;
     using MyPlace.Services;
     using MyPlace.DataModels;
+    using MyPlace.Infrastructure;
     using MyPlace.Data.Repositories;
     using MyPlace.Services.Contracts;
     using MyPlace.Infrastructure.Logger;
     using MyPlace.Infrastructure.Extensions;
     using AutoMapper;
-    using MyPlace.Infrastructure;
-
+    
     public class Startup
     {
         public Startup(IConfiguration configuration)

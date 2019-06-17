@@ -24,4 +24,18 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+
+    $('.edit-button').click(function () {
+
+        var url = $('#NickNameModal').data('url') + "/" + this.id;
+        console.log(url);
+        $.get(url, function (data) {
+            $("#NickNameModal").html(data);
+            $("#NickNameModal").modal('show');
+        });
+    });
+
+});
+
 

@@ -6,6 +6,4 @@
     {
         public List<EntityViewModel> Entities { get; set; }
     }  
-
-    
 }
