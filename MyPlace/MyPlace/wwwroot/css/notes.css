@@ -41,3 +41,7 @@
 .status-icon {
    height: 1.4rem;
 }
+
+.break-word {
+    word-break: break-word;
+}

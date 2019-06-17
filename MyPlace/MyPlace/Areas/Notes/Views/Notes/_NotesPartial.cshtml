@@ -7,8 +7,8 @@
 
 <div class="container">
     <div class="row mt-2 mb-2 p-2 bg-light" id="@noteId">
-        <input type="hidden" asp-for="@Model.Id" />        
-        <div class="col-md-3 col-12 font-weight-bold">@Model.Text</div>
+        <input type="hidden" asp-for="@Model.Id" />
+        <div class="col-md-4 col-12 font-weight-bold break-word">@Model.Text</div>
         <div class="col-md-2 col-12">@Model.Date.ToShortDateString() @Model.Date.ToShortTimeString()</div>
         <div class="col-md-2 col-12"><i class="fa fa-user"></i> @Model.NoteUser.Name</div>
 
@@ -34,16 +34,12 @@
                 }
             }
         </div>
-        @if (Model.NoteUser.Id == Model.CurrentUserId)
-        {
-            <a class="col-md-1 col-4" href='@Url.Action("EditNote", "Notes", new { noteId = @Model.Id })'><i class="fa fa-pencil-square-o icon"></i></a>
-            @* @Html.ActionLink("Edit", "EditNote", "Notes", new { noteId = @Model.Id })*@
-
-            <div class="col-md-1 col-4">
+        <div class="col-md-1 col-8">
+            @if (Model.NoteUser.Id == Model.CurrentUserId)
+            {
+                <a href='@Url.Action("EditNote", "Notes", new { noteId = @Model.Id })' title="Edit" class="p-1"><i class="fa fa-pencil-square-o icon"></i></a>
                 <container>
-                    @*@Html.ActionLink("Delete", "DeleteNote", "Notes", new { noteId = @Model.Id, entityId = @Model.EntityId })*@
-                    <!-- Button <div class="row"igger modal -->
-                    <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" title="Delete"><i class="fa fa-trash icon"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#confirmDeleteModal" title="Delete" class="p-1"><i class="fa fa-trash icon"></i></a>
                     <!-- Modal -->
                     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -66,7 +62,7 @@
                         </div>
                     </div>
                 </container>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>

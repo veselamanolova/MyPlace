@@ -46,7 +46,7 @@ namespace MyPlace.Areas.Notes.Controllers
             var selectedEntityId = entityId ?? entities[0].EntityId;
             var entityCategories = await GetEntityCategoriesAsync(selectedEntityId);
 
-            int pageSize = 3;
+            int pageSize = 5;
             int pageIndex = pageNumber ?? 1;
             int? skip = (pageIndex - 1) * (pageSize);
             int? take = pageSize;
