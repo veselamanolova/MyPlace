@@ -118,16 +118,21 @@ namespace MyPlace.Data.Repositories
                         query.OrderBy(note => note.HasStatus).ThenByDescending(note => note.IsCompleted) :
                         query.OrderByDescending(note => note.HasStatus).ThenByDescending(note => note.IsCompleted);
                 }
-                else if (sortOption == "Date")
+                else if (sortOption == "Date"&& sortIsAscending)
                 {
-                    query = sortIsAscending ?
-                        query.OrderBy(note => note.Date) :
-                        query.OrderByDescending(note => note.Date);
+                    //query = sortIsAscending ?
+                        query.OrderBy(note => note.Date);
+                  //      query.OrderByDescending(note => note.Date);
                 }
                 else
                 {
                     query = query.OrderByDescending(note => note.Date);
                 }
+            }
+            //no sort option is selected => return default
+            else
+            {
+                query = query.OrderByDescending(note => note.Date);
             }
             return query;
         }      
