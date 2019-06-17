@@ -5,45 +5,36 @@
 <h1>Tags</h1>
 
 @{
-    string searchPanelClass = "";
     string addPanelClass = "";
-    string searchHeaderClass = "";
     string addHeaderClass = "";
-    //if (Model.SearchNotes.IsSearchActive)
-    //{
-    //    searchPanelClass += "show";
-    //    addHeaderClass += "collapsed";
-    //}
-    //else
-    //{
-    //    addPanelClass += "show";
-    //    searchHeaderClass += "collapsed";
-    //}
 }
-<div class="tab-content clearfix">
-    <div class="tab-pane active">
-        <div id="accordion">
-            <div>
-                <div class="card-header" id="headingAddNote">
-                    <h5 class="mb-0 collapsible-header @addHeaderClass" data-toggle="collapse" data-target="#collapseAddNote" aria-expanded="true" aria-controls="collapseAddNote">
-                        <button class="btn btn-link">Add Tag</button>
-                    </h5>
+<div id="page-border">
+    <div class="tab-content clearfix">
+        <div class="tab-pane active">
+            <div id="accordion">
+                <div>
+                    <div class="card-header" id="headingAddTag">
+                        <h5 class="mb-0 collapsible-header @addHeaderClass" data-toggle="collapse" data-target="#collapseAddNote" aria-expanded="true" aria-controls="collapseAddNote">
+                            <button class="btn btn-link">Add Tag</button>
+                        </h5>
+                    </div>
+                    <div id="collapseAddNote" class="collapse collapsible-panel @addPanelClass" aria-labelledby="headingAddTag" data-parent="#accordion">
+                        <partial name="_AddTagPartial" model=@Model.AddTag />
+                    </div>
                 </div>
-                <div id="collapseAddNote" class="collapse collapsible-panel @addPanelClass" aria-labelledby="headingAddNote" data-parent="#accordion">
-                    <partial name="_AddTagPartial" model=@Model.AddTag />
-                </div>
-            </div>   
+            </div>
+            @foreach (var tag in Model.Tags)
+            {
+                <partial name="_TagPartial" model=tag />
+            }
         </div>
-        @foreach (var tag in Model.Tags)
-        {
-            <partial name="_TagPartial" model=tag />
-        }
     </div>
 </div>
 
 @section Styles
     {
-    <link rel="stylesheet" href="~/css/notes.css" />
+
+    <link href="~/css/entities.css" rel="stylesheet" />
     <link href="~/lib/login-form/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 }
 
