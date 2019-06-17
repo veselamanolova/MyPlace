@@ -45,14 +45,18 @@
                     </figure>
                 </div>
                 <div class="col-md-7 left-align-p">
-                    <br>
-                    <h6>@item.Description</h6>
-                    <h5>Rating: </h5>
 
                     <br>
+                    <h3>@item.Title</h3>
+
+                    <h6>@item.Description</h6>
+
+                    <h6><strong>Address:</strong> @item.Address</h6>
+
                     <a asp-controller="Catalog" asp-action="Establishment" asp-route-id="@item.Id" class="snip1505 hover">
-                        leave a comment
+                        <h6 style="font-size:20px">Leave a comment</h6>
                     </a>
+
                 </div>
             </div>
         </div>
