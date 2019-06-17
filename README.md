@@ -72,6 +72,7 @@ In this entities they can **censor posts** that does not comply with common sens
 - Used **AJAX form** communication **caching** f data when loading the date in the search autocomplete textbox in the home page.
 - Applied **error handling** and **data validation** both client-side and server-side
 - Create  **unit tests**  for your &quot;business&quot; functionality following the best practices for writing unit tests ( **at least 70% code coverage** )
-- Use **Dependency Inversion** principle and **Dependency Injection** The application is integrated with **Azure Devops** as a **Continuous Integration server.** Theunit tests are configured to run on each commit to the master branch.
+- Use **Dependency Inversion** principle and **Dependency Injection** 
+- The application is integrated with **Azure Devops** as a **Continuous Integration server.** at https://dev.azure.com/sea-wolves/MyPlace/_build?definitionId=2 The unit tests are configured to run on each commit to the master branch.
 - Used GitHub and **branches** for writing different features.
 - Hosted the application in **Azure https://myplace.azurewebsites.net/**
