@@ -310,6 +310,11 @@ namespace MyPlace.Areas.Notes.Controllers
                return View(nameof(Edit), model);                
             }
 
+            if (model.SelectedCategoryId == 0)
+            {
+                model.SelectedCategoryId = null;
+            }
+
             try
             {
                 await _notesService.EditAsync(model.Note.Id, model.Note.Text,

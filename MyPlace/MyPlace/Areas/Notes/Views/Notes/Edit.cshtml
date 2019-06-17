@@ -27,6 +27,12 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
+                    <i class="fa fa-tag"></i> Tag:
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="radiobtnWithoutTag" class="custom-control-input"
+                               asp-for="@Model.SelectedCategoryId" value="0">
+                        <label for="radiobtnWithoutTag" class="custom-control-label">Without Tag</label>
+                    </div>
                     @for (int i = 0; i < Model.EntityCategories.Count; i++)
                     {
                         string id = "radiobtn" + Model.EntityCategories[i].Name;
