@@ -74,4 +74,3 @@ In this entities they can **censor posts** that does not comply with common sens
 - Use **Dependency Inversion** principle and **Dependency Injection** 
 - The application is integrated with **Azure Devops** as a **Continuous Integration server.** at https://dev.azure.com/sea-wolves/MyPlace/_build?definitionId=2 The unit tests are configured to run on each commit to the master branch.
 - Used GitHub and **branches** for writing different features.
-- Hosted the application in **Azure https://myplace.azurewebsites.net/**
