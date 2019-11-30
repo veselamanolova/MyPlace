@@ -1,13 +1,11 @@
 ﻿
 @model MyPlace.Areas.Notes.Models.NotesViewModel
-
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
 {
     <div class="alert alert-danger" role="alert">
         @Model.ErrorMessage
     </div>
 }
-
 
 <ul class="nav nav-tabs">
     @foreach (var entity in Model.UserEntites)
@@ -51,7 +49,6 @@
                     <partial name="_AddNotePartial" model="Model.AddNote" />
                 </div>
             </div>
-
             <div>
                 <div class="card-header" id="headingSearch">
                     <h5 class="mb-0 collapsible-header @searchHeaderClass" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
@@ -69,27 +66,23 @@
         }
     </div>
 </div>
-
 @{
     var prevDisabled = !Model.Notes.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.Notes.HasNextPage ? "disabled" : "";
 }
-
 <a href="@Model.PreviousPageLink" class="btn @prevDisabled">
     <strong>Previous</strong>
 </a>
-
 <a href="@Model.NextPageLink" class="btn @nextDisabled">
     <strong>Next</strong>
 </a>
-
-@section Styles 
+@section Styles
 {
     <link rel="stylesheet" href="~/css/notes.css" />
     <link href="~/lib/login-form/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 }
-
-@section Scripts 
+@section Scripts
 {
+    <script src="~/js/notes.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
