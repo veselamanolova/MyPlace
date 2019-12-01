@@ -4,7 +4,7 @@ namespace MyPlace.Areas.Notes.Controllers
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Collections.Generic;    
+    using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
     using MyPlace.Areas.Notes.Models;
     using MyPlace.Services.Contracts;
@@ -15,7 +15,7 @@ namespace MyPlace.Areas.Notes.Controllers
     using Microsoft.AspNetCore.Authorization;
     using MyPlace.Common;
 
-    [Area("Notes")]    
+    [Area("Notes")]
     [Authorize(Roles = GlobalConstants.ManagerRole)]
     public class NotesController : Controller
     {
@@ -33,9 +33,9 @@ namespace MyPlace.Areas.Notes.Controllers
             _entityCategoriesService = entityCategoriesService ?? throw new ArgumentNullException(nameof(entityCategoriesService));
         }
 
-        [HttpGet("Notes")] 
+        [HttpGet("Notes")]
         public async Task<IActionResult> Notes(int? entityId, string searchedStringInText,
-            int? categoryId, string exactDate, string fromDate, string toDate, string creator, 
+            int? categoryId, string exactDate, string fromDate, string toDate, string creator,
             NotesSearchByStatus searchByStatus, string sortOption, bool sortIsAscending, int? pageNumber)
         {
 
@@ -82,10 +82,10 @@ namespace MyPlace.Areas.Notes.Controllers
             {
                 errorMessage = "Error loading notes. Please try again.";
             }
-            NotesViewModel vm = CreateNotesViewModel(searchedStringInText, categoryId, 
-                exactDate, fromDate, toDate, 
-                creator, searchByStatus, sortOption, sortIsAscending, 
-                entities, selectedEntityId, entityCategories, 
+            NotesViewModel vm = CreateNotesViewModel(searchedStringInText, categoryId,
+                exactDate, fromDate, toDate,
+                creator, searchByStatus, sortOption, sortIsAscending,
+                entities, selectedEntityId, entityCategories,
                 pageSize, addNoteVm, null, null);
 
             if (!string.IsNullOrEmpty(errorMessage))
@@ -126,7 +126,7 @@ namespace MyPlace.Areas.Notes.Controllers
                 sortIsAscending,
                 pageNumber = (pageNumber ?? 1) + 1
             });
-            
+
             vm.Notes = new PaginatedList<NoteViewModel>(
                     notes.Select(x => ConvertNoteDtoToNoteViewModel(x, userId)).ToList(),
                     notesCount, pageIndex, pageSize);
@@ -137,9 +137,9 @@ namespace MyPlace.Areas.Notes.Controllers
         }
 
         private NotesViewModel CreateNotesViewModel(string searchedStringInText, int? categoryId,
-            string exactDate, string fromDate, string toDate, 
-            string creator, NotesSearchByStatus searchByStatus, string sortOption, bool sortIsAscending, 
-            List<UserEntityDTO> entities, int selectedEntityId, List<CategoryViewModel> entityCategories, 
+            string exactDate, string fromDate, string toDate,
+            string creator, NotesSearchByStatus searchByStatus, string sortOption, bool sortIsAscending,
+            List<UserEntityDTO> entities, int selectedEntityId, List<CategoryViewModel> entityCategories,
             int pageSize, AddNoteViewModel addNoteVm, string previousPageLink, string nextPageLink)
         {
             return new NotesViewModel()
@@ -196,12 +196,12 @@ namespace MyPlace.Areas.Notes.Controllers
                 },
                 Text = x.Text,
                 Date = x.Date,
-                Category = x.Category != null ? 
+                Category = x.Category != null ?
                 new CategoryViewModel
                 {
                     CategoryId = x.Category.CategoryId,
                     Name = x.Category.Name
-                }:
+                } :
                 null,
                 CurrentUserId = userId,
                 IsCompleted = x.IsCompleted,
@@ -220,25 +220,25 @@ namespace MyPlace.Areas.Notes.Controllers
             return dateTimeResult;
         }
 
-        [HttpPost("AddNote")]       
-        [ValidateAntiForgeryToken]        
-        public async Task<IActionResult> AddNote(AddNoteViewModel model)        
-        {            
+        [HttpPost("AddNote")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddNote(AddNoteViewModel model)
+        {
             if (!this.ModelState.IsValid)
             {
                 return View(nameof(AddNote), model);
             }
 
             try
-            {               
+            {
                 await _notesService.AddAsync(model.Note.EntityId, model.Note.NoteUser.Id, model.Note.Text, model.SelectedCategoryId, model.Note.HasStatus);
                 return RedirectToAction(nameof(Notes), new { entityId = model.Note.EntityId });
             }
             catch (ArgumentException ex)
-            {                
+            {
                 model.ErrorMessage = ex.Message;
                 return View(nameof(AddNote), model);
-            }            
+            }
         }
 
 
@@ -265,7 +265,7 @@ namespace MyPlace.Areas.Notes.Controllers
         // public async Task<IActionResult> DeleteNote(int noteId, int entityId)
         public async Task<IActionResult> DeleteNote(NoteViewModel model)
         {
-            
+
             await _notesService.DeleteAsync(model.Id);
             return RedirectToAction(nameof(Notes), new { entityId = model.EntityId });
         }
@@ -277,7 +277,7 @@ namespace MyPlace.Areas.Notes.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-               return View(nameof(Edit), model);                
+                return View(nameof(Edit), model);
             }
 
             if (model.SelectedCategoryId == 0)
@@ -294,8 +294,8 @@ namespace MyPlace.Areas.Notes.Controllers
             }
             catch (ApplicationException ex)
             {
-                model.ErrorMessage = ex.Message;               
-                return View(nameof(Edit), model);                
+                model.ErrorMessage = ex.Message;
+                return View(nameof(Edit), model);
             }
         }
 
@@ -327,6 +327,12 @@ namespace MyPlace.Areas.Notes.Controllers
                 this.ModelState.AddModelError("Error", ex.Message);
                 return View(nameof(Notes), model);
             }
+        }
+        [HttpPost("Notes/ChangeNoteStatus")]
+        public bool ChangeNoteStatus(NoteNewStatus noteNewStatus)
+        {
+            //TODO create service -> update the database
+             return true;
         }
     }
 }

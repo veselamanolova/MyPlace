@@ -1,9 +1,7 @@
 ﻿@model MyPlace.Areas.Notes.Models.NoteViewModel
-
 @{
     var noteId = "noteId" + @Model.Id;
 }
-
 
 <div class="container">
     <div class="row mt-2 mb-2 p-2 bg-light" id="@noteId">
@@ -11,7 +9,6 @@
         <div class="col-md-4 col-12 font-weight-bold break-word">@Model.Text</div>
         <div class="col-md-2 col-12">@Model.Date.ToShortDateString() @Model.Date.ToShortTimeString()</div>
         <div class="col-md-2 col-12"><i class="fa fa-user"></i> @Model.NoteUser.Name</div>
-
         @if (@Model.Category == null || @Model.Category.Name == null)
         {
             <div class="col-md-2 col-12"></div>
@@ -23,15 +20,18 @@
         <div class="col-md-1 col-4">
             @if (@Model.HasStatus)
             {
+                string completedVisibility = "d-none";
+                string inProgressVisibility = "d-none";
                 if (Model.IsCompleted)
                 {
-
-                    <img src="~/images/notes/completed.svg" class="status-icon isCompleted" alt="Completed">
+                    completedVisibility = "d-inline-flex";
                 }
                 else
                 {
-                    <img src="~/images/notes/in-progress.png" class="status-icon isInProgress" alt="In progress">
+                    inProgressVisibility = "d-inline-flex";
                 }
+                <img id="@Model.Id" src="~/images/notes/completed.svg" class="status-icon isCompleted @(completedVisibility)" alt="Completed">
+                <img id="@Model.Id" src="~/images/notes/in-progress.png" class="status-icon isInProgress @(inProgressVisibility)" alt="In progress">
             }
         </div>
         <div class="col-md-1 col-8">
